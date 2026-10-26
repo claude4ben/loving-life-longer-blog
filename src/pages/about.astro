@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import SignupBlock from '../components/SignupBlock.astro';
+import { PILLARS, PILLAR_COLORS } from '../data/site';
+---
+<Base title="About">
+  <div class="col about">
+    <div class="photo breakout"><img src="https://picsum.photos/seed/lll-ben-about/800/600" alt="Candid photo of Ben" /></div>
+    <h1>I started this because I got tired of my own excuses.</h1>
+    <p class="bio">Placeholder — first-person intro paragraph pending final "About Me" copy. This will cover who I am, why this exists, and what changed for me.</p>
+    <p class="bio">Placeholder — second paragraph pending final copy.</p>
+    <div class="placeholder-note" style="margin-bottom:36px">Placeholder copy — real "About Me" content pending.</div>
+
+    <h2>What I believe</h2>
+    <div class="pillars">
+      {PILLARS.map((p) => (
+        <div class="pillar-card">
+          <div class="pillar-label" style={`color:${PILLAR_COLORS[p.name]}`}>{p.name}</div>
+          <div class="pillar-text">{p.text}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2>People behind it</h2>
+    <div class="people">
+      <div class="person">
+        <img src="https://picsum.photos/seed/lll-ben-avatar/200/200" alt="Ben" />
+        <div><div class="name">Ben</div><div class="role">Writes and runs Loving Life Longer</div></div>
+      </div>
+      <div class="person">
+        <img src="https://picsum.photos/seed/lll-emma-avatar/200/200" alt="Emma" />
+        <div><div class="name">Emma</div><div class="role">Occasional contributor — separate brand (link pending)</div></div>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <h2>A note on qualifications</h2>
+      <p>I'm not a therapist, doctor, or clinician. Nothing here is medical or therapeutic advice. What I share comes from lived experience and my own reading and research — take it as one person's account, not a prescription.</p>
+    </div>
+
+    <div class="strip breakout">
+      <img src="https://picsum.photos/seed/lll-strip1/600/600" alt="" />
+      <img src="https://picsum.photos/seed/lll-strip2/600/600" alt="" />
+      <img src="https://picsum.photos/seed/lll-strip3/600/600" alt="" />
+    </div>
+
+    <SignupBlock compact />
+  </div>
+</Base>
+
+<style>
+  .about { padding-top: 40px; padding-bottom: 40px; }
+  .photo { width: 100%; aspect-ratio: 4 / 3; max-height: 300px; margin: 0 auto 28px; overflow: hidden; }
+  .photo img, .strip img { width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 960px) { .photo { max-width: 420px; } }
+  h1 { font-size: 32px; line-height: 1.2; margin: 0 0 16px; }
+  .bio { font-size: 18px; line-height: 1.65; margin: 0 0 16px; }
+  h2 { font-size: 22px; margin: 0 0 16px; }
+  .pillars { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; }
+  @media (min-width: 960px) { .pillars { grid-template-columns: repeat(3, 1fr); } }
+  .pillar-card { background: var(--subtle); border-radius: 8px; padding: 20px; }
+  .pillar-label { font-family: var(--font-label); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .pillar-text { font-size: 15px; line-height: 1.5; }
+  .people { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+  .person { display: flex; gap: 14px; align-items: center; }
+  .person img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .name { font-weight: 600; font-size: 15px; }
+  .role { font-size: 13px; color: var(--muted); }
+  .note-card { background: var(--ink); color: var(--white); border-radius: 8px; padding: 32px 24px; margin-bottom: 36px; }
+  .note-card h2 { font-size: 20px; margin: 0 0 14px; }
+  .note-card p { font-size: 16px; line-height: 1.65; margin: 0; }
+  .strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-bottom: 40px; }
+  .strip img { aspect-ratio: 1; }
+  @media (min-width: 960px) { .strip { gap: 12px; } }
+</style>

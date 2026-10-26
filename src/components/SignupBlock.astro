@@ -1,0 +1,27 @@
+---
+import { SIGNUP } from '../data/site';
+// compact = the smaller About-page version (no body text, no checkbox)
+interface Props { compact?: boolean; style?: string; }
+const { compact = false, style } = Astro.props;
+---
+<section class:list={['signup', { 'signup-compact': compact }]} style={style}>
+  <h2>{SIGNUP.title}</h2>
+  {!compact && <p>{SIGNUP.body}</p>}
+  <!-- TODO: connect to an email provider (double opt-in + consent record). -->
+  <form data-signup>
+    <input class="field" type="email" name="email" placeholder="Email address" required />
+    {!compact && (
+      <label><input type="checkbox" name="consent" required /><span>{SIGNUP.consent}</span></label>
+    )}
+    <button class="btn btn-block" type="submit">Subscribe</button>
+  </form>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-signup]').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.outerHTML = '<p class="signup-done">Thanks — you’re on the list.</p>';
+    });
+  });
+</script>

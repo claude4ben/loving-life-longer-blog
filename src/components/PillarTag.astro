@@ -1,0 +1,6 @@
+---
+import { PILLAR_COLORS, type Pillar } from '../data/site';
+interface Props { pillar: Pillar; class?: string; }
+const { pillar, class: cls } = Astro.props;
+---
+<span class:list={['pillar-tag', cls]} style={`background:${PILLAR_COLORS[pillar]}`}>{pillar}</span>
