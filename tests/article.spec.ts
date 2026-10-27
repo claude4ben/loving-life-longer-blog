@@ -95,15 +95,24 @@ test.describe('Article interactions', () => {
       .toBeLessThan(150);
   });
 
-  test('like toggles on and off', async ({ page, isMobile }) => {
+  test('like toggles on and off and is saved', async ({ page, isMobile }) => {
     const like = page.locator(isMobile ? '.engage-bar [data-like]' : '.engage-rail [data-like]');
-    await expect(like).toBeVisible();
-    await expect(like).toContainText('♡24');
+    const count = async () => Number(await like.locator('[data-like-count]').textContent());
+    await expect(like).toContainText('♡');
+    await page.waitForLoadState('networkidle');
+    const before = await count();
+
     await like.click();
-    await expect(like).toContainText('♥25');
+    await expect(like).toContainText('♥');
     await expect(like).toHaveCSS('color', GREEN);
+    await page.waitForLoadState('networkidle');
+    expect(await count()).toBeGreaterThanOrEqual(before + 1);
+
+    await page.reload();
+    await expect(like).toContainText('♥'); // remembered by the database
+
     await like.click();
-    await expect(like).toContainText('♡24');
+    await expect(like).toContainText('♡');
   });
 
   test('only the right engagement controls show for the screen size', async ({ page, isMobile }) => {
@@ -159,41 +168,42 @@ test.describe('Share sheet', () => {
 test.describe('Comments', () => {
   const form = (page) => page.locator('[data-comment-form]');
   const items = (page) => page.locator('[data-comments] > div');
-
-  test('shows sample comments with a reply', async ({ page }) => {
-    await expect(items(page)).toHaveCount(2);
-    await expect(page.locator('.c.reply')).toHaveCount(1);
-    await expect(page.locator('#comments-section h2')).toHaveText('Comments (2)');
-  });
+  const unique = () => `Test comment ${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const post = async (page, name: string, text: string) => {
+    await form(page).getByPlaceholder('Name').fill(name);
+    await form(page).getByPlaceholder('Add a comment').fill(text);
+    await form(page).getByRole('button', { name: 'Post comment' }).click();
+  };
 
   test('name and comment are required', async ({ page }) => {
-    await form(page).getByPlaceholder('Name').fill('   ');
-    await form(page).getByPlaceholder('Add a comment').fill('Hello');
-    await form(page).getByRole('button', { name: 'Post comment' }).click();
-    await form(page).getByPlaceholder('Name').fill('Sam');
-    await form(page).getByPlaceholder('Add a comment').fill('   ');
-    await form(page).getByRole('button', { name: 'Post comment' }).click();
-    await expect(items(page)).toHaveCount(2);
+    const text = unique();
+    await post(page, '   ', text);
+    await expect(page.locator('[data-comment-notice]')).toHaveText('Please add your name and a comment.');
+    await post(page, 'Sam', '   ');
+    await expect(page.getByText(text)).toHaveCount(0);
   });
 
-  test('posting adds the comment to the top and updates every count', async ({ page }) => {
-    await form(page).getByPlaceholder('Name').fill('sam');
-    await form(page).getByPlaceholder('Add a comment').fill('Loved this.');
-    await form(page).getByRole('button', { name: 'Post comment' }).click();
+  test('posting adds the comment to the top, updates every count, and is saved', async ({ page }) => {
+    const text = unique();
+    await post(page, 'sam', text);
 
     const first = items(page).first();
+    await expect(first.locator('.c-text')).toHaveText(text);
     await expect(first.locator('.c-av')).toHaveText('S');
     await expect(first.locator('.c-name')).toHaveText('sam');
     await expect(first.locator('.c-time')).toHaveText('Just now');
-    await expect(first.locator('.c-text')).toHaveText('Loved this.');
     await expect(form(page).getByPlaceholder('Name')).toHaveValue('');
-    await expect(page.locator('[data-comment-count]')).toHaveText(['3', '3', '3']);
+
+    const counts = await page.locator('[data-comment-count]').allTextContents();
+    expect(new Set(counts).size).toBe(1);
+    expect(Number(counts[0])).toBeGreaterThanOrEqual(1);
+
+    await page.reload();
+    await expect(page.locator('.c-text', { hasText: text })).toBeVisible(); // loaded from the database
   });
 
   test('comment text is shown as plain text, not run as code', async ({ page }) => {
-    await form(page).getByPlaceholder('Name').fill('<b>Bob</b>');
-    await form(page).getByPlaceholder('Add a comment').fill('<img src=x onerror="window.hacked=1">');
-    await form(page).getByRole('button', { name: 'Post comment' }).click();
+    await post(page, '<b>Bob</b>', '<img src=x onerror="window.hacked=1">');
     await expect(items(page).first().locator('.c-name')).toHaveText('<b>Bob</b>');
     expect(await page.evaluate(() => (window as any).hacked)).toBeUndefined();
   });

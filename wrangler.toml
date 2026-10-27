@@ -1,0 +1,20 @@
+# Cloudflare Pages settings for the site (Cloudflare reads this file on every deploy).
+name = "loving-life-longer-blog"
+pages_build_output_dir = "./dist"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Comments and likes database (Cloudflare D1). The site creates its tables automatically.
+[[d1_databases]]
+binding = "DB"
+database_name = "lll-blog"
+database_id = "REPLACE_WITH_DATABASE_ID"
+
+[vars]
+# "true" = comments wait for Ben's approval before appearing; "false" = appear straight away.
+COMMENTS_NEED_APPROVAL = "false"
+# Who can use /admin (comma-separated emails).
+ADMIN_EMAILS = "benjamesparker@gmail.com"
+# From Cloudflare Zero Trust, once the /admin Access application exists (see docs/ARCHITECTURE.md).
+ACCESS_TEAM_DOMAIN = ""
+ACCESS_AUD = ""

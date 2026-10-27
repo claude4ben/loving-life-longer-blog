@@ -16,7 +16,6 @@ const blog = defineCollection({
     heroImage: z.string(),
     heroAlt: z.string().default(''),
     featured: z.boolean().default(false),
-    likes: z.number().default(24),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
     sectionImages: z
       .record(

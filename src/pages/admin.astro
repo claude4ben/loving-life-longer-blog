@@ -1,0 +1,46 @@
+---
+// Ben's comment admin. The page itself is plain; the data comes from /api/admin/comments, which only
+// answers when Cloudflare Access has signed Ben in (see src/lib/admin-auth.ts).
+import Base from '../layouts/Base.astro';
+---
+<Base title="Admin" description="Comment admin">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <div class="admin">
+    <h1>Comments</h1>
+    <div class="toolbar">
+      <label><input type="checkbox" data-show-deleted /> Show deleted</label>
+      <button class="btn" data-refresh type="button">Refresh</button>
+    </div>
+    <p class="msg" data-msg role="status">Loading…</p>
+    <div data-list></div>
+  </div>
+</Base>
+
+<script>
+  import { initAdmin } from '../scripts/admin';
+  initAdmin();
+</script>
+
+<style>
+  .admin { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+  h1 { font-size: 28px; margin: 0 0 16px; }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; font-size: 14px; }
+  .toolbar label { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+  .msg { font-size: 14px; color: var(--muted); }
+  .msg.error { color: #b3261e; }
+  :global(.a-post) { font-family: var(--font-label); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 28px 0 10px; }
+  :global(.a-card) { border: 1px solid var(--border-input); border-radius: 8px; padding: 16px; margin-bottom: 12px; background: var(--white); }
+  :global(.a-card.reply) { margin-left: 40px; background: var(--subtle); border-color: var(--subtle); }
+  :global(.a-card.deleted) { opacity: 0.6; }
+  :global(.a-head) { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; font-size: 13px; color: var(--muted); }
+  :global(.a-name) { font-weight: 600; font-size: 15px; color: var(--ink); }
+  :global(.a-status) { font-family: var(--font-label); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 4px; background: var(--subtle); color: var(--ink); }
+  :global(.a-status.pending) { background: #fff3cd; }
+  :global(.a-status.deleted) { background: #f8d7da; }
+  :global(.a-text) { font-size: 15px; line-height: 1.5; margin: 8px 0 12px; white-space: pre-wrap; }
+  :global(.a-actions) { display: flex; flex-wrap: wrap; gap: 8px; }
+  :global(.a-actions button) { min-height: 44px; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-input); background: var(--white); font-size: 14px; cursor: pointer; color: var(--ink); }
+  :global(.a-actions .danger) { color: #b3261e; }
+  :global(.a-reply) { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  :global(.a-reply[hidden]) { display: none; }
+</style>

@@ -24,6 +24,9 @@ The site is a **static website**: all pages are built once into plain files. Onl
 (comments, likes, signup) will run as small server functions. Today the functions, database, Turnstile
 and newsletter service are decided but not built yet (🔨), so the live site is fully static.
 
+*Update 2026-10-27:* Pages Functions and the D1 database are now built (decisions 8, 16, 19); they go
+live once the database is created in Cloudflare and its id is added to `wrangler.toml`.
+
 | Page | Address | File |
 | --- | --- | --- |
 | Home | `/` | `src/pages/index.astro` |
@@ -121,7 +124,7 @@ photo zoom are in `src/scripts/article.ts`, with no React or other UI library.
 | Tiny download and fast | Harder to grow into complex features than a component library |
 | Nothing extra to update or keep secure | Comment HTML is built from strings (user text is escaped) |
 
-### 8. Comments and likes: Cloudflare D1 🔨
+### 8. Comments and likes: Cloudflare D1 ✅
 
 **Why:** comments and likes have to be shared by every visitor, so they need a database. D1 is
 Cloudflare's built-in SQL database, so it sits in the same account as the hosting (decision 14).
@@ -140,8 +143,24 @@ free tiers). Each email must include an unsubscribe link, and we only send to pe
 *Still to build:* tables for comments and likes, one like per visitor, a moderation queue, and an admin
 view to approve, delete and reply to comments.
 
-*Until then* 🕒: likes and new comments are saved only in the visitor's own browser, and the sample
-comments come from `SEED_COMMENTS` in `src/data/site.ts`.
+*How it's built:*
+- **Tables** live in `src/lib/db.ts` as numbered migrations. The site applies any new ones automatically
+  the first time it talks to the database, so nobody has to run database commands. To change the
+  tables, add a new migration; never edit an old one.
+- **Server routes:** `/api/comments` (load, post), `/api/likes` (load, like/unlike) and
+  `/api/admin/comments` (admin only).
+- **Moderation:** comments appear straight away and Ben deletes bad ones (*post-moderation*), because
+  that keeps conversation flowing. Switch to approve-first with `COMMENTS_NEED_APPROVAL = "true"` in
+  `wrangler.toml`. Deleted comments are hidden, not erased, so they can be restored.
+- **Likes:** one per visitor, using a random id stored in the visitor's browser (not linked to who they are).
+- **Basic spam guard:** a hidden form field that bots fill in; Turnstile (17) comes next.
+- **No invented data:** the sample comments and the starting like count of 24 were removed.
+
+| Pros of these choices | Cons |
+| --- | --- |
+| Zero manual database steps, now and for future changes | A table change ships with code, so it must be tested first (the tests use a fresh local database) |
+| Comments flow without waiting for approval | A bad comment is visible until Ben deletes it (approval mode fixes this) |
+| Deleted comments can be restored | Deleted comments stay in the database (fine for now; the privacy policy should say so) |
 
 ### 9. Email signup: a newsletter service 🔨
 
@@ -235,7 +254,7 @@ github.com, and automatic deploys to Cloudflare Pages.
 | Every change is tracked and reversible | Requires a GitHub account to edit |
 | Cloudflare Pages deploys straight from it | |
 
-### 16. Server code: Pages Functions via `@astrojs/cloudflare` 🔨
+### 16. Server code: Pages Functions via `@astrojs/cloudflare` ✅
 
 **Why:** the comment, like and signup forms need a little code running on a server to talk to D1,
 Turnstile and the newsletter service. The `@astrojs/cloudflare` add-on runs those endpoints as Pages
@@ -283,6 +302,28 @@ everything on every push to `main` and every pull request, skipping changes that
 *Alternatives considered:* Cypress (similar, but slower and heavier); unit tests only, e.g. Vitest
 (this site has little logic; most risk is in what readers see and click).
 
+### 19. Cloudflare settings in `wrangler.toml`; admin sign-in via Cloudflare Access ✅
+
+**Why:** `wrangler.toml` (in the repository) tells Cloudflare which database the site uses and holds
+the comment settings, so the setup is saved in git history, not only in the dashboard. Once this file
+exists, Cloudflare uses it instead of the dashboard for bindings and settings. It also turns on
+`nodejs_compat`, which the Astro add-on needs.
+
+The `/admin` page is protected by a **Cloudflare Access** application (sign in with an emailed code).
+The server also checks Access's signed sign-in token on every admin request (`src/lib/admin-auth.ts`,
+using the `jose` library) and that the email is in `ADMIN_EMAILS`. If Access isn't set up, admin is
+simply refused.
+
+| Pros | Cons |
+| --- | --- |
+| Settings are versioned and reviewed like code | Bindings can no longer be edited in the Cloudflare dashboard |
+| No passwords for Ben to manage; same sign-in as the private site | Needs the Access team domain and application id copied into `wrangler.toml` once |
+| Two locks on admin: Access in front, signature check behind | |
+
+**Local testing:** tests run the built site with `wrangler pages dev` and a fresh, throwaway database.
+`ADMIN_DEV_BYPASS=1` lets tests use admin without signing in; it is only ever passed on the test
+command line and never set on Cloudflare.
+
 ---
 
 ## Change log
@@ -297,3 +338,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | Article section parsing moved to `src/lib/sections.ts` (3) so it can be tested directly; supports bold and lists. |
 | 2026-10-27 | Page text (4) moved from `src/data/site.ts` into Markdown files in `src/content/pages/`; formatting marks work in all of them. |
 | 2026-10-27 | Comments (8): added "email me when someone replies" notifications; email-sending service still to choose. Article reading column widened to 820px on desktop (styling only). |
+| 2026-10-27 | Built comments and likes on D1 (8) via Pages Functions (16); added `wrangler.toml` config and Access-protected admin (19); removed sample comments and fake like count. Goes live once the database id is added. |

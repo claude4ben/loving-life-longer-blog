@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect, ARTICLE } from './fixtures';
 
 // Automated accessibility scan (WCAG 2.1 A and AA rules) on every page.
-for (const path of ['/', ARTICLE, '/about/', '/policy/']) {
+for (const path of ['/', ARTICLE, '/about/', '/policy/', '/admin/']) {
   test(`${path} has no accessibility violations`, async ({ page }) => {
     await page.goto(path);
     const results = await new AxeBuilder({ page })

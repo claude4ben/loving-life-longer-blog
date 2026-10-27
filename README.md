@@ -8,7 +8,7 @@ The blog site, built with [Astro](https://astro.build) from the `design_handoff_
 npm install
 npm run dev      # opens http://localhost:4321 and reloads as you edit
 npm run build    # makes the finished site in dist/
-npm test         # builds the site and runs the automated tests
+npm test         # builds the site and runs the automated tests (with a local, throwaway database)
 ```
 
 The first time you run tests on a new computer, also run `npx playwright install chromium`.
@@ -24,6 +24,7 @@ Tests live in `tests/` and run automatically on GitHub for every code change (se
 | Policy page | `src/content/pages/policy.md` |
 | Email signup box text | `src/content/pages/signup.md` |
 | Header, menu, footer | `src/layouts/Base.astro` |
+| Comment settings (approval on/off, admin emails) | `wrangler.toml` |
 | Colours and fonts | top of `src/styles/global.css` |
 | Logo | replace `public/logo.png` |
 
@@ -67,11 +68,16 @@ one you want at the top of the home page. Once there are two or more articles, t
 All photos are placeholders from picsum.photos. Put real photos in `public/images/` and point to them
 as `/images/your-photo.jpg`.
 
+## Managing comments
+
+Go to **/admin** on the site (for example `https://loving-life-longer-blog.pages.dev/admin/`) and sign
+in with your email. You can reply as Ben, delete comments (they can be restored), and approve comments
+if approval is switched on (`COMMENTS_NEED_APPROVAL` in `wrangler.toml`).
+
 ## Not built yet
 
 These need a backend or a third-party service (see `docs/ARCHITECTURE.md`):
 
-- **Comments and likes** only work in the visitor's own browser for now. Planned: Cloudflare D1 with moderation.
 - **Email signup** shows a thank-you message but doesn't save the address yet. Planned: a newsletter service with double opt-in, and Turnstile spam protection on both forms.
 - **Footer social icons** are grey placeholder circles.
 - A CMS for publishing without editing files, and a cookie banner if analytics are added.

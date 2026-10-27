@@ -1,26 +1,41 @@
 // Interactive behaviour for the article page.
-// Likes and comments are stored in this browser only until a backend is added.
+// Likes and comments are saved in the site's database through /api/likes and /api/comments.
 
-type Comment = { id: number; name: string; initials: string; time: string; text: string; replies: Comment[] };
+type Comment = { id: number; name: string; initials: string; text: string; createdAt: string; isAuthor: boolean; replies: Comment[] };
 
 const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string) => [...document.querySelectorAll<T>(sel)];
 
-const store = {
-  get<T>(key: string, fallback: T): T {
-    try {
-      const v = localStorage.getItem(key);
-      return v ? (JSON.parse(v) as T) : fallback;
-    } catch {
-      return fallback;
-    }
-  },
-  set(key: string, value: unknown) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch {}
-  },
-};
+// A random id for this browser, so each visitor's like counts once. Not linked to who they are.
+function visitorId(): string {
+  try {
+    let id = localStorage.getItem('lll-visitor');
+    if (!id) localStorage.setItem('lll-visitor', (id = crypto.randomUUID()));
+    return id;
+  } catch {
+    return crypto.randomUUID(); // storage blocked: likes still work for this page view
+  }
+}
+
+async function api<T>(path: string, body?: unknown): Promise<T> {
+  const res = await fetch(path, body === undefined ? undefined : {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+  return data as T;
+}
+
+/** "Just now", "5 minutes ago", "2 days ago", then the date. */
+function timeAgo(iso: string): string {
+  const s = (Date.now() - new Date(iso).getTime()) / 1000;
+  const ago = (n: number, unit: string) => `${n} ${unit}${n === 1 ? '' : 's'} ago`;
+  if (s < 60) return 'Just now';
+  if (s < 3600) return ago(Math.floor(s / 60), 'minute');
+  if (s < 86400) return ago(Math.floor(s / 3600), 'hour');
+  if (s < 86400 * 30) return ago(Math.floor(s / 86400), 'day');
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
 
 function scrollToId(id: string) {
   const el = document.getElementById(id);
@@ -33,7 +48,7 @@ function escapeHtml(s: string) {
 }
 
 export function initArticle() {
-  const meta = JSON.parse($('#post-meta')!.textContent!) as { id: string; title: string; likes: number };
+  const meta = JSON.parse($('#post-meta')!.textContent!) as { id: string; title: string };
 
   // Scroll progress through #article-body
   const bar = $('[data-progress]')!;
@@ -85,21 +100,29 @@ export function initArticle() {
   );
 
   // Likes
-  const likeKey = `lll-liked:${meta.id}`;
-  let liked = store.get(likeKey, false);
+  const visitor = visitorId();
+  const post = encodeURIComponent(meta.id);
+  let like = { count: 0, liked: false };
   const renderLike = () => {
-    $$('[data-like]').forEach((b) => b.classList.toggle('liked', liked));
-    $$('[data-like-glyph]').forEach((g) => (g.textContent = liked ? '♥' : '♡'));
-    $$('[data-like-count]').forEach((c) => (c.textContent = String(meta.likes + (liked ? 1 : 0))));
+    $$('[data-like]').forEach((b) => b.classList.toggle('liked', like.liked));
+    $$('[data-like-glyph]').forEach((g) => (g.textContent = like.liked ? '\u2665' : '\u2661'));
+    $$('[data-like-count]').forEach((c) => (c.textContent = String(like.count)));
   };
   $$('[data-like]').forEach((b) =>
-    b.addEventListener('click', () => {
-      liked = !liked;
-      store.set(likeKey, liked);
+    b.addEventListener('click', async () => {
+      const before = like;
+      like = { liked: !like.liked, count: Math.max(0, like.count + (like.liked ? -1 : 1)) }; // show it straight away
+      renderLike();
+      try {
+        like = await api('/api/likes', { post: meta.id, visitor, liked: like.liked });
+      } catch {
+        like = before;
+      }
       renderLike();
     }),
   );
   renderLike();
+  api<typeof like>(`/api/likes?post=${post}&visitor=${visitor}`).then((l) => ((like = l), renderLike())).catch(() => {});
 
   $$('[data-to-comments]').forEach((b) => b.addEventListener('click', () => scrollToId('comments-section')));
 
@@ -131,15 +154,19 @@ export function initArticle() {
   );
 
   // Comments
-  const seed = JSON.parse($('#seed-comments')!.textContent!) as Comment[];
-  const commentsKey = `lll-comments:${meta.id}`;
-  let comments: Comment[] = [...store.get<Comment[]>(commentsKey, []), ...seed];
+  let comments: Comment[] = [];
   const list = $('[data-comments]')!;
+  const notice = $('[data-comment-notice]')!;
+  const say = (msg: string, error = false) => {
+    notice.textContent = msg;
+    notice.classList.toggle('error', error);
+    notice.hidden = !msg;
+  };
   const item = (c: Comment, reply = false) => `
-    <div class="c${reply ? ' reply' : ''}">
+    <div class="c${reply ? ' reply' : ''}${c.isAuthor ? ' author' : ''}">
       <div class="c-av">${escapeHtml(c.initials)}</div>
       <div class="c-body">
-        <div class="c-head"><span class="c-name">${escapeHtml(c.name)}</span><span class="c-time">${escapeHtml(c.time)}</span></div>
+        <div class="c-head"><span class="c-name">${escapeHtml(c.name)}</span>${c.isAuthor ? '<span class="c-badge">Author</span>' : ''}<span class="c-time">${escapeHtml(timeAgo(c.createdAt))}</span></div>
         <p class="c-text">${escapeHtml(c.text)}</p>
       </div>
     </div>`;
@@ -148,18 +175,30 @@ export function initArticle() {
     $$('[data-comment-count]').forEach((n) => (n.textContent = String(comments.length)));
   };
   renderComments();
+  api<{ comments: Comment[] }>(`/api/comments?post=${post}`)
+    .then((r) => ((comments = r.comments), renderComments()))
+    .catch(() => say('Comments couldn’t be loaded just now. Please refresh to try again.', true));
 
   const form = $<HTMLFormElement>('[data-comment-form]')!;
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const data = new FormData(form);
-    const name = String(data.get('name') ?? '').trim();
-    const text = String(data.get('text') ?? '').trim();
-    if (!name || !text) return;
-    const c: Comment = { id: Date.now(), name, initials: name.charAt(0).toUpperCase(), time: 'Just now', text, replies: [] };
-    comments = [c, ...comments];
-    store.set(commentsKey, [c, ...store.get<Comment[]>(commentsKey, [])]);
-    form.reset();
-    renderComments();
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    if (!data.name?.trim() || !data.text?.trim()) return say('Please add your name and a comment.', true);
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    button.disabled = true;
+    try {
+      const r = await api<{ status: string; comment: Comment | null }>('/api/comments', { ...data, post: meta.id });
+      form.reset();
+      if (r.status === 'pending') say('Thanks! Your comment will appear once Ben has approved it.');
+      else {
+        say('');
+        if (r.comment) comments = [r.comment, ...comments];
+        renderComments();
+      }
+    } catch (err) {
+      say((err as Error).message, true);
+    } finally {
+      button.disabled = false;
+    }
   });
 }

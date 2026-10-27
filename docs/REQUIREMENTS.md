@@ -42,8 +42,8 @@ Every feature and design change should move at least one of these forward, and s
 | **Q&A (FAQ)** on articles and the home page, answering the questions people search for and ask AI | G1, G2 | ✅ layout; 📝 answers are placeholders |
 | **Discoverability basics**: page titles and descriptions | G1 | ✅ |
 | **Discoverability extras**: structured data (Article, FAQ, author), sitemap, share previews (Open Graph), canonical links | G1 | 🔨 not built yet; needed before launch |
-| **Comments** with Ben's replies, plus an **admin panel** to reply to and delete comments, and **"email me when someone replies"** notifications | G3, G5 | 🕒 comments only in the reader's browser; 🔨 D1 + admin panel |
-| **Likes and sharing** (copy link, email, WhatsApp, X, Facebook, Instagram, Snapchat) | G1, G3 | ✅ sharing; 🕒 likes only in the reader's browser |
+| **Comments** saved in a database, with Ben's replies, an **admin panel** (reply, delete, restore, approve), and later **"email me when someone replies"** notifications | G3, G5 | ✅ built and tested (goes live once the database exists); 🔨 reply emails |
+| **Likes and sharing** (copy link, email, WhatsApp, X, Facebook, Instagram, Snapchat) | G1, G3 | ✅ (likes saved in the database, one per visitor) |
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
@@ -180,8 +180,8 @@ change better serves the goals in Part 1.
 | ART-24 | TOC jump | Clicking a heading scrolls smoothly to that section (90px below the top, clear of the header) and closes the list. | ✅ | Auto |
 | ART-25 | Mobile engagement bar | Below 960px: bar fixed to the bottom with Like (♡ + count), "Comments (n)" and Share. Each tap target at least 44px. | ✅ | Auto |
 | ART-26 | Desktop engagement rail | 960px and wider: white rounded panel fixed at the right, vertically centred, with Like, 💬 count and Share stacked. | ✅ | Auto |
-| ART-27 | Like | Tapping Like turns ♡ into a green ♥ and adds 1 to the count; tapping again undoes it. | ✅ | Auto |
-| ART-28 | Likes are shared | Likes are saved for everyone (not just this browser), one per visitor. | 🕒 saved in this browser only; 🔨 move to D1 | None |
+| ART-27 | Like | Tapping Like turns ♡ into a green ♥ and adds 1 to the count straight away; tapping again undoes it. The count is the real number of visitors who liked it (starts at 0). | ✅ | Auto |
+| ART-28 | Likes are shared | Likes are saved in the database for everyone, one per visitor (each browser has a random visitor id, not linked to who they are). A visitor's like is remembered when they come back. | ✅ | Auto |
 | ART-29 | Comments button | Scrolls to the comments section. | ✅ | Auto |
 | ART-30 | Share sheet | Share opens a dimmed background with a white sheet rising from the bottom, "Share this article". Clicking the dimmed area closes it. | ✅ | Auto |
 | ART-31 | Copy link | Copies the article address; the label reads "Copied!" briefly. | ✅ | Auto |
@@ -193,13 +193,15 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | ART-40 | Comment form | Name, "Email (optional, not published)" and "Add a comment" (3 rows) fields; "Policy" link on the left and "Post comment" on the right. | ✅ | Auto |
 | ART-41 | Validation | Name and comment are required (spaces alone don't count); email is optional. Nothing posts if a required field is empty. | ✅ | Auto |
-| ART-42 | New comment | Appears at the top of the list with the first letter of the name as its avatar and "Just now" as the time. The form clears. | ✅ | Auto |
+| ART-42 | New comment | Saved to the database and shown at the top of the list with the first letter of the name as its avatar and "Just now" as the time. The form clears. Times show as "5 minutes ago", "2 days ago", then the date. If saving fails, a red message explains why. | ✅ | Auto |
 | ART-43 | Comment list | 36px grey initial circle, name and time on one line, text 15px. Replies indented 48px with 32px circles. Comments 24px apart. | ✅ | Auto |
 | ART-44 | Comment count | Heading, mobile bar and desktop rail all show the same count of top-level comments. | ✅ | Auto |
-| ART-45 | Comments are shared | Comments are saved for every visitor and need approval before appearing. | 🕒 saved in this browser only; 🔨 move to D1 with moderation | None |
+| ART-45 | Comments are shared | Comments are saved in the database and shown to every visitor. By default they appear straight away and Ben deletes bad ones; setting `COMMENTS_NEED_APPROVAL = "true"` in `wrangler.toml` makes them wait for Ben's approval (the commenter is told). | ✅ | Auto |
 | ART-49 | Reply notifications | Commenters who leave their email can tick **"Email me when someone replies"** (unticked by default). They then get an email when Ben or another reader replies, with a link back to the comment and a one-click unsubscribe. The email is never published. | 🔨 needs the comments database (D1) and an email-sending service | None |
+| ART-50 | Comment rules | Name up to 80 characters, comment up to 5,000, email optional but must look valid. A hidden field catches simple bots (their comments are silently ignored). Commenters' emails are never sent to the article page. | ✅ | Auto |
+| ART-51 | Author badge | Ben's replies show under the comment with a green "Author" badge. | ✅ | Auto |
 | ART-46 | Comment safety | Text people type is shown as plain text, never run as code. | ✅ | Auto |
-| ART-47 | Sample comments | Priya, Tom and Ben's reply are sample data, to be removed once real comments exist. | 🕒 | Auto |
+| ART-47 | No invented comments or likes | The sample comments (Priya, Tom) and the starting like count of 24 were removed; everything shown is real (G5). | ✅ | Auto |
 | ART-48 | Signup block | Full signup block below the comments (see CMP-04). | ✅ | Auto |
 
 ## 4. About (`/about/`)
@@ -268,7 +270,8 @@ change better serves the goals in Part 1.
 | OPS-01 | Hosting | Site served by Cloudflare Pages (project `loving-life-longer-blog`, https://loving-life-longer-blog.pages.dev) from `claude4ben/loving-life-longer-blog`. | ✅ | Manual (Cloudflare check passed on GitHub, 2026-10-27) |
 | OPS-02 | Auto deploy | Every push to `main` goes live; other branches get preview links. | ✅ | Manual (each commit shows a "Cloudflare Pages" check on GitHub) |
 | OPS-04 | Private until launch | Only allowed email addresses can open the site (main address and previews); everyone else sees a Cloudflare sign-in page. Removed at launch. | 🔨 (steps given; not yet confirmed) | None |
-| OPS-03 | Moderation admin | A private view to approve, delete and reply to comments. | 🔨 | None |
+| OPS-05 | Database | Cloudflare D1 database `lll-blog`, connected through `wrangler.toml`. Tables are created automatically on first use. | 🔨 waiting for the database to be created | Auto (local copy in tests) |
+| OPS-03 | Comment admin | `/admin` lists every comment (with commenters' emails), grouped by article: reply as Ben, delete (with confirmation), restore, approve. Hidden from search engines. Only works for Ben once signed in through Cloudflare Access; anyone else gets "Not signed in as an admin". | ✅ built; 🔨 Access sign-in to set up | Auto |
 
 ---
 
@@ -280,7 +283,7 @@ Small, deliberate differences; each still meets the handoff's intent.
 | --- | --- | --- | --- |
 | Share buttons | Only "Copy link" did anything | Every option opens a real share screen | So sharing actually works |
 | Copy link | Closed the sheet at once | Shows "Copied!", then closes | So the confirmation is visible |
-| Likes, comments | Lost on page reload | Kept in the visitor's browser | Closer to the real behaviour until D1 is built |
+| Likes, comments | Lost on page reload | Saved in the Cloudflare D1 database | Real, shared comments and likes |
 | Signup | Did nothing | Requires email and consent, then says thanks | Clear feedback; consent captured in the form |
 | Home introduction | Mission paragraph in large serif | Purpose as the H1 headline with a "Welcome" label and a short line about Ben | Clearer purpose, especially on mobile (G1, G4) |
 | Article text width | 680px | 820px on desktop | Ben's choice (option B): fills more of the screen while staying readable |
