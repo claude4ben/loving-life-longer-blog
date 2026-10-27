@@ -43,9 +43,9 @@ as `/images/your-photo.jpg`.
 
 ## Not built yet
 
-These need a backend or a third-party service:
+These need a backend or a third-party service (see `docs/ARCHITECTURE.md`):
 
-- **Comments and likes** only work in the visitor's own browser for now. They need a database with moderation.
-- **Email signup** shows a thank-you message but doesn't save the address yet. It needs an email provider with double opt-in.
+- **Comments and likes** only work in the visitor's own browser for now. Planned: Cloudflare D1 with moderation.
+- **Email signup** shows a thank-you message but doesn't save the address yet. Planned: a newsletter service with double opt-in, and Turnstile spam protection on both forms.
 - **Footer social icons** are grey placeholder circles.
 - A CMS for publishing without editing files, and a cookie banner if analytics are added.

@@ -6,3 +6,5 @@
   hosting, routing, images, fonts, and so on), update the matching entry or add a new one, and add a
   dated line to its Change log in the same commit.
 - Keep the README's "Where to edit things" table accurate when files move.
+- Hosting is Cloudflare (Pages, D1, Pages Functions, Turnstile). Don't suggest Vercel or Netlify;
+  they were considered and ruled out (see decision 14 in docs/ARCHITECTURE.md).
