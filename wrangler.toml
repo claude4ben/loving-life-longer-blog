@@ -15,3 +15,8 @@ database_id = "0bc01f85-fd80-48ed-b0b8-633fad218774"
 COMMENTS_NEED_APPROVAL = "false"
 # The /admin password is NOT here: it's a secret called ADMIN_PASSWORD, set in the Cloudflare
 # dashboard (Workers & Pages > loving-life-longer-blog > Settings > Variables and Secrets).
+
+# The photo crop editor (/admin/photos/) saves changes into this repository on GitHub. It needs a secret
+# called GITHUB_TOKEN (a GitHub key that can edit this repository's contents), set in the dashboard.
+GITHUB_REPO = "claude4ben/loving-life-longer-blog"
+GITHUB_BRANCH = "main"

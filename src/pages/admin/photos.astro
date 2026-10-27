@@ -1,11 +1,12 @@
 ---
-// Crop preview: every photo in every frame shape it's shown in, so Ben can check nothing important
-// is cut off. Change a photo's "focus" setting in its Markdown file to move the crop.
-// Admin only: built on request, and anyone not signed in is sent to the admin sign-in first.
+// Photo crop editor (admin only). Each photo is shown uncropped, next to every frame it appears in.
+// Ben drags to move it and uses the slider to zoom; every frame updates as he goes. Save writes the
+// new focus and zoom into the photo's Markdown file on GitHub, and the site rebuilds (about 2 minutes).
 import { getCollection, getEntry } from 'astro:content';
-import { isAdmin } from '../../lib/admin-auth';
+import type { ImageMetadata } from 'astro';
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
+import { isAdmin } from '../../lib/admin-auth';
 import { focusPosition } from '../../lib/photos';
 
 export const prerender = false;
@@ -15,94 +16,162 @@ if (!(await isAdmin(Astro.request, Astro.locals.runtime.env))) {
 }
 Astro.response.headers.set('cache-control', 'private, no-store');
 
-type Frame = { label: string; w: number; h: number; caption?: string };
+type Frame = { label: string; w: number; h: number; caption?: string; round?: boolean };
+type Shot = { id: string; what: string; src: ImageMetadata | string; alt: string; focus: string; zoom: number; frames: Frame[] };
+
 const HERO: Frame[] = [
   { label: 'Article top, desktop', w: 1280, h: 480 },
   { label: 'Article top, phone', w: 390, h: 219 },
-  { label: 'Home page "Latest article", desktop', w: 1080, h: 480 },
+  { label: 'Home page "Latest article", desktop', w: 1128, h: 480 },
 ];
 const SECTION: Frame[] = [
-  { label: 'Beside text, desktop', w: 530, h: 460 },
+  { label: 'Beside text, desktop', w: 536, h: 460 },
   { label: 'Under text, phone', w: 390, h: 292 },
 ];
+const ROUND = (size: number): Frame[] => [{ label: 'Round photo', w: size, h: size, round: true }];
 
 const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const about = (await getEntry('about', 'about'))!.data;
-// Show Ben's file name ("hero.jpg"), not the build's renamed copy ("hero.bLw5rMtu.jpg").
-const name = (src: unknown) =>
-  typeof src === 'string'
-    ? src
-    : String((src as { src: string }).src).split('/').pop()?.replace(/\?.*$/, '').replace(/\.[\w-]{8}(\.\w+)$/, '$1');
 
-const groups = [
+const groups: { title: string; file: string; shots: Shot[] }[] = [
   ...posts.map((p) => ({
     title: p.data.title,
     file: `src/content/blog/${p.id}.md`,
-    photos: [
-      { what: 'Top photo (heroImage)', src: p.data.heroImage, alt: p.data.heroAlt, focus: p.data.heroFocus, frames: HERO },
+    shots: [
+      { id: 'hero', what: 'Top photo', src: p.data.heroImage, alt: p.data.heroAlt, focus: p.data.heroFocus, zoom: p.data.heroZoom, frames: HERO },
       ...Object.entries(p.data.sectionImages).map(([id, img]) => ({
-        what: `Section photo: ${id}`, src: img.src, alt: img.alt, focus: img.focus,
+        id: `section:${id}`, what: `Section photo: ${id}`, src: img.src, alt: img.alt, focus: img.focus, zoom: img.zoom,
         frames: SECTION.map((f) => ({ ...f, caption: img.caption })),
       })),
+      { id: 'avatar', what: 'Byline photo (next to your name)', src: p.data.avatar, alt: p.data.author, focus: p.data.avatarFocus, zoom: p.data.avatarZoom, frames: ROUND(88) },
     ],
   })),
   {
     title: 'About page',
     file: 'src/content/pages/about.md',
-    photos: [{ what: 'Main photo (photo)', src: about.photo, alt: about.photoAlt, focus: about.photoFocus, frames: [{ label: 'Desktop and phone', w: 420, h: 300 }] }],
+    shots: [
+      { id: 'photo', what: 'Main photo', src: about.photo, alt: about.photoAlt, focus: about.photoFocus, zoom: about.photoZoom,
+        frames: [{ label: 'Desktop', w: 507, h: 380 }, { label: 'Phone', w: 390, h: 292 }] },
+      ...about.people.map((p, i) => ({ id: `person:${i}`, what: `Person: ${p.name}`, src: p.photo, alt: p.name, focus: p.focus, zoom: p.zoom, frames: ROUND(112) })),
+      ...about.strip.map((s, i) => ({ id: `strip:${i}`, what: `Photo strip ${i + 1}`, src: s.src, alt: s.alt, focus: s.focus, zoom: s.zoom,
+        frames: [{ label: 'Desktop', w: 376, h: 282 }, { label: 'Phone', w: 130, h: 130 }] })),
+    ],
   },
 ];
+
+// Ben's file name ("hero.jpg"), not the build's renamed copy ("hero.bLw5rMtu.jpg").
+const fileName = (src: ImageMetadata | string) =>
+  typeof src === 'string' ? src : String(src.src).split('/').pop()?.replace(/\?.*$/, '').replace(/\.[\w-]{8}(\.\w+)$/, '$1');
+const original = (src: ImageMetadata | string) => (typeof src === 'string' ? src : src.src);
+const ratio = (src: ImageMetadata | string) => (typeof src === 'string' ? '4 / 3' : `${src.width} / ${src.height}`);
+const percents = (focus: string) => focusPosition(focus).split(' ').map((v) => parseFloat(v));
 ---
-<Base title="Photo crops" description="Photo crop preview" noindex>
+<Base title="Photo crops" description="Photo crop editor" noindex>
   <div class="wrap">
+    <p class="back"><a href="/admin/">← Comments</a></p>
     <h1>Photo crops</h1>
     <p class="intro">
-      Each photo is shown in every frame it appears in. If something important is cut off, change that photo's
-      <strong>focus</strong> in its Markdown file: <code>center</code>, <code>top</code>, <code>bottom</code>,
-      <code>left</code>, <code>right</code>, two together like <code>top left</code>, or exact percentages like
-      <code>50% 30%</code> (across, then down). The red dot marks the focus point.
+      Each photo is shown whole on the left, with every frame it appears in. <strong>Drag inside a frame</strong>
+      (or move the red dot) to choose what stays in view, and use the <strong>zoom</strong> slider to zoom in.
+      All frames update as you go. Press <strong>Save</strong> and the site updates in about 2 minutes.
     </p>
+
     {groups.map((g) => (
       <section>
         <h2>{g.title}</h2>
         <p class="file">{g.file}</p>
-        {g.photos.map((ph) => (
-          <div class="photo-block">
-            <h3>{ph.what}</h3>
-            <p class="meta">File: <code>{name(ph.src)}</code> · focus: <code>{ph.focus}</code>{!ph.alt && <span class="warn"> · No description (alt text) yet</span>}</p>
-            <div class="frames">
-              {ph.frames.map((f) => (
-                <figure style={`--w:${f.w}px`}>
-                  <div class="frame" style={`aspect-ratio:${f.w} / ${f.h}`}>
-                    <Photo src={ph.src} alt="" focus={ph.focus} sizes="(min-width: 960px) 600px, 100vw" widths={[400, 800, 1200]} eager />
-                    <span class="dot" style={`left:${focusPosition(ph.focus).split(' ')[0]};top:${focusPosition(ph.focus).split(' ')[1]}`} />
-                    {f.caption && <div class="caption">{f.caption}</div>}
+        {g.shots.map((s) => {
+          const [x, y] = percents(s.focus);
+          return (
+            <div class="shot" data-shot data-file={g.file} data-id={s.id} data-x={x} data-y={y} data-zoom={s.zoom}>
+              <h3>{s.what}</h3>
+              <p class="meta">File: <code>{fileName(s.src)}</code>{!s.alt && <span class="warn"> · No description (alt text) yet</span>}</p>
+              <div class="editor">
+                <div class="original-wrap">
+                  <div class="original" data-original tabindex="0" role="slider" aria-label={`Focus point for ${s.what}`}
+                    aria-valuetext={`${x}% across, ${y}% down`} style={`aspect-ratio: ${ratio(s.src)}`}>
+                    <img src={original(s.src)} alt="" draggable="false" />
+                    <span class="dot" data-dot style={`left:${x}%;top:${y}%`} />
                   </div>
-                  <figcaption>{f.label} ({f.w} × {f.h})</figcaption>
-                </figure>
-              ))}
+                  <label class="zoom">
+                    <span>Zoom</span>
+                    <input type="range" min="1" max="3" step="0.05" value={s.zoom} data-zoom-input aria-label={`Zoom for ${s.what}`} />
+                    <output data-zoom-value>{s.zoom.toFixed(2)}×</output>
+                  </label>
+                  <div class="actions">
+                    <button type="button" class="btn btn-quiet" data-undo disabled>Undo changes</button>
+                    <span class="status" data-status role="status"></span>
+                  </div>
+                </div>
+                <div class="frames">
+                  {s.frames.map((f) => (
+                    <figure style={`--w:${f.w}px`}>
+                      <div class:list={['frame', { round: f.round }]} data-frame style={`aspect-ratio:${f.w} / ${f.h}`}>
+                        <Photo src={s.src} alt="" focus={s.focus} zoom={s.zoom} sizes="600px" widths={[400, 800, 1200]} eager />
+                        {f.caption && <div class="caption">{f.caption}</div>}
+                      </div>
+                      <figcaption>{f.label}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
     ))}
   </div>
+
+  <div class="savebar" data-savebar hidden>
+    <span data-count></span>
+    <button type="button" class="btn" data-save>Save</button>
+  </div>
 </Base>
 
+<script>
+  import { initCropEditor } from '../../scripts/crop-editor';
+  initCropEditor();
+</script>
+
 <style>
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 20px 60px; }
-  h1 { font-size: 28px; margin: 0 0 8px; }
-  .intro { font-size: 15px; color: var(--muted); max-width: 760px; line-height: 1.6; }
-  h2 { font-size: 22px; margin: 40px 0 0; }
-  .file { font-size: 13px; color: var(--muted); margin: 4px 0 16px; }
-  h3 { font-family: var(--font-label); font-size: 14px; font-weight: 600; margin: 24px 0 4px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 24px 40px 120px; }
+  .back { font-size: 14px; margin: 0 0 8px; }
+  h1 { font-size: 30px; margin: 0 0 8px; }
+  .intro { font-size: 15px; color: var(--muted); max-width: 820px; line-height: 1.6; }
+  h2 { font-size: 22px; margin: 48px 0 0; }
+  .file { font-size: 13px; color: var(--muted); margin: 4px 0 8px; }
+  .shot { border-top: 1px solid var(--subtle); padding: 20px 0 8px; }
+  .shot.changed { background: linear-gradient(90deg, #fffbea, transparent 60%); }
+  h3 { font-family: var(--font-label); font-size: 15px; font-weight: 600; margin: 0 0 2px; }
   .meta { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
   .warn { color: #b3261e; }
   code { font-size: 12px; background: var(--subtle); padding: 1px 5px; border-radius: 4px; }
+  .editor { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 32px; align-items: start; }
+  @media (max-width: 900px) { .wrap { padding: 20px 20px 120px; } .editor { grid-template-columns: 1fr; } }
+  .original { position: relative; width: 100%; max-height: 360px; background: var(--subtle); cursor: crosshair; touch-action: none; }
+  .original img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; }
+  .original:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #e53935; box-shadow: 0 0 0 3px #fff, 0 1px 4px rgba(0,0,0,.4); pointer-events: none; }
+  .zoom { display: grid; grid-template-columns: auto 1fr 48px; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; }
+  .zoom input { width: 100%; min-height: 32px; accent-color: var(--accent); }
+  .zoom output { font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
+  .actions { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+  .btn-quiet { background: var(--white); color: var(--ink); border: 1px solid var(--border-input); padding: 8px 14px; font-size: 14px; }
+  .btn-quiet:disabled { opacity: 0.5; cursor: default; }
+  .status { font-size: 13px; color: var(--accent); }
+  .status.error { color: #b3261e; }
   .frames { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
-  figure { margin: 0; width: min(100%, calc(var(--w) / 2)); min-width: 180px; }
-  .frame { position: relative; overflow: hidden; background: var(--subtle); }
-  .dot { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #e53935; box-shadow: 0 0 0 2px #fff; }
-  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 13px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
+  figure { margin: 0; width: min(100%, calc(var(--w) / 2)); min-width: 88px; }
+  .frame { position: relative; overflow: hidden; background: var(--subtle); cursor: grab; touch-action: none; }
+  .frame:active { cursor: grabbing; }
+  .frame.round { border-radius: 50%; }
+  .frame :global(img) { pointer-events: none; user-select: none; }
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 13px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); pointer-events: none; }
   figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .savebar {
+    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 80; display: flex; align-items: center; gap: 16px;
+    background: var(--ink); color: var(--white); padding: 12px 12px 12px 20px; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.25); font-size: 15px;
+  }
+  .savebar[hidden] { display: none; }
+  .savebar .btn { background: var(--accent); }
 </style>

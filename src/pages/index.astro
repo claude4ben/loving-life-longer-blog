@@ -31,7 +31,7 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
       <a class="feature" href={`/blog/${featured.id}/`}>
         <div class="label">Latest article</div>
         <div class="feature-img breakout">
-          <Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} sizes="(min-width: 1320px) 1128px, 100vw" eager />
+          <Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} zoom={featured.data.heroZoom} sizes="(min-width: 1320px) 1128px, 100vw" eager />
         </div>
         <div class="feature-text">
           <div class="feature-title">

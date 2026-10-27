@@ -5,6 +5,8 @@ import { FOCUS_HELP, FOCUS_PATTERN } from './lib/photos';
 // A photo is either a file stored next to the Markdown file (e.g. ./my-article/hero.jpg) or a web link.
 const photo = (image: () => z.ZodTypeAny) => z.union([z.string().url(), image()]);
 const focus = z.string().regex(FOCUS_PATTERN, FOCUS_HELP).default('center');
+// How far a photo is zoomed in inside its frame: 1 = not zoomed, up to 3. Set it with the crop editor.
+const zoom = z.number().min(1).max(3).default(1);
 
 // Settings every article must have. The same rules check the article template (_template.md).
 const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
@@ -17,9 +19,12 @@ const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
     author: z.string(),
     disclosure: z.string(),
     avatar: photo(image),
+    avatarFocus: focus,
+    avatarZoom: zoom,
     heroImage: photo(image),
     heroAlt: z.string().default(''),
     heroFocus: focus,
+    heroZoom: zoom,
     featured: z.boolean().default(false),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
     sectionImages: z
@@ -28,6 +33,7 @@ const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
           src: photo(image),
           alt: z.string().default(''),
           focus,
+          zoom,
           side: z.enum(['left', 'right']).default('right'),
           caption: z.string().optional(),
         }),
@@ -76,14 +82,15 @@ const about = defineCollection({
     heading: z.string(),
     photo: photo(image),
     photoFocus: focus,
+    photoZoom: zoom,
     photoAlt: z.string().default(''),
     placeholderNote: z.string().optional(),
     believeHeading: z.string(),
     pillars: z.object({ Think: z.string(), Move: z.string(), Live: z.string() }),
     peopleHeading: z.string(),
-    people: z.array(z.object({ name: z.string(), role: z.string(), photo: photo(image), focus })),
+    people: z.array(z.object({ name: z.string(), role: z.string(), photo: photo(image), focus, zoom })),
     note: z.object({ title: z.string(), body: z.string() }),
-    strip: z.array(z.object({ src: photo(image), alt: z.string().default(''), focus })).length(3),
+    strip: z.array(z.object({ src: photo(image), alt: z.string().default(''), focus, zoom })).length(3),
   }),
 });
 

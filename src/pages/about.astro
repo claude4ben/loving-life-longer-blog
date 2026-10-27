@@ -13,7 +13,7 @@ const d = page.data;
 <Base title="About">
   <div class="wide about">
     <div class="about-top">
-      <div class="photo breakout"><Photo src={d.photo} alt={d.photoAlt} focus={d.photoFocus} sizes="(min-width: 960px) 520px, 100vw" widths={[400, 800, 1200]} eager /></div>
+      <div class="photo breakout"><Photo src={d.photo} alt={d.photoAlt} focus={d.photoFocus} zoom={d.photoZoom} sizes="(min-width: 960px) 520px, 100vw" widths={[400, 800, 1200]} eager /></div>
       <div class="about-intro">
         <h1 set:html={inline(d.heading)} />
         <div class="bio" set:html={block(page.body)} />
@@ -37,7 +37,7 @@ const d = page.data;
         <div class="people">
           {d.people.map((p) => (
             <div class="person">
-              <span class="avatar"><Photo src={p.photo} alt={p.name} focus={p.focus} sizes="56px" widths={[112, 168]} /></span>
+              <span class="avatar"><Photo src={p.photo} alt={p.name} focus={p.focus} zoom={p.zoom} sizes="56px" widths={[112, 168]} /></span>
               <div><div class="name">{p.name}</div><div class="role" set:html={inline(p.role)} /></div>
             </div>
           ))}
@@ -50,7 +50,7 @@ const d = page.data;
     </div>
 
     <div class="strip breakout">
-      {d.strip.map((s) => <div class="strip-item"><Photo src={s.src} alt={s.alt} focus={s.focus} sizes="(min-width: 960px) 376px, 33vw" widths={[200, 400, 800]} /></div>)}
+      {d.strip.map((s) => <div class="strip-item"><Photo src={s.src} alt={s.alt} focus={s.focus} zoom={s.zoom} sizes="(min-width: 960px) 376px, 33vw" widths={[200, 400, 800]} /></div>)}
     </div>
   </div>
 

@@ -208,7 +208,7 @@ About page photos in `src/content/pages/about/`), referenced from the Markdown s
 built, Astro's image tools (using `sharp`) make several sizes of each photo in the WebP format, and
 each browser downloads the size it needs (`src/components/Photo.astro`). A **focus** setting per photo
 (`center`, `top`, `top left`, `"50% 30%"`…) controls which part stays in view when a frame crops it
-(`src/lib/photos.ts`). An admin-only page, `/admin/photos/`, shows every photo in every frame shape. It's built on request (not pre-built) so it can check the admin sign-in first; signed-out visitors are sent to the `/admin` sign-in and back.
+(`src/lib/photos.ts`), and a **zoom** (1–3) zooms in around it. An admin-only page, `/admin/photos/`, shows every photo in every frame shape. It's built on request (not pre-built) so it can check the admin sign-in first; signed-out visitors are sent to the `/admin` sign-in and back.
 Web links (`https://…`) still work for photos stored elsewhere, but aren't resized.
 
 | Pros | Cons |
@@ -357,6 +357,30 @@ method even when free.
 **Local testing:** tests run the built site with `wrangler pages dev`, a fresh, throwaway database and
 a test-only admin password passed on the command line (the real password exists only in Cloudflare).
 
+### 20. Photo crop editor saves to GitHub ✅
+
+**Why:** Ben wants to drag and zoom photos into place visually. The editor (`/admin/photos/`,
+`src/scripts/crop-editor.ts`) shows each photo whole beside every frame it appears in. Save sends the new
+focus and zoom to `/api/admin/photos`, which uses the GitHub API (`src/lib/github.ts`) to edit just those
+lines in the photo's Markdown file (`src/lib/frontmatter.ts`) and commit it. Cloudflare rebuilds as for
+any other change. Keeping the crop in the Markdown file means pages stay pre-built and fast, and there's
+one place where every setting lives.
+
+| Pros | Cons |
+| --- | --- |
+| Visual: drag, zoom, see every frame at once | Needs a GitHub key saved in Cloudflare (`GITHUB_TOKEN`), renewed when it expires |
+| Pages stay pre-built (fast); no flicker or layout jump for readers | Changes take about 2 minutes to go live (a rebuild) |
+| Every crop change is in git history and can be undone | Each Save is a commit and a rebuild (fine within free limits) |
+| Only exact photo settings can be changed; everything else in the file is untouched | |
+
+*Safety:* only admins can save; only known photo settings in article and About files are accepted
+(`src/lib/photo-slots.ts`); the key is limited to this repository's contents. Tests use a pretend GitHub
+(`tests/mock-github.mjs`), so they never touch the real repository.
+
+*Alternatives considered:* storing crops in the D1 database and applying them in the browser (live
+instantly, but the photo would jump after the page loads, and crop settings would live in two places);
+building article pages on request (slower pages, more server cost).
+
 ---
 
 ## Change log
@@ -378,3 +402,4 @@ a test-only admin password passed on the command line (the real password exists 
 | 2026-10-27 | Content (2): article template checked on every build; per-article links with icons and affiliate disclosure. |
 | 2026-10-27 | Styling (5): one shared page width (`.wide`) across all pages; wider desktop layouts for About, Policy, signup, article header, links, Q&A and comments. |
 | 2026-10-27 | Photo crop preview (11) now admin-only: checks the admin sign-in on the server. |
+| 2026-10-27 | Photo zoom setting (11) and a drag-and-zoom crop editor that saves to GitHub (20). |

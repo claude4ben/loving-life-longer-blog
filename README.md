@@ -96,8 +96,11 @@ sectionImages:
 `bottom`, `left`, `right`, two together (`top left`), or exact percentages across then down
 (`"50% 30%"`). A typo stops the build, so the live site is never affected.
 
-**Check the crops** at **/admin/photos/**: every photo in every frame shape it appears in (desktop
-and phone), with a red dot on the focus point.
+**Adjust the crops** at **/admin/photos/** (admin sign-in needed). Every photo is shown whole next to
+each frame it appears in (desktop and phone). **Drag inside a frame** (or move the red dot on the whole
+photo) to choose what stays in view, and use the **Zoom** slider to zoom in. Every frame updates as you
+go. Press **Save**: the change is written into the photo's Markdown file on GitHub and the site updates in
+about 2 minutes. You can also type `focus` and `zoom` (1 to 3) into the settings yourself.
 
 You don't need to resize photos: the site makes small, fast copies automatically. Phone photos are fine.
 
@@ -129,6 +132,19 @@ this), and tagged for search engines as sponsored. See `_template.md` for an exa
 for 30 days on that device. You can reply as Ben, delete comments (they can be restored), and approve
 comments if approval is switched on (`COMMENTS_NEED_APPROVAL` in `wrangler.toml`). To sign out every
 device, change the password.
+
+**One-time setup: let the photo editor save (GitHub key)**
+1. On github.com (signed in as claude4ben): profile picture → **Settings → Developer settings →
+   Personal access tokens → Fine-grained tokens → Generate new token**.
+2. Name: `LLL photo editor`. Expiration: up to 1 year (put a reminder in your calendar to renew it).
+3. **Repository access → Only select repositories →** `loving-life-longer-blog`.
+4. **Permissions → Repository permissions → Contents → Read and write.** Leave everything else as is.
+5. Click **Generate token** and copy it (it's only shown once).
+6. In Cloudflare: **Workers & Pages → loving-life-longer-blog → Settings → Variables and Secrets → Add**,
+   type **Secret**, name `GITHUB_TOKEN`, paste the token, save. Then **Deployments → ⋯ → Retry deployment**.
+
+The key can only change files in this one repository. If it expires or is removed, Save says so and
+nothing else on the site is affected.
 
 ## Launch checklist
 

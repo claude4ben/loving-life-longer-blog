@@ -63,16 +63,16 @@ test.describe('Crop preview page', () => {
     await expect(page.locator('h1')).toHaveText('Photo crops');
   });
 
-  test('shows every photo in each of its frames', async ({ page }) => {
+  test('lists every photo, uncropped, beside each frame it appears in', async ({ page }) => {
     await page.goto('/admin/photos/');
     await signIn(page);
     await expect(page.locator('h1')).toHaveText('Photo crops');
-    // Article: top photo in 3 frames + 3 section photos in 2 frames each; About: 1 frame.
-    await expect(page.locator('figure')).toHaveCount(3 + 3 * 2 + 1);
-    await expect(page.locator('.photo-block h3').first()).toHaveText('Top photo (heroImage)');
-    await expect(page.locator('.photo-block .meta code').first()).toHaveText('hero.jpg'); // Ben's own file name
-    await expect(page.locator('figure .dot')).toHaveCount(10);
-    await expect(page.locator('figure .caption', { hasText: '50 dancers. Blindfolded. In the dark.' })).toHaveCount(2);
+    // Article: top photo, 3 section photos, byline photo. About: main photo, 2 people, 3 strip photos.
+    await expect(page.locator('[data-shot]')).toHaveCount(11);
+    // Frames: top 3, sections 3×2, byline 1, About main 2, people 2, strip 3×2.
+    await expect(page.locator('[data-frame]')).toHaveCount(20);
+    await expect(page.locator('[data-shot] .meta code').first()).toHaveText('hero.jpg'); // Ben's own file name
+    await expect(page.locator('[data-frame] .caption', { hasText: '50 dancers. Blindfolded. In the dark.' })).toHaveCount(2);
   });
 
   test('is linked from the admin page', async ({ page }) => {

@@ -10,7 +10,8 @@
 #
 # Text settings: **bold**, *italic* and [links](https://example.com) work. Keep quotes around text.
 # Photo "focus" (which part stays in view when cropped): center, top, bottom, left, right,
-# two together like "top left", or "50% 30%" (across, then down). Check crops at /admin/photos/.
+# two together like "top left", or "50% 30%" (across, then down). "zoom" (1 to 3) zooms in around it.
+# Easiest: leave them out and set them by dragging and zooming in the crop editor at /admin/photos/.
 
 title: "Your article title"
 pillar: Think                     # Think, Move or Live
@@ -21,11 +22,14 @@ readTime: "8 min read"
 author: "Ben Parker"
 disclosure: "First-person account."
 avatar: ./_template/ben.jpg       # small round photo next to your name
+avatarFocus: center
+avatarZoom: 1
 featured: true                    # true = show at the top of the home page (newest featured wins)
 
 heroImage: ./_template/hero.jpg   # top photo: landscape, 2000px+ wide, subject in the middle band
 heroAlt: "Describe the photo for people who can't see it"
 heroFocus: center
+heroZoom: 1                       # 1 = not zoomed; up to 3
 
 # Questions people might search for or ask an AI, answered in a sentence or two.
 faqs:
@@ -39,6 +43,7 @@ sectionImages:
     src: ./_template/section-photo.jpg
     alt: "Describe the photo"
     focus: center
+    zoom: 1
     side: right
     caption: "An optional short caption over the photo."
 

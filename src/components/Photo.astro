@@ -9,12 +9,15 @@ interface Props {
   src: ImageMetadata | string;
   alt: string;
   focus?: string;
+  zoom?: number; // 1 = fills the frame; higher zooms in around the focus point
   sizes: string; // how wide the frame is on screen, e.g. "100vw"
   widths?: number[];
   eager?: boolean; // load straight away (the main photo at the top of a page)
 }
-const { src, alt, focus, sizes, widths = [400, 800, 1200, 1600, 2400], eager = false } = Astro.props;
-const style = `object-position: ${focusPosition(focus)}`;
+const { src, alt, focus, zoom = 1, sizes, widths = [400, 800, 1200, 1600, 2400], eager = false } = Astro.props;
+const position = focusPosition(focus);
+// Zoom scales the photo around its focus point, so that point stays where it is in the frame.
+const style = `object-position: ${position}; transform-origin: ${position}; --zoom: ${zoom}`;
 const loading = eager ? 'eager' : 'lazy';
 const usable = typeof src === 'string' ? [] : widths.filter((w) => w <= src.width);
 ---
@@ -34,5 +37,6 @@ const usable = typeof src === 'string' ? [] : widths.filter((w) => w <= src.widt
 )}
 
 <style>
-  .pic { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* --reveal is the article's gentle zoom-in on scroll; --zoom is the photo's own zoom. */
+  .pic { display: block; width: 100%; height: 100%; object-fit: cover; transform: scale(calc(var(--zoom, 1) * var(--reveal, 1))); }
 </style>
