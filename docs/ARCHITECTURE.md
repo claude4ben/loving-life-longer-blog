@@ -237,6 +237,31 @@ server function verifies the result before saving anything.
 | Mostly invisible to readers (no picture puzzles) | |
 | Same Cloudflare account | |
 
+### 18. Automated testing: Playwright + axe, run by GitHub Actions ✅
+
+**Why:** the site should be checked automatically whenever the code changes. Playwright opens the real
+site in a browser at desktop (1280px) and phone (390px) sizes and clicks through it like a reader would.
+axe scans each page for accessibility problems. GitHub Actions (`.github/workflows/test.yml`) runs
+everything on every push to `main` and every pull request, skipping changes that only touch docs.
+
+| Pros | Cons |
+| --- | --- |
+| Catches broken features before readers notice | Tests need updating when behaviour changes on purpose |
+| Tests the built site, exactly as visitors get it | Adds about 2 minutes per push on GitHub (free for this size) |
+| Free on GitHub; failing runs keep a report showing what broke | Doesn't check the exact look; that's still checked by eye |
+
+*Choices within this:*
+- **Outside photos and fonts are blocked in tests,** so tests don't depend on other websites and give
+  the same result every time.
+- **No screenshot-comparison tests yet,** because the design is still changing and every tweak would need
+  new approved screenshots. Add them once the look settles.
+- **Tests don't block deploys yet:** Cloudflare Pages deploys each push even if tests fail. A failing run
+  shows a red ✗ on GitHub. To make tests block deploys, Cloudflare could deploy from GitHub Actions
+  after tests pass (a later decision).
+
+*Alternatives considered:* Cypress (similar, but slower and heavier); unit tests only, e.g. Vitest
+(this site has little logic; most risk is in what readers see and click).
+
 ---
 
 ## Change log
@@ -245,3 +270,4 @@ server function verifies the result before saving anything.
 | --- | --- |
 | 2026-10-27 | First version: documents the initial build from the design handoff. |
 | 2026-10-27 | Hosting decided: Cloudflare Pages (14). Comments and likes move to Cloudflare D1 (8); signup moves to a newsletter service, D1 as fallback (9). Added Pages Functions (16) and Turnstile (17). Vercel and Netlify ruled out. |
+| 2026-10-27 | Added automated testing (18): Playwright behaviour tests and axe accessibility scans at desktop and phone sizes, run by GitHub Actions on every code change. |

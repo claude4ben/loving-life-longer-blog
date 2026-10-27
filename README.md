@@ -8,7 +8,11 @@ The blog site, built with [Astro](https://astro.build) from the `design_handoff_
 npm install
 npm run dev      # opens http://localhost:4321 and reloads as you edit
 npm run build    # makes the finished site in dist/
+npm test         # builds the site and runs the automated tests
 ```
+
+The first time you run tests on a new computer, also run `npx playwright install chromium`.
+Tests live in `tests/` and run automatically on GitHub for every code change (see the **Actions** tab).
 
 ## Where to edit things
 
