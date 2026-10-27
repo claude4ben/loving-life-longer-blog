@@ -67,6 +67,15 @@ checks that each article has a title, pillar, photos and so on.
 *Later:* the handoff asks for a no-code CMS. A Git-based CMS (such as Decap or TinaCMS) could sit on
 top of these same Markdown files, so moving to one won't require rewriting the site.
 
+*Article template:* `src/content/blog/_template.md` explains every setting. It's loaded as its own
+collection (`blogTemplate`) using the same rules as articles, so the build fails if the template and
+the rules ever drift apart. Files starting with `_` are excluded from the published articles.
+
+*Links per article:* a `links` list in the settings (name, url, description, optional type, icon and
+`affiliate`) renders as cards after the article (`src/components/ArticleLinks.astro`). Affiliate links
+are labelled, explained (text in `src/content/pages/links.md`) and marked `rel="sponsored"`, as
+search engines require for paid links.
+
 ### 3. Article sections come from `## Heading {#id}` ✅
 
 **Why:** the design needs per-section layouts (text only, or text beside a photo) and a table of
@@ -361,3 +370,4 @@ a test-only admin password passed on the command line (the real password exists 
 | 2026-10-27 | D1 database `lll-blog` created and connected; comments and likes live. |
 | 2026-10-27 | Replaced Cloudflare Access (needs a payment method) with: admin password sign-in (19), and hiding the site from search engines until launch (14). Removed the `jose` library. |
 | 2026-10-27 | Photos (11): stored next to the content, resized to WebP at build, focus setting per photo, crop preview at `/admin/photos/`; top photo up to 480px tall on desktop. |
+| 2026-10-27 | Content (2): article template checked on every build; per-article links with icons and affiliate disclosure. |

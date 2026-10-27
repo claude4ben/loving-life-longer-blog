@@ -40,6 +40,32 @@ sectionImages:
     alt: "sunrise closing circle photo"
     side: right
     caption: "You're welcome… Feel free."
+# LINKS FROM THIS ARTICLE (shown after the text). Placeholders except Angsbacka: replace with real ones.
+links:
+  - name: "Pulse Music & Dance Festival, Angsbacka"
+    url: "https://www.angsbacka.com/product/pulse-music-dance-festival/"
+    type: Website
+    description: "The Swedish community festival we looked at first: music, dance and retreat-style workshops."
+  - name: "Ecstatic Dance Festival"
+    url: "https://example.com/placeholder-ed-festival"
+    type: Website
+    icon: ./blindfolded-with-50-strangers/link-1.jpg
+    description: "Placeholder: the Dorset festival this article is about. Dates, tickets and what a weekend looks like."
+  - name: "Seth Newman"
+    url: "https://example.com/placeholder-seth"
+    type: Instagram
+    icon: ./blindfolded-with-50-strangers/link-2.jpg
+    description: "Placeholder: DJ and co-founder of ED Festival, who guided every dance."
+  - name: "URUBU Collective"
+    url: "https://example.com/placeholder-urubu"
+    type: Music
+    icon: ./blindfolded-with-50-strangers/link-3.jpg
+    description: "Placeholder: the live musicians (sax, keys and three drummers) who moved through the dancers."
+  - name: "Contoured sleep mask"
+    url: "https://example.com/placeholder-affiliate"
+    type: Shop
+    affiliate: true
+    description: "Placeholder affiliate example: a comfortable blindfold for trance dance or a good night's sleep."
 ---
 
 ## How did we end up at an Ecstatic Dance festival? {#how-we-got-there}

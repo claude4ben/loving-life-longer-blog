@@ -1,0 +1,68 @@
+---
+// "Links from this article": a card per link with a round icon, name, type and what it offers.
+// Affiliate links are labelled, explained, and marked rel="sponsored" (what search engines ask for).
+import { getEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import Photo from './Photo.astro';
+import { inline } from '../lib/markdown';
+
+type Link = { name: string; url: string; description: string; type?: string; icon?: ImageMetadata | string; affiliate: boolean };
+interface Props { links: Link[]; title?: string }
+const { links, title } = Astro.props;
+const settings = (await getEntry('links', 'links'))!.data;
+const anyAffiliate = links.some((l) => l.affiliate);
+const initial = (name: string) => name.trim().charAt(0).toUpperCase();
+---
+{links.length > 0 && (
+  <section class="col col-article links" id="links" aria-labelledby="links-title">
+    <h2 id="links-title" set:html={inline(title ?? settings.title)} />
+    <ul class="link-list">
+      {links.map((l) => (
+        <li>
+          <a class="link-card" href={l.url} target="_blank" rel={l.affiliate ? 'sponsored noopener' : 'noopener'}>
+            <span class="icon" aria-hidden="true">
+              {l.icon ? <Photo src={l.icon} alt="" sizes="48px" widths={[96, 144]} /> : <span class="initial">{initial(l.name)}</span>}
+            </span>
+            <span class="body">
+              <span class="top">
+                <span class="name">{l.name}</span>
+                {l.type && <span class="type">{l.type}</span>}
+                {l.affiliate && <span class="affiliate">Affiliate</span>}
+              </span>
+              <span class="desc" set:html={inline(l.description)} />
+            </span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    {anyAffiliate && <p class="note" set:html={inline(settings.affiliateNote)} />}
+  </section>
+)}
+
+<style>
+  .links { padding-top: 8px; padding-bottom: 32px; }
+  h2 { font-size: 22px; margin: 0 0 16px; }
+  .link-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  @media (min-width: 960px) { .link-list { grid-template-columns: 1fr 1fr; } }
+  .link-card {
+    display: flex; align-items: flex-start; gap: 14px; height: 100%; padding: 14px 16px; color: var(--ink);
+    border: 1px solid var(--border-input); border-radius: 8px; background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .link-card:hover { text-decoration: none; color: var(--ink); border-color: var(--accent); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+  .icon { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--subtle); }
+  .initial { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; color: var(--muted); }
+  .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; }
+  .name { font-weight: 600; font-size: 16px; }
+  .type, .affiliate {
+    font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 1px 6px; border-radius: 4px; color: var(--muted); background: var(--subtle);
+  }
+  .affiliate { color: #7a4b00; background: #fff3cd; }
+  .desc { font-size: 15px; line-height: 1.5; color: var(--muted); }
+  .arrow { color: var(--muted); font-size: 16px; line-height: 1; padding-top: 2px; }
+  .link-card:hover .arrow { color: var(--accent); }
+  .note { font-size: 13px; line-height: 1.5; color: var(--muted); margin: 14px 0 0; }
+</style>

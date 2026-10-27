@@ -48,6 +48,8 @@ Every feature and design change should move at least one of these forward, and s
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
 | **Easy publishing**: all articles and page text in simple Markdown files on GitHub, with **bold** and bullet lists | G2 | ✅ |
+| **Links from each article**: cards with round icons for people, brands, social accounts and shops, with clearly labelled affiliate links | G3, G4 (partners and the ecosystem), G5 (honest affiliate disclosure) | ✅ (demo links are placeholders) |
+| **Article template** (`_template.md`) explaining every setting, checked on every build | G2 (easy, regular publishing) | ✅ |
 | **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
 | **Hidden from search engines until launch** (one switch to flip at launch) | G1 (no half-finished pages in search or AI answers) | ✅ |
 
@@ -168,6 +170,8 @@ change better serves the goals in Part 1.
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
 | ART-11 | Bold and lists | In an article file, `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
 | ART-12 | Rail never covers text | On desktop, the Like/Share rail never overlaps article text. | ✅ | Auto |
+| ART-13 | Links from this article | After the article text and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Two columns on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
+| ART-14 | Affiliate links | Links with `affiliate: true` show an "Affiliate" label, use `rel="sponsored noopener"`, and the affiliate note from `links.md` appears under the list. | ✅ | Auto |
 
 ### Interactions
 
@@ -248,6 +252,7 @@ change better serves the goals in Part 1.
 | CON-08 | Photos with the content | Photos live next to their Markdown file (`src/content/blog/<article>/`, `src/content/pages/about/`) and are referenced from its settings. The site makes resized WebP copies at build time, and browsers download the size they need; below-the-fold photos load lazily. Web links still work (not resized). | ✅ | Auto + Build |
 | CON-09 | Photo focus | Every photo has a `focus` (`center` by default): `center`, `top`, `bottom`, `left`, `right`, two together, or `"X% Y%"`. It sets which part stays in view when cropped. Anything else stops the build with a helpful message. | ✅ | Auto |
 | CON-10 | Crop preview | `/admin/photos/` shows each photo in every frame it appears in (article top desktop/phone, home "Latest article", beside-text desktop, under-text phone, About), with captions, a red dot on the focus point, Ben's file name, and a warning if alt text is missing. Hidden from search engines. Linked from `/admin`. | ✅ | Auto |
+| CON-11 | Article template | `src/content/blog/_template.md` shows and explains every setting (with example photos in `_template/`). It's checked against the same rules as real articles on every build, and files starting with `_` are never published. | ✅ | Build + Auto |
 | CON-05 | Real photos | Placeholder photos (downloaded into the article and About folders with descriptive names) replaced with Ben's real photos by uploading files with the same names. | 🔨 | None |
 | CON-06 | No-code editing | The author can publish articles without editing files. | 🔨 (CMS not chosen) | None |
 

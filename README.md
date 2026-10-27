@@ -18,7 +18,8 @@ Tests live in `tests/` and run automatically on GitHub for every code change (se
 
 | To change… | Edit this file |
 | --- | --- |
-| An article's text, title, photos or FAQ | `src/content/blog/<article>.md` |
+| An article's text, title, photos, FAQ or links | `src/content/blog/<article>.md` (start from `_template.md`) |
+| "Links from this article" heading and affiliate note | `src/content/pages/links.md` |
 | Home page introduction and home Q&A | `src/content/pages/home.md` |
 | About page | `src/content/pages/about.md` |
 | Policy page | `src/content/pages/policy.md` |
@@ -61,7 +62,7 @@ Each article is one Markdown file in `src/content/blog/`. The file name becomes 
 - To put a photo beside a section, add its id under `sectionImages:` with `src`, `side` (`left`/`right`)
   and an optional `caption`.
 
-To add a new article, copy the existing file, rename it and change the text. Set `featured: true` on the
+To add a new article, **copy `src/content/blog/_template.md`**: it lists every setting with an explanation. Rename it (the name becomes the web address), make a folder with the same name for its photos, and fill it in. Files starting with `_` are never published. Set `featured: true` on the
 one you want at the top of the home page. Once there are two or more articles, the home page lists them.
 
 ### Photos
@@ -104,6 +105,15 @@ You don't need to resize photos: the site makes small, fast copies automatically
 text: portrait or square, at least 1200px. Keep important detail out of the bottom fifth if there's a
 caption. Ask permission from anyone recognisable. About page photos work the same way, in
 `src/content/pages/about/`.
+
+### Links from an article
+
+Under `links:` in an article's settings, add websites, social accounts, people or shops you mention.
+Each shows as a card after the article with a small round icon (`icon:`, a photo in the article's
+folder; without one, the first letter is shown), its `name`, a `type` label (Website, Instagram,
+Shop…) and a one-line `description` of what the reader gets. **Mark paid or affiliate links with
+`affiliate: true`**: they're labelled "Affiliate", explained underneath (UK advertising rules require
+this), and tagged for search engines as sponsored. See `_template.md` for an example.
 
 ## Managing comments
 

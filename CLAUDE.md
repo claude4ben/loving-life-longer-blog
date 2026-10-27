@@ -15,6 +15,8 @@
   and `src/content/pages/`), never hard-coded. Short interface labels (buttons, menu items, form
   placeholders such as "Post comment") are still in the code; move them to Markdown when Ben wants to
   edit them. Keep the README's formatting-marks table accurate.
+- When article settings change (src/content.config.ts), update `src/content/blog/_template.md` to match
+  and explain the new setting there.
 - Keep the README's "Where to edit things" table accurate when files move.
 - Before pushing any change to code, styles or content, run `npm test` and only push if it passes.
   Add or update tests in `tests/` for new or changed behaviour, and set the Test column in

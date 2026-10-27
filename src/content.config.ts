@@ -6,9 +6,8 @@ import { FOCUS_HELP, FOCUS_PATTERN } from './lib/photos';
 const photo = (image: () => z.ZodTypeAny) => z.union([z.string().url(), image()]);
 const focus = z.string().regex(FOCUS_PATTERN, FOCUS_HELP).default('center');
 
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: ({ image }) => z.object({
+// Settings every article must have. The same rules check the article template (_template.md).
+const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
     title: z.string(),
     pillar: z.enum(['Think', 'Move', 'Live']),
     standfirst: z.string(),
@@ -34,7 +33,32 @@ const blog = defineCollection({
         }),
       )
       .default({}),
-  }),
+    // "Links from this article": websites, social accounts, shops, people, with a small round icon each.
+    linksTitle: z.string().optional(),
+    links: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.string().url(),
+          description: z.string(),
+          type: z.string().optional(), // e.g. Website, Instagram, Podcast, Shop
+          icon: photo(image).optional(), // round picture; without one, the first letter is shown
+          affiliate: z.boolean().default(false), // paid/affiliate link: labelled and disclosed
+        }),
+      )
+      .default([]),
+  });
+
+// Articles: every .md file in src/content/blog except ones starting with "_" (like the template).
+const blog = defineCollection({
+  loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/blog' }),
+  schema: article,
+});
+
+// The article template is checked on every build too, so it always matches the rules above.
+const blogTemplate = defineCollection({
+  loader: glob({ pattern: '_template.md', base: './src/content/blog' }),
+  schema: article,
 });
 
 const faqs = z.array(z.object({ q: z.string(), a: z.string() })).default([]);
@@ -73,4 +97,9 @@ const signup = defineCollection({
   schema: z.object({ title: z.string(), body: z.string(), consent: z.string() }),
 });
 
-export const collections = { blog, home, about, policy, signup };
+const links = defineCollection({
+  loader: page('links.md'),
+  schema: z.object({ title: z.string(), affiliateNote: z.string() }),
+});
+
+export const collections = { blog, blogTemplate, home, about, policy, signup, links };

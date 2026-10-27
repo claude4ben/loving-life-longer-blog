@@ -6,6 +6,7 @@ import Faq from '../../components/Faq.astro';
 import SignupBlock from '../../components/SignupBlock.astro';
 import { splitSections } from '../../lib/sections';
 import Photo from '../../components/Photo.astro';
+import ArticleLinks from '../../components/ArticleLinks.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -69,6 +70,8 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
       ),
     )}
   </article>
+
+  <ArticleLinks links={d.links} title={d.linksTitle} />
 
   {d.faqs.length > 0 && (
     <div class="col col-article faq-wrap">

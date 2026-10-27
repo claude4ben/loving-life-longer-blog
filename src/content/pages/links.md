@@ -1,0 +1,7 @@
+---
+# "LINKS FROM THIS ARTICLE" (shown after an article's text when it has links)
+# An article can use its own heading with "linksTitle:" in its settings.
+title: "Links from this article"
+# Shown under the links whenever any of them is marked "affiliate: true".
+affiliateNote: "Links marked **Affiliate** may earn Loving Life Longer a small commission if you buy something, at no extra cost to you. I only share things I've used or would recommend."
+---
