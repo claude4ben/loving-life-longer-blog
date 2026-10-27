@@ -7,9 +7,14 @@ dateLabel: "Jul 2026"
 readTime: "15 min read"
 author: "Ben Parker"
 disclosure: "First-person account — Ben’s first Ecstatic Dance festival."
-avatar: "https://picsum.photos/seed/lll-ben-byline/200/200"
-heroImage: "https://picsum.photos/seed/lll-article-hero/1600/900"
+avatar: ./blindfolded-with-50-strangers/ben-byline.jpg
+# PHOTOS live in the folder with the same name as this file. Replace a photo by uploading one with
+# the same name, or add new ones and point to them here. "focus" says which part of the photo to keep
+# in view when it's cropped: center, top, bottom, left, right, "top left", or "50% 30%".
+# Check the crops at /admin/photos/ on the site.
+heroImage: ./blindfolded-with-50-strangers/hero.jpg
 heroAlt: "Festival venue and grounds"
+heroFocus: center
 featured: true
 faqs:
   - q: "What is ecstatic dance?"
@@ -19,16 +24,19 @@ faqs:
 # Images that sit beside a section. Key = the section's id (shown in {#...} after its heading).
 sectionImages:
   mealtime-fun:
-    src: "https://picsum.photos/seed/cacaocircle1/900/1200"
+    src: ./blindfolded-with-50-strangers/cacao-circle.jpg
+    focus: center
     alt: "cacao fireside circle photo"
     side: right
   dancing-in-the-dark:
-    src: "https://picsum.photos/seed/trancedance2/900/1200"
+    src: ./blindfolded-with-50-strangers/trance-dance.jpg
+    focus: center
     alt: "blindfolded trance dance photo"
     side: left
     caption: "50 dancers. Blindfolded. In the dark."
   final-sharing-and-finale:
-    src: "https://picsum.photos/seed/sunrisecircle3/900/1200"
+    src: ./blindfolded-with-50-strangers/sunrise-circle.jpg
+    focus: center
     alt: "sunrise closing circle photo"
     side: right
     caption: "You're welcome… Feel free."

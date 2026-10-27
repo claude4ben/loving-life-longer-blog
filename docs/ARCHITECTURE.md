@@ -187,16 +187,26 @@ and switches to an article list once there are two or more articles.
 | --- | --- |
 | Matches the design | Will need a real `/blog/` index page as articles grow |
 
-### 11. Images: placeholders loaded from picsum.photos 🕒
+### 11. Photos: stored with the content, resized automatically, with a focus point ✅
 
-**Why:** real photos haven't been supplied. The logo is stored in the repo (`public/logo.png`).
+**Why:** each article's photos live in a folder named after the article (`src/content/blog/<article>/`;
+About page photos in `src/content/pages/about/`), referenced from the Markdown settings. When the site is
+built, Astro's image tools (using `sharp`) make several sizes of each photo in the WebP format, and
+each browser downloads the size it needs (`src/components/Photo.astro`). A **focus** setting per photo
+(`center`, `top`, `top left`, `"50% 30%"`…) controls which part stays in view when a frame crops it
+(`src/lib/photos.ts`). A private page, `/admin/photos/`, shows every photo in every frame shape.
+Web links (`https://…`) still work for photos stored elsewhere, but aren't resized.
 
 | Pros | Cons |
 | --- | --- |
-| Layout can be checked now | Random stock photos, and they depend on an outside website |
+| Ben uploads phone photos as they are; pages stay fast (good for readers and search ranking) | Photos add to the repository size (fine for a blog; GitHub warns above 50MB per file) |
+| Focus keeps faces and key moments in view in every frame shape | Builds take a few seconds longer as photos are resized |
+| Crop preview catches bad crops before readers see them | |
+| A wrong file name or focus word stops the build, so the live site is never broken | |
 
-*To replace with:* real photos in `public/images/`, ideally run through Astro's image optimisation
-for smaller files.
+The placeholder photos were downloaded into these folders with descriptive names (`hero.jpg`,
+`cacao-circle.jpg`…), so replacing them is just uploading a file with the same name. The top photo
+was made taller on desktop (up to 480px, from 300px) so it has more impact.
 
 ### 12. Fonts: Google Fonts ✅
 
@@ -350,3 +360,4 @@ a test-only admin password passed on the command line (the real password exists 
 | 2026-10-27 | Built comments and likes on D1 (8) via Pages Functions (16); added `wrangler.toml` config and Access-protected admin (19); removed sample comments and fake like count. Goes live once the database id is added. |
 | 2026-10-27 | D1 database `lll-blog` created and connected; comments and likes live. |
 | 2026-10-27 | Replaced Cloudflare Access (needs a payment method) with: admin password sign-in (19), and hiding the site from search engines until launch (14). Removed the `jose` library. |
+| 2026-10-27 | Photos (11): stored next to the content, resized to WebP at build, focus setting per photo, crop preview at `/admin/photos/`; top photo up to 480px tall on desktop. |

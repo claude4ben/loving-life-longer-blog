@@ -1,9 +1,12 @@
 ---
 # ABOUT PAGE
 # The bio is the main text below the second "---" line.
+# Photos live in the about/ folder next to this file. "focus" = which part stays in view when cropped
+# (center, top, bottom, left, right, "top left", or "50% 30%").
 # Short text fields: **bold**, *italic* and [links](https://example.com) work.
 heading: "I started this because I got tired of my own excuses."
-photo: "https://picsum.photos/seed/lll-ben-about/800/600"
+photo: ./about/ben.jpg
+photoFocus: center
 photoAlt: "Candid photo of Ben"
 # Delete this line once the real bio is in:
 placeholderNote: 'Placeholder copy — real "About Me" content pending.'
@@ -18,10 +21,12 @@ peopleHeading: "People behind it"
 people:
   - name: "Ben"
     role: "Writes and runs Loving Life Longer"
-    photo: "https://picsum.photos/seed/lll-ben-avatar/200/200"
+    photo: ./about/ben-avatar.jpg
+    focus: center
   - name: "Emma"
     role: "Occasional contributor — separate brand (link pending)"
-    photo: "https://picsum.photos/seed/lll-emma-avatar/200/200"
+    photo: ./about/emma-avatar.jpg
+    focus: center
 
 note:
   title: "A note on qualifications"
@@ -29,9 +34,15 @@ note:
 
 # Three square photos near the bottom of the page.
 strip:
-  - "https://picsum.photos/seed/lll-strip1/600/600"
-  - "https://picsum.photos/seed/lll-strip2/600/600"
-  - "https://picsum.photos/seed/lll-strip3/600/600"
+  - src: ./about/strip-1.jpg
+    alt: ""
+    focus: center
+  - src: ./about/strip-2.jpg
+    alt: ""
+    focus: center
+  - src: ./about/strip-3.jpg
+    alt: ""
+    focus: center
 ---
 
 Placeholder — first-person intro paragraph pending final "About Me" copy. This will cover who I am, why this exists, and what changed for me.

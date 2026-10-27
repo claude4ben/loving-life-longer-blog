@@ -1,0 +1,99 @@
+---
+// Crop preview: every photo in every frame shape it's shown in, so Ben can check nothing important
+// is cut off. Change a photo's "focus" setting in its Markdown file to move the crop.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import { focusPosition } from '../../lib/photos';
+
+type Frame = { label: string; w: number; h: number; caption?: string };
+const HERO: Frame[] = [
+  { label: 'Article top, desktop', w: 1280, h: 480 },
+  { label: 'Article top, phone', w: 390, h: 219 },
+  { label: 'Home page "Latest article", desktop', w: 1080, h: 480 },
+];
+const SECTION: Frame[] = [
+  { label: 'Beside text, desktop', w: 530, h: 460 },
+  { label: 'Under text, phone', w: 390, h: 292 },
+];
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const about = (await getEntry('about', 'about'))!.data;
+// Show Ben's file name ("hero.jpg"), not the build's renamed copy ("hero.bLw5rMtu.jpg").
+const name = (src: unknown) =>
+  typeof src === 'string'
+    ? src
+    : String((src as { src: string }).src).split('/').pop()?.replace(/\?.*$/, '').replace(/\.[\w-]{8}(\.\w+)$/, '$1');
+
+const groups = [
+  ...posts.map((p) => ({
+    title: p.data.title,
+    file: `src/content/blog/${p.id}.md`,
+    photos: [
+      { what: 'Top photo (heroImage)', src: p.data.heroImage, alt: p.data.heroAlt, focus: p.data.heroFocus, frames: HERO },
+      ...Object.entries(p.data.sectionImages).map(([id, img]) => ({
+        what: `Section photo: ${id}`, src: img.src, alt: img.alt, focus: img.focus,
+        frames: SECTION.map((f) => ({ ...f, caption: img.caption })),
+      })),
+    ],
+  })),
+  {
+    title: 'About page',
+    file: 'src/content/pages/about.md',
+    photos: [{ what: 'Main photo (photo)', src: about.photo, alt: about.photoAlt, focus: about.photoFocus, frames: [{ label: 'Desktop and phone', w: 420, h: 300 }] }],
+  },
+];
+---
+<Base title="Photo crops" description="Photo crop preview" noindex>
+  <div class="wrap">
+    <h1>Photo crops</h1>
+    <p class="intro">
+      Each photo is shown in every frame it appears in. If something important is cut off, change that photo's
+      <strong>focus</strong> in its Markdown file: <code>center</code>, <code>top</code>, <code>bottom</code>,
+      <code>left</code>, <code>right</code>, two together like <code>top left</code>, or exact percentages like
+      <code>50% 30%</code> (across, then down). The red dot marks the focus point.
+    </p>
+    {groups.map((g) => (
+      <section>
+        <h2>{g.title}</h2>
+        <p class="file">{g.file}</p>
+        {g.photos.map((ph) => (
+          <div class="photo-block">
+            <h3>{ph.what}</h3>
+            <p class="meta">File: <code>{name(ph.src)}</code> · focus: <code>{ph.focus}</code>{!ph.alt && <span class="warn"> · No description (alt text) yet</span>}</p>
+            <div class="frames">
+              {ph.frames.map((f) => (
+                <figure style={`--w:${f.w}px`}>
+                  <div class="frame" style={`aspect-ratio:${f.w} / ${f.h}`}>
+                    <Photo src={ph.src} alt="" focus={ph.focus} sizes="(min-width: 960px) 600px, 100vw" widths={[400, 800, 1200]} eager />
+                    <span class="dot" style={`left:${focusPosition(ph.focus).split(' ')[0]};top:${focusPosition(ph.focus).split(' ')[1]}`} />
+                    {f.caption && <div class="caption">{f.caption}</div>}
+                  </div>
+                  <figcaption>{f.label} ({f.w} × {f.h})</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 20px 60px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .intro { font-size: 15px; color: var(--muted); max-width: 760px; line-height: 1.6; }
+  h2 { font-size: 22px; margin: 40px 0 0; }
+  .file { font-size: 13px; color: var(--muted); margin: 4px 0 16px; }
+  h3 { font-family: var(--font-label); font-size: 14px; font-weight: 600; margin: 24px 0 4px; }
+  .meta { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+  .warn { color: #b3261e; }
+  code { font-size: 12px; background: var(--subtle); padding: 1px 5px; border-radius: 4px; }
+  .frames { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+  figure { margin: 0; width: min(100%, calc(var(--w) / 2)); min-width: 180px; }
+  .frame { position: relative; overflow: hidden; background: var(--subtle); }
+  .dot { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #e53935; box-shadow: 0 0 0 2px #fff; }
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 13px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
+  figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; }
+</style>

@@ -143,7 +143,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | HOME-01 | Purpose introduction | Small label "Welcome to Loving Life Longer"; the page heading (H1) is LLL's purpose, "Helping you get the most out of your human experience, in how you think, move and live.", with think/move/live in their pillar colours (28px mobile / 40px desktop); then a short line about Ben (Inter 16px mobile / 18px desktop, grey). Divider below. Text is edited in `src/data/site.ts`. | ✅ | Auto |
-| HOME-02 | Featured article | Labelled "Latest article". The whole block links to the article. Shows a 16:9 photo (max 300px tall, square corners, no zoom), pillar tag, title as a sub-heading (H2; 36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
+| HOME-02 | Featured article | Labelled "Latest article". The whole block links to the article. Shows a 16:9 photo (max 480px tall, square corners, no zoom), pillar tag, title as a sub-heading (H2; 36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
 | HOME-03 | Featured choice | Shows the newest article marked `featured: true` (or the newest article if none are). | ✅ | None |
 | HOME-04 | Home FAQ | Questions come from `home.md` (separate from the article's). Collapsed "Common questions" section; opening it shows each question (600 15px) and answer (14px grey). | ✅ 📝 answers | Auto |
 | HOME-05 | One-article note | With one article: italic note "Only one article published so far…". | ✅ | Auto |
@@ -158,7 +158,7 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (40px desktop / 28px mobile); standfirst 19px grey. Column 820px desktop / 720px mobile. | ✅ 📝 standfirst | Auto |
 | ART-02 | Byline | 44px round avatar; name (600 14px) and disclosure (13px grey); read time and date right-aligned. | ✅ 📝 avatar, disclosure | Auto |
-| ART-03 | Hero photo | 16:9, max 300px tall, square corners; edge to edge on mobile. | ✅ 📝 photo | Manual |
+| ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
 | ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it**: beside the photo it's a column, and once it passes the bottom of the photo it runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
@@ -245,7 +245,10 @@ change better serves the goals in Part 1.
 | CON-03 | Section photos | A photo is attached to a section by its `{#id}`, with side and optional caption. | ✅ | None |
 | CON-04 | Page text in Markdown | All words on Home, About, Policy and the signup box come from Markdown files in `src/content/pages/`, editable on GitHub. A missing or wrong field stops the build. | ✅ | Build + Auto |
 | CON-07 | Formatting marks | In any Markdown file: `**bold**`, `*italic*`, `[links](...)`; in main text also `- ` bullets and `1. ` numbered lists. Home headline: `{think}`, `{move}`, `{live}` show in pillar colours. | ✅ | Auto |
-| CON-05 | Real photos | All picsum.photos placeholders replaced with real photos: Home hero, article hero, three section photos, byline avatar, About photo, Ben and Emma avatars, three strip photos. | 🔨 | None |
+| CON-08 | Photos with the content | Photos live next to their Markdown file (`src/content/blog/<article>/`, `src/content/pages/about/`) and are referenced from its settings. The site makes resized WebP copies at build time, and browsers download the size they need; below-the-fold photos load lazily. Web links still work (not resized). | ✅ | Auto + Build |
+| CON-09 | Photo focus | Every photo has a `focus` (`center` by default): `center`, `top`, `bottom`, `left`, `right`, two together, or `"X% Y%"`. It sets which part stays in view when cropped. Anything else stops the build with a helpful message. | ✅ | Auto |
+| CON-10 | Crop preview | `/admin/photos/` shows each photo in every frame it appears in (article top desktop/phone, home "Latest article", beside-text desktop, under-text phone, About), with captions, a red dot on the focus point, Ben's file name, and a warning if alt text is missing. Hidden from search engines. Linked from `/admin`. | ✅ | Auto |
+| CON-05 | Real photos | Placeholder photos (downloaded into the article and About folders with descriptive names) replaced with Ben's real photos by uploading files with the same names. | 🔨 | None |
 | CON-06 | No-code editing | The author can publish articles without editing files. | 🔨 (CMS not chosen) | None |
 
 ## 8. Quality (non-functional)

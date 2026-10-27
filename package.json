@@ -13,7 +13,8 @@
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.13",
     "astro": "^5.18.2",
-    "marked": "^15.0.12"
+    "marked": "^15.0.12",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

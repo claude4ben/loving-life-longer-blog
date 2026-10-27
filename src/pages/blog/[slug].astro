@@ -5,6 +5,7 @@ import PillarTag from '../../components/PillarTag.astro';
 import Faq from '../../components/Faq.astro';
 import SignupBlock from '../../components/SignupBlock.astro';
 import { splitSections } from '../../lib/sections';
+import Photo from '../../components/Photo.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -24,7 +25,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     <h1>{d.title}</h1>
     <p class="standfirst">{d.standfirst}</p>
     <div class="byline">
-      <img class="avatar" src={d.avatar} alt={d.author} />
+      <span class="avatar"><Photo src={d.avatar} alt={d.author} sizes="44px" widths={[88, 132]} /></span>
       <div>
         <div class="by-name">{d.author}</div>
         <div class="by-note">{d.disclosure}</div>
@@ -34,7 +35,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   </header>
 
   <div class="hero reveal">
-    <img src={d.heroImage} alt={d.heroAlt} />
+    <Photo src={d.heroImage} alt={d.heroAlt} focus={d.heroFocus} sizes="100vw" eager />
   </div>
 
   <div class="col col-article toc-wrap">
@@ -52,7 +53,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
         <section id={s.id} class:list={['sec-split', { 'img-left': s.image.side === 'left' }]}>
           {/* Photo comes first so text can wrap around it on desktop; on mobile it shows after the text. */}
           <div class="sec-img reveal breakout">
-            <div class="sec-img-inner" role="img" aria-label={s.image.alt} style={`background-image:url('${s.image.src}')`}></div>
+            <Photo src={s.image.src} alt={s.image.alt} focus={s.image.focus} sizes="(min-width: 960px) 50vw, 100vw" widths={[400, 800, 1200]} />
             {s.image.caption && <div class="caption"><span>{s.image.caption}</span></div>}
           </div>
           <div class="sec-text">
@@ -146,19 +147,19 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   .article-head h1 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
   .standfirst { font-size: 19px; line-height: 1.6; color: var(--muted); margin: 0 0 6px; }
   .byline { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
   .by-name { font-size: 14px; font-weight: 600; }
   .by-note, .by-meta { font-size: 13px; color: var(--muted); }
   .by-meta { margin-left: auto; text-align: right; white-space: nowrap; }
 
-  .hero { width: 100%; aspect-ratio: 16 / 9; max-height: 300px; margin-bottom: 8px; overflow: hidden; }
-  .hero img { width: 100%; height: 100%; object-fit: cover; }
+  /* Top photo: 16:9 on phones; on desktop up to 480px tall (raised from 300px, 2026-10-27). */
+  .hero { width: 100%; aspect-ratio: 16 / 9; max-height: 480px; margin-bottom: 8px; overflow: hidden; }
 
   /* Scroll-reveal zoom */
-  .reveal > img, .reveal > .sec-img-inner { transform: scale(1.08); transition: transform 1.1s var(--ease-reveal); }
-  .reveal.is-visible > img, .reveal.is-visible > .sec-img-inner { transform: scale(1); }
+  .reveal > :global(img) { transform: scale(1.08); transition: transform 1.1s var(--ease-reveal); }
+  .reveal.is-visible > :global(img) { transform: scale(1); }
   @media (prefers-reduced-motion: reduce) {
-    .reveal > img, .reveal > .sec-img-inner { transform: none; transition: none; }
+    .reveal > :global(img) { transform: none; transition: none; }
   }
 
   .toc-wrap { padding-top: 24px; }
@@ -185,7 +186,6 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   .sec-split { padding: 0 20px 40px; display: flex; flex-direction: column; }
   .sec-split .sec-img { order: 2; } /* mobile: text first, then the photo */
   .sec-img { aspect-ratio: 4 / 3; max-height: 300px; position: relative; overflow: hidden; margin-bottom: 24px; }
-  .sec-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
   .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 20px 18px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
   .caption span { color: var(--white); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 1.3; }
 

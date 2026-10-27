@@ -66,8 +66,44 @@ one you want at the top of the home page. Once there are two or more articles, t
 
 ### Photos
 
-All photos are placeholders from picsum.photos. Put real photos in `public/images/` and point to them
-as `/images/your-photo.jpg`.
+Each article's photos live in a folder with **the same name as the article file**:
+
+```
+src/content/blog/my-new-article.md
+src/content/blog/my-new-article/hero.jpg
+src/content/blog/my-new-article/sunrise.jpg
+```
+
+On github.com: open `src/content/blog/my-new-article/` (or type the folder name when uploading),
+click **Add file → Upload files**, and drag your photos in. To replace a photo, upload one with the
+same name. Then point to them in the article's settings:
+
+```yaml
+heroImage: ./my-new-article/hero.jpg
+heroAlt: "Ben dancing barefoot in the marquee at sunrise"   # describe the photo
+heroFocus: top                                               # which part to keep in view
+sectionImages:
+  final-sharing:
+    src: ./my-new-article/sunrise.jpg
+    alt: "The closing circle at sunrise"
+    focus: center
+    side: right
+    caption: "You're welcome… Feel free."   # optional
+```
+
+**Focus** says which part of the photo stays in view when a frame crops it: `center`, `top`,
+`bottom`, `left`, `right`, two together (`top left`), or exact percentages across then down
+(`"50% 30%"`). A typo stops the build, so the live site is never affected.
+
+**Check the crops** at **/admin/photos/**: every photo in every frame shape it appears in (desktop
+and phone), with a red dot on the focus point.
+
+You don't need to resize photos: the site makes small, fast copies automatically. Phone photos are fine.
+
+**Tips:** top photo: landscape, at least 2000px wide, subject in the middle band. Photos beside
+text: portrait or square, at least 1200px. Keep important detail out of the bottom fifth if there's a
+caption. Ask permission from anyone recognisable. About page photos work the same way, in
+`src/content/pages/about/`.
 
 ## Managing comments
 
