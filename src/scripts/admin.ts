@@ -1,4 +1,4 @@
-// Comment admin: list every comment, reply as Ben, delete, restore, approve.
+// Comment admin: sign in, list every comment, reply as Ben, delete, restore, approve.
 
 type Row = {
   id: number; post: string; parent_id: number | null; name: string; email: string | null; text: string;
@@ -12,6 +12,8 @@ export function initAdmin() {
   const list = document.querySelector<HTMLElement>('[data-list]')!;
   const msg = document.querySelector<HTMLElement>('[data-msg]')!;
   const showDeleted = document.querySelector<HTMLInputElement>('[data-show-deleted]')!;
+  const login = document.querySelector<HTMLFormElement>('[data-login]')!;
+  const panel = document.querySelector<HTMLElement>('[data-admin]')!;
   let rows: Row[] = [];
 
   const say = (text: string, error = false) => {
@@ -50,11 +52,21 @@ export function initAdmin() {
     say(top.length ? (pending ? `${pending} waiting for approval.` : '') : 'No comments yet.');
   };
 
+  const showLogin = (message = '') => {
+    panel.hidden = true;
+    login.hidden = false;
+    say(message, !!message);
+    login.querySelector('input')!.focus();
+  };
+
   const load = async () => {
     try {
       const res = await fetch('/api/admin/comments');
       const data = await res.json().catch(() => ({}));
+      if (res.status === 401) return showLogin();
       if (!res.ok) throw new Error(data.error || 'Couldn’t load comments.');
+      login.hidden = true;
+      panel.hidden = false;
       rows = data.comments;
       render();
     } catch (e) {
@@ -68,9 +80,28 @@ export function initAdmin() {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, action, text }),
     });
     const data = await res.json().catch(() => ({}));
+    if (res.status === 401) return showLogin('You’ve been signed out. Please sign in again.');
     if (!res.ok) return say(data.error || 'That didn’t work. Please try again.', true);
     await load();
   };
+
+  login.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = (login.querySelector('input') as HTMLInputElement).value;
+    const res = await fetch('/api/admin/session', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return say(data.error || 'Sign-in failed. Please try again.', true);
+    login.reset();
+    await load();
+  });
+
+  document.querySelector('[data-signout]')!.addEventListener('click', async () => {
+    await fetch('/api/admin/session', { method: 'DELETE' });
+    list.innerHTML = '';
+    showLogin();
+  });
 
   list.addEventListener('click', (e) => {
     const btn = (e.target as Element).closest<HTMLButtonElement>('button[data-act]');

@@ -230,14 +230,17 @@ every push to `main`. Hosting, database (D1), server code (Pages Functions) and 
 | Everything in one account | |
 | Every branch/pull request gets its own preview link | |
 
-*Private until launch:* the whole site (the main `.pages.dev` address and every preview link) sits
-behind **Cloudflare Access**, so only allowed email addresses can see it. Visitors sign in with a one-time
-code sent by email. At launch, remove the main address from the Access application and keep previews private.
+*Hidden from search until launch:* every page carries a "noindex" tag and `/robots.txt` asks all
+crawlers (search engines and AI) to stay away, controlled by one switch: `HIDE_FROM_SEARCH` in
+`src/data/site.ts`. At launch, set it to `false`. The site is still viewable by anyone with the link.
+(We first planned to lock the whole site with Cloudflare Access, but its Zero Trust plan asks for a
+payment method even when free, so we chose this instead.)
 
 | Pros | Cons |
 | --- | --- |
-| Free for up to 50 people, in the same Cloudflare account | Extra setup screens (Zero Trust may ask for a card even on the free plan) |
-| Search engines and strangers can't see it | You sign in with an emailed code every so often |
+| Free, no extra accounts or payment details | Anyone who has the link can still view the site |
+| Keeps half-finished pages out of Google and AI answers, protecting discoverability at launch | Relies on crawlers obeying the rules (all major ones do) |
+| One switch to flip at launch | |
 
 *Alternatives considered:*
 - **Vercel:** no built-in database, so we'd need a separate service such as Supabase or Neon. Its free
@@ -302,27 +305,33 @@ everything on every push to `main` and every pull request, skipping changes that
 *Alternatives considered:* Cypress (similar, but slower and heavier); unit tests only, e.g. Vitest
 (this site has little logic; most risk is in what readers see and click).
 
-### 19. Cloudflare settings in `wrangler.toml`; admin sign-in via Cloudflare Access ✅
+### 19. Cloudflare settings in `wrangler.toml`; admin sign-in with a password ✅
 
 **Why:** `wrangler.toml` (in the repository) tells Cloudflare which database the site uses and holds
 the comment settings, so the setup is saved in git history, not only in the dashboard. Once this file
 exists, Cloudflare uses it instead of the dashboard for bindings and settings. It also turns on
 `nodejs_compat`, which the Astro add-on needs.
 
-The `/admin` page is protected by a **Cloudflare Access** application (sign in with an emailed code).
-The server also checks Access's signed sign-in token on every admin request (`src/lib/admin-auth.ts`,
-using the `jose` library) and that the email is in `ADMIN_EMAILS`. If Access isn't set up, admin is
-simply refused.
+`/admin` asks for a password. The password is a Cloudflare **secret** called `ADMIN_PASSWORD`, set in
+the dashboard and never stored in GitHub (`src/lib/admin-auth.ts`):
+- Admin stays switched off until a password of at least 12 characters is set.
+- Signing in sets a cookie for 30 days that only the site can read (HttpOnly, Secure, SameSite=Strict).
+  It's signed with the password, so changing the password signs out every device.
+- After 5 wrong passwords from one address, that address must wait 15 minutes. Addresses are stored
+  only as one-way hashes.
+- Admin changes are only accepted from the site itself, a check that Astro also enforces.
+
+We first planned Cloudflare Access (emailed sign-in codes), but its Zero Trust plan asks for a payment
+method even when free.
 
 | Pros | Cons |
 | --- | --- |
+| Free, with no payment details needed | A password is weaker than emailed codes: use a long, unique one from a password manager |
 | Settings are versioned and reviewed like code | Bindings can no longer be edited in the Cloudflare dashboard |
-| No passwords for Ben to manage; same sign-in as the private site | Needs the Access team domain and application id copied into `wrangler.toml` once |
-| Two locks on admin: Access in front, signature check behind | |
+| Changing the password instantly signs out every device | Forgetting the password means setting a new one in the dashboard |
 
-**Local testing:** tests run the built site with `wrangler pages dev` and a fresh, throwaway database.
-`ADMIN_DEV_BYPASS=1` lets tests use admin without signing in; it is only ever passed on the test
-command line and never set on Cloudflare.
+**Local testing:** tests run the built site with `wrangler pages dev`, a fresh, throwaway database and
+a test-only admin password passed on the command line (the real password exists only in Cloudflare).
 
 ---
 
@@ -340,3 +349,4 @@ command line and never set on Cloudflare.
 | 2026-10-27 | Comments (8): added "email me when someone replies" notifications; email-sending service still to choose. Article reading column widened to 820px on desktop (styling only). |
 | 2026-10-27 | Built comments and likes on D1 (8) via Pages Functions (16); added `wrangler.toml` config and Access-protected admin (19); removed sample comments and fake like count. Goes live once the database id is added. |
 | 2026-10-27 | D1 database `lll-blog` created and connected; comments and likes live. |
+| 2026-10-27 | Replaced Cloudflare Access (needs a payment method) with: admin password sign-in (19), and hiding the site from search engines until launch (14). Removed the `jose` library. |

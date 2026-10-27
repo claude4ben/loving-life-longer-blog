@@ -13,8 +13,5 @@ database_id = "0bc01f85-fd80-48ed-b0b8-633fad218774"
 [vars]
 # "true" = comments wait for Ben's approval before appearing; "false" = appear straight away.
 COMMENTS_NEED_APPROVAL = "false"
-# Who can use /admin (comma-separated emails).
-ADMIN_EMAILS = "benjamesparker@gmail.com"
-# From Cloudflare Zero Trust, once the /admin Access application exists (see docs/ARCHITECTURE.md).
-ACCESS_TEAM_DOMAIN = ""
-ACCESS_AUD = ""
+# The /admin password is NOT here: it's a secret called ADMIN_PASSWORD, set in the Cloudflare
+# dashboard (Workers & Pages > loving-life-longer-blog > Settings > Variables and Secrets).

@@ -41,6 +41,17 @@ const MIGRATIONS: { id: number; statements: string[] }[] = [
       )`,
     ],
   },
+  {
+    id: 2,
+    statements: [
+      // Failed admin sign-ins (address stored only as a one-way hash), used to slow down guessing.
+      `CREATE TABLE IF NOT EXISTS login_failures (
+        ip_hash TEXT NOT NULL,
+        at TEXT NOT NULL DEFAULT (datetime('now'))
+      )`,
+      `CREATE INDEX IF NOT EXISTS login_failures_by_ip ON login_failures (ip_hash, at)`,
+    ],
+  },
 ];
 
 let ready: Promise<void> | undefined;

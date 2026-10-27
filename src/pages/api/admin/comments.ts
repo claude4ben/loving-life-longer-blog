@@ -1,15 +1,15 @@
 import type { APIRoute } from 'astro';
-import { adminEmail } from '../../../lib/admin-auth';
+import { isAdmin, sameOrigin } from '../../../lib/admin-auth';
 import type { CommentRow } from '../../../lib/db';
 import { database, json, readJson, text } from '../../../lib/server';
 
 export const prerender = false;
 
-const denied = () => json({ error: 'Not signed in as an admin.' }, 403);
+const denied = () => json({ error: 'Please sign in.' }, 401);
 
 // GET /api/admin/comments → every comment (all statuses), newest first, with emails
 export const GET: APIRoute = async (ctx) => {
-  if (!(await adminEmail(ctx.request, ctx.locals.runtime.env))) return denied();
+  if (!(await isAdmin(ctx.request, ctx.locals.runtime.env))) return denied();
   const { db } = await database(ctx);
   const { results } = await db.prepare('SELECT * FROM comments ORDER BY created_at DESC, id DESC').all<CommentRow>();
   return json({ comments: results });
@@ -17,7 +17,7 @@ export const GET: APIRoute = async (ctx) => {
 
 // POST /api/admin/comments {id, action: 'reply' | 'delete' | 'restore' | 'approve', text?}
 export const POST: APIRoute = async (ctx) => {
-  if (!(await adminEmail(ctx.request, ctx.locals.runtime.env))) return denied();
+  if (!sameOrigin(ctx.request) || !(await isAdmin(ctx.request, ctx.locals.runtime.env))) return denied();
   const body = await readJson(ctx.request);
   const id = Number(body?.id);
   if (!body || !Number.isInteger(id)) return json({ error: 'Invalid request.' }, 400);

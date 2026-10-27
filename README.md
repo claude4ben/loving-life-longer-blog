@@ -24,7 +24,8 @@ Tests live in `tests/` and run automatically on GitHub for every code change (se
 | Policy page | `src/content/pages/policy.md` |
 | Email signup box text | `src/content/pages/signup.md` |
 | Header, menu, footer | `src/layouts/Base.astro` |
-| Comment settings (approval on/off, admin emails) | `wrangler.toml` |
+| Comment approval on/off | `wrangler.toml` |
+| Hide from search engines (until launch) | `HIDE_FROM_SEARCH` in `src/data/site.ts` |
 | Colours and fonts | top of `src/styles/global.css` |
 | Logo | replace `public/logo.png` |
 
@@ -70,9 +71,22 @@ as `/images/your-photo.jpg`.
 
 ## Managing comments
 
-Go to **/admin** on the site (for example `https://loving-life-longer-blog.pages.dev/admin/`) and sign
-in with your email. You can reply as Ben, delete comments (they can be restored), and approve comments
-if approval is switched on (`COMMENTS_NEED_APPROVAL` in `wrangler.toml`).
+**One-time setup: choose your admin password**
+1. Make a long password (at least 12 characters; a password manager can generate one).
+2. In Cloudflare go to **Workers & Pages → loving-life-longer-blog → Settings → Variables and Secrets**.
+3. Click **Add**, choose type **Secret**, name it `ADMIN_PASSWORD`, paste the password, and save (for Production).
+4. Go to **Deployments**, open the latest one's **⋯** menu and click **Retry deployment**, so the new
+   secret takes effect. (Any later push does this too.)
+
+**Day to day:** go to **/admin** on the site (for example
+`https://loving-life-longer-blog.pages.dev/admin/`) and sign in with that password. You stay signed in
+for 30 days on that device. You can reply as Ben, delete comments (they can be restored), and approve
+comments if approval is switched on (`COMMENTS_NEED_APPROVAL` in `wrangler.toml`). To sign out every
+device, change the password.
+
+## Launch checklist
+
+- Set `HIDE_FROM_SEARCH` to `false` in `src/data/site.ts`, so search engines and AI tools can list the site.
 
 ## Not built yet
 

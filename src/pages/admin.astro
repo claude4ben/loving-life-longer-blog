@@ -1,18 +1,27 @@
 ---
 // Ben's comment admin. The page itself is plain; the data comes from /api/admin/comments, which only
-// answers when Cloudflare Access has signed Ben in (see src/lib/admin-auth.ts).
+// answers once Ben has signed in with the admin password (see src/lib/admin-auth.ts).
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Admin" description="Comment admin">
-  <meta slot="head" name="robots" content="noindex, nofollow" />
+<Base title="Admin" description="Comment admin" noindex>
   <div class="admin">
     <h1>Comments</h1>
-    <div class="toolbar">
-      <label><input type="checkbox" data-show-deleted /> Show deleted</label>
-      <button class="btn" data-refresh type="button">Refresh</button>
+    <form class="login" data-login hidden>
+      <label for="admin-password">Admin password</label>
+      <input class="field" id="admin-password" name="password" type="password" autocomplete="current-password" required />
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+    <div data-admin hidden>
+      <div class="toolbar">
+        <label><input type="checkbox" data-show-deleted /> Show deleted</label>
+        <div class="tools">
+          <button class="btn" data-refresh type="button">Refresh</button>
+          <button class="btn btn-quiet" data-signout type="button">Sign out</button>
+        </div>
+      </div>
+      <div data-list></div>
     </div>
     <p class="msg" data-msg role="status">Loading…</p>
-    <div data-list></div>
   </div>
 </Base>
 
@@ -27,6 +36,11 @@ import Base from '../layouts/Base.astro';
   .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; font-size: 14px; }
   .toolbar label { display: flex; align-items: center; gap: 8px; min-height: 44px; }
   .msg { font-size: 14px; color: var(--muted); }
+  .login { display: flex; flex-direction: column; gap: 10px; max-width: 360px; }
+  .login[hidden], [data-admin][hidden] { display: none; }
+  .login label { font-size: 14px; font-weight: 600; }
+  .tools { display: flex; gap: 8px; }
+  .btn-quiet { background: var(--white); color: var(--ink); border: 1px solid var(--border-input); }
   .msg.error { color: #b3261e; }
   :global(.a-post) { font-family: var(--font-label); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 28px 0 10px; }
   :global(.a-card) { border: 1px solid var(--border-input); border-radius: 8px; padding: 16px; margin-bottom: 12px; background: var(--white); }

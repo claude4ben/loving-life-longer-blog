@@ -3,7 +3,7 @@ import { test, expect } from './fixtures';
 const POST = 'blindfolded-with-50-strangers';
 const ARTICLE = `/blog/${POST}/`;
 
-// The admin page, using the local-testing sign-in bypass.
+// The admin page, signed in with the local test password.
 test.describe('Comment admin', () => {
   test.skip(({ isMobile }) => isMobile, 'admin is checked at desktop size');
 
@@ -12,6 +12,8 @@ test.describe('Comment admin', () => {
     await request.post('/api/comments', { data: { post: POST, name: 'Reader', email: 'reader@example.com', text } });
 
     await page.goto('/admin/');
+    await page.getByLabel('Admin password').fill('test-admin-password');
+    await page.getByRole('button', { name: 'Sign in' }).click();
     const card = page.locator('.a-card', { hasText: text });
     await expect(card).toContainText('reader@example.com'); // Ben sees the email; readers never do
 
@@ -42,8 +44,22 @@ test.describe('Comment admin', () => {
     await expect(page.locator('.c-text', { hasText: text })).toBeVisible();
   });
 
-  test('admin page is hidden from search engines', async ({ page }) => {
+  test('asks for the password, explains a wrong one, and signs out', async ({ page }) => {
     await page.goto('/admin/');
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+    await expect(page.getByLabel('Admin password')).toBeVisible();
+    await expect(page.locator('[data-admin]')).toBeHidden();
+
+    await page.getByLabel('Admin password').fill('wrong-password');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await expect(page.locator('[data-msg]')).toHaveText('That password isn’t right.');
+
+    await page.getByLabel('Admin password').fill('test-admin-password');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await expect(page.locator('[data-admin]')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Sign out' }).click();
+    await expect(page.getByLabel('Admin password')).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Admin password')).toBeVisible(); // still signed out after reload
   });
 });

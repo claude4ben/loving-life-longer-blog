@@ -16,10 +16,10 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Desktop Chrome'], viewport: { width: 390, height: 844 }, hasTouch: true } },
   ],
   // Runs the built site on a local copy of Cloudflare, with a fresh, empty database each time.
-  // ADMIN_DEV_BYPASS lets tests use /admin without signing in (local only; never set on Cloudflare).
+  // The admin password here is for local tests only; the real one is a Cloudflare secret.
   webServer: {
     command:
-      'npm run build && rm -rf .wrangler/test-state && wrangler pages dev dist --port 4321 --persist-to .wrangler/test-state --binding ADMIN_DEV_BYPASS=1',
+      'npm run build && rm -rf .wrangler/test-state && wrangler pages dev dist --port 4321 --persist-to .wrangler/test-state --binding ADMIN_PASSWORD=test-admin-password',
     env: { WRANGLER_SEND_METRICS: 'false' },
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,

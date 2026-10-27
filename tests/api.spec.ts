@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { adminEmail } from '../src/lib/admin-auth';
+import { isAdmin, sessionCookie, passwordReady, COOKIE } from '../src/lib/admin-auth';
 
 const POST = 'blindfolded-with-50-strangers';
 
@@ -43,16 +43,50 @@ test.describe('Likes API', () => {
   });
 });
 
-test.describe('Admin sign-in check', () => {
-  const req = (token?: string) => new Request('https://x/api/admin/comments', { headers: token ? { 'cf-access-jwt-assertion': token } : {} });
+test.describe('Admin sign-in', () => {
+  const env = { ADMIN_PASSWORD: 'a-long-test-password' };
+  const withCookie = (cookie: string) => new Request('https://x/', { headers: { cookie: cookie.split(';')[0] } });
 
-  test('refuses when Cloudflare Access is not set up', async () => {
-    expect(await adminEmail(req('anything'), {})).toBeNull();
-    expect(await adminEmail(req(), { ACCESS_TEAM_DOMAIN: 'team.cloudflareaccess.com', ACCESS_AUD: 'aud' })).toBeNull();
+  test('a fresh sign-in cookie is accepted', async () => {
+    expect(await isAdmin(withCookie(await sessionCookie(env)), env)).toBe(true);
   });
 
-  test('refuses a fake sign-in token', async () => {
-    const env = { ACCESS_TEAM_DOMAIN: 'invalid.invalid', ACCESS_AUD: 'aud', ADMIN_EMAILS: 'ben@example.com' };
-    expect(await adminEmail(req('not.a.jwt'), env)).toBeNull();
+  test('refuses expired, tampered or old-password cookies', async () => {
+    const old = await sessionCookie(env, Date.now() - 31 * 86400_000);
+    expect(await isAdmin(withCookie(old), env)).toBe(false);
+    const good = (await sessionCookie(env)).split(';')[0];
+    expect(await isAdmin(withCookie(good.slice(0, -2) + '00'), env)).toBe(false);
+    expect(await isAdmin(withCookie(good), { ADMIN_PASSWORD: 'a-different-password' })).toBe(false);
+    expect(await isAdmin(withCookie(`${COOKIE}=9999999999999.abc`), env)).toBe(false);
+    expect(await isAdmin(new Request('https://x/'), env)).toBe(false);
+  });
+
+  test('admin is off until a password of 12+ characters is set', async () => {
+    expect(passwordReady({})).toBe(false);
+    expect(passwordReady({ ADMIN_PASSWORD: 'short' })).toBe(false);
+    expect(await isAdmin(withCookie(await sessionCookie({ ADMIN_PASSWORD: 'short' })), { ADMIN_PASSWORD: 'short' })).toBe(false);
+  });
+
+  test('blocks an address after 5 wrong passwords', async ({ request }) => {
+    const ip = `10.0.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`;
+    const attempt = (password: string) =>
+      request.post('/api/admin/session', { data: { password }, headers: { 'cf-connecting-ip': ip } });
+    for (let i = 0; i < 5; i++) expect((await attempt('wrong')).status()).toBe(401);
+    expect((await attempt('wrong')).status()).toBe(429);
+    expect((await attempt('test-admin-password')).status()).toBe(429); // even the right one, until the wait is over
+  });
+
+  test('admin data needs sign-in, and changes must come from the site itself', async ({ request }) => {
+    expect((await request.get('/api/admin/comments')).status()).toBe(401);
+    const ip = `10.1.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`;
+    const ok = await request.post('/api/admin/session', { data: { password: 'test-admin-password' }, headers: { 'cf-connecting-ip': ip } });
+    expect(ok.status()).toBe(200);
+    expect((await request.get('/api/admin/comments')).status()).toBe(200);
+    const crossSite = await request.post('/api/admin/comments', { data: { id: 1, action: 'delete' }, headers: { origin: 'https://evil.example' } });
+    expect(crossSite.status()).toBe(401);
+    // Sign-out tells the browser to drop the cookie (the real-browser sign-out is tested in admin.spec.ts).
+    const signOut = await request.delete('/api/admin/session', { headers: { origin: 'http://localhost:4321' } });
+    expect(signOut.status()).toBe(200);
+    expect(signOut.headers()['set-cookie']).toMatch(/^lll_admin=; .*Max-Age=0/);
   });
 });
