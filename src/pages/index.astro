@@ -6,6 +6,7 @@ import Photo from '../components/Photo.astro';
 import Faq from '../components/Faq.astro';
 import SignupBlock from '../components/SignupBlock.astro';
 import { PILLAR_COLORS, type Pillar } from '../data/site';
+import { readTime } from '../lib/article-meta';
 import { block, inline } from '../lib/markdown';
 
 const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -41,7 +42,7 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
           <div class="feature-summary">
             <p>{featured.data.standfirst}</p>
             <div class="feature-meta">
-              <span class="meta">{featured.data.readTime}</span>
+              <span class="meta">{readTime(featured.body)}</span>
               <span class="read-more">Read the article →</span>
             </div>
           </div>
@@ -64,7 +65,7 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
           <a class="card" href={`/blog/${p.id}/`}>
             <PillarTag pillar={p.data.pillar} />
             <h2>{p.data.title}</h2>
-            <span class="meta">{p.data.readTime}</span>
+            <span class="meta">{readTime(p.body)}</span>
           </a>
         ))}
       </div>

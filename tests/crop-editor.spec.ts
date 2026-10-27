@@ -65,7 +65,7 @@ test.describe('Photo crop editor', () => {
     await expect(page.locator('[data-savebar]')).toContainText('The site will update in about 2 minutes');
 
     const last = await (await request.get('http://127.0.0.1:4399/__last')).json();
-    expect(last.path).toBe('src/content/blog/blindfolded-with-50-strangers.md');
+    expect(last.path).toBe('tests/fixtures/content/blog/blindfolded-with-50-strangers.md'); // the tests' sample copy
     expect(last.branch).toBe('main');
     expect(last.message).toMatch(/^Photo crop: hero/);
     expect(last.text).toContain(`heroFocus: "${x}% ${y}%"\nheroZoom: 1.5\n`);

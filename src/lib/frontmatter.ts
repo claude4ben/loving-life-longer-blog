@@ -3,6 +3,8 @@
 // layout are left exactly as they were.
 
 import { isMap, isScalar, parseDocument, type YAMLMap } from 'yaml';
+import Markdoc, { type Node } from '@markdoc/markdoc';
+import { slugify } from './sections';
 
 type Path = (string | number)[];
 
@@ -34,20 +36,60 @@ function setValue(fm: string, parent: Path, key: string, text: string, anchor: s
   return `${fm.slice(0, at)}\n${' '.repeat(indent)}${key}: ${text}${fm.slice(at)}`;
 }
 
-export type CropEdit = {
-  parent: Path; // where the photo's settings live, e.g. [] or ['sectionImages', 'mealtime-fun']
-  focusKey: string; // e.g. 'heroFocus' or 'focus'
-  zoomKey: string; // e.g. 'heroZoom' or 'zoom'
-  anchor: string; // the photo's own setting, e.g. 'heroImage' or 'src'
-  focus: string; // "50% 30%"
-  zoom: number; // 1 to 3
-};
+/** Where a photo's crop lives: in the settings at the top, or in a {% photo %} block in the article text. */
+export type CropPlace =
+  | {
+      parent: Path; // where the photo's settings live, e.g. [] or ['people', 0]
+      focusKey: string; // e.g. 'heroFocus' or 'focus'
+      zoomKey: string; // e.g. 'heroZoom' or 'zoom'
+      anchor: string; // the photo's own setting, e.g. 'heroImage' or 'src'
+    }
+  | { section: string }; // the first {% photo %} block in this section of the text (id from its heading)
+
+export type CropEdit = CropPlace & { focus: string; zoom: number };
+
+const textOf = (node: Node): string =>
+  node.type === 'text' ? String(node.attributes.content ?? '') : node.children.map(textOf).join('');
+
+/** Update focus="…" and zoom=… on the photo block in one section of the text. */
+function setPhotoBlock(body: string, section: string, focus: string, zoom: number): string {
+  const doc = Markdoc.parse(body);
+  let current = '';
+  const used = new Set<string>();
+  for (const node of doc.children) {
+    if (node.type === 'heading' && node.attributes.level === 2) {
+      const heading = textOf(node).trim();
+      let id = slugify(heading) || 'section';
+      for (let n = 2; used.has(id); n++) id = `${slugify(heading)}-${n}`;
+      used.add(id);
+      current = id;
+      continue;
+    }
+    if (current === section && node.type === 'tag' && node.tag === 'photo' && node.lines.length) {
+      const lines = body.split('\n');
+      const [first, last] = [node.lines[0], node.lines[node.lines.length - 1]];
+      let tag = lines.slice(first, last).join('\n');
+      const setAttr = (name: string, value: string) => {
+        const re = new RegExp(`\\b${name}=("[^"]*"|[^\\s/%]+)`);
+        tag = re.test(tag) ? tag.replace(re, `${name}=${value}`) : tag.replace(/\s*\/%\}\s*$/, ` ${name}=${value} /%}`);
+      };
+      setAttr('focus', `"${focus}"`);
+      setAttr('zoom', String(zoom));
+      return [...lines.slice(0, first), ...tag.split('\n'), ...lines.slice(last)].join('\n');
+    }
+  }
+  throw new Error(`Couldn't find the photo in the "${section}" section of the text.`);
+}
 
 export function applyCropEdits(markdown: string, edits: CropEdit[]): string {
   let { fm, rest } = split(markdown);
   for (const e of edits) {
-    fm = setValue(fm, e.parent, e.focusKey, `"${e.focus}"`, e.anchor);
-    fm = setValue(fm, e.parent, e.zoomKey, String(e.zoom), e.focusKey);
+    if ('section' in e) {
+      rest = setPhotoBlock(rest, e.section, e.focus, e.zoom);
+    } else {
+      fm = setValue(fm, e.parent, e.focusKey, `"${e.focus}"`, e.anchor);
+      fm = setValue(fm, e.parent, e.zoomKey, String(e.zoom), e.focusKey);
+    }
   }
   return `---\n${fm}\n---\n${rest}`;
 }

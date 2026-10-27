@@ -47,9 +47,9 @@ Every feature and design change should move at least one of these forward, and s
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
-| **Easy publishing**: all articles and page text in simple Markdown files on GitHub, with **bold** and bullet lists | G2 | ✅ |
+| **Easy publishing**: write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ 🔨 trial on the `keystatic-trial` branch |
 | **Links from each article**: cards with round icons for people, brands, social accounts and shops, with clearly labelled affiliate links | G3, G4 (partners and the ecosystem), G5 (honest affiliate disclosure) | ✅ (demo links are placeholders) |
-| **Article template** (`_template.md`) explaining every setting, checked on every build | G2 (easy, regular publishing) | ✅ |
+| **Article form** in Keystatic, explaining every setting next to its field | G2 (easy, regular publishing) | ✅ 🔨 trial |
 | **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
 | **Hidden from search engines until launch** (one switch to flip at launch) | G1 (no half-finished pages in search or AI answers) | ✅ |
 
@@ -160,16 +160,16 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
-| ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
+| ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). The date label ("Jul 2026") and read time (words ÷ 230) are worked out automatically. Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
-| ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
+| ART-04 | Sections | Each `## Heading` ("Heading 2" in Keystatic) is a section; its web id comes from the heading text (e.g. `#final-sharing-circle-finale`): H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
 | ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it, a paragraph at a time**: a paragraph (or bullet point) that starts beside the photo stays in that column to its end, even if it runs past the photo; the next one below the photo runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
 | ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
 | ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers, two across on desktop. | ✅ 📝 answers | Auto |
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
-| ART-11 | Bold and lists | In an article file, `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
+| ART-11 | Bold and lists | In an article (Keystatic toolbar or Markdown), `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
 | ART-12 | Rail never covers text | On desktop, the Like/Share rail never overlaps article text. | ✅ | Auto |
 | ART-13 | Links from this article | After the article text and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Three across on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
 | ART-14 | Affiliate links | Links with `affiliate: true` show an "Affiliate" label, use `rel="sponsored noopener"`, and the affiliate note from `links.md` appears under the list. | ✅ | Auto |
@@ -226,7 +226,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | POL-01 | Policy page | H1 "Policies" and an intro, then three sections: Comments policy, Data & privacy, Cookies. | ✅ 📝 all text | Auto |
-| POL-02 | Deep link | The comment form's Policy link opens the Comments policy section. | ✅ | Auto |
+| POL-02 | Deep link | The comment form's Policy link opens the Comments policy section (`/policy/#comments-policy`). | ✅ | Auto |
 | POL-03a | Policy layout | Desktop: title and intro across the page, then an "On this page" list on the left (stays in view while scrolling) beside the policy text (up to 820px wide). Phones: text only. | ✅ | Auto |
 | POL-03 | Real policy text | Covers what's collected (comments, emails), Google Fonts, Cloudflare, the newsletter service, and how to ask for data deletion. | 🔨 | None |
 
@@ -246,18 +246,19 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| CON-01 | Articles as files | Each article is one Markdown file in `src/content/blog/`; the file name is its web address. | ✅ | Build |
+| CON-01 | Articles as files | Each article is one Markdown file in `src/content/blog/` (Keystatic creates it); the file name is its web address. | ✅ | Build |
 | CON-02 | Article settings checked | Title, pillar (Think/Move/Live only), standfirst, date, photos and FAQ are checked; a mistake stops the build. | ✅ | Build |
-| CON-03 | Section photos | A photo is attached to a section by its `{#id}`, with side and optional caption. | ✅ | None |
-| CON-04 | Page text in Markdown | All words on Home, About, Policy and the signup box come from Markdown files in `src/content/pages/`, editable on GitHub. A missing or wrong field stops the build. | ✅ | Build + Auto |
+| CON-03 | Section photos | A `{% photo %}` block straight after a section heading ("Photo beside this section" in Keystatic) attaches a photo to that section, with side, optional caption, focus and zoom. A missing photo file stops the build. | ✅ | Auto |
+| CON-04 | Page text in files | All words on Home, About, Policy and the signup box come from files in `src/content/pages/` (Markdown, or `.yaml` for the signup box and links settings), editable in Keystatic under "Pages". A missing or wrong field stops the build. | ✅ | Build + Auto |
 | CON-07 | Formatting marks | In any Markdown file: `**bold**`, `*italic*`, `[links](...)`; in main text also `- ` bullets and `1. ` numbered lists. Home headline: `{think}`, `{move}`, `{live}` show in pillar colours. | ✅ | Auto |
 | CON-08 | Photos with the content | Photos live next to their Markdown file (`src/content/blog/<article>/`, `src/content/pages/about/`) and are referenced from its settings. The site makes resized WebP copies at build time, and browsers download the size they need; below-the-fold photos load lazily. Web links still work (not resized). | ✅ | Auto + Build |
 | CON-09 | Photo focus | Every photo has a `focus` (`center` by default): `center`, `top`, `bottom`, `left`, `right`, two together, or `"X% Y%"`. It sets which part stays in view when cropped. A `zoom` (1–3, default 1) zooms in around the focus point; it combines with the article's zoom-in-on-scroll effect. Anything else stops the build with a helpful message. | ✅ | Auto |
 | CON-10 | Photo crop editor | `/admin/photos/` (admin only; signed-out visitors go to the sign-in and back) shows every adjustable photo (article top, section and byline photos; About main, people and strip photos) uncropped, beside every frame it appears in. Drag inside a frame or move the dot on the whole photo (click, drag, or arrow keys) to set the focus; the Zoom slider (1–3×) zooms around it; all frames update live. Changed photos are highlighted, with Undo per photo and a Save bar showing how many changed. Hidden from search engines. | ✅ | Auto |
 | CON-12 | Saving crops | Save writes each photo's `focus` ("X% Y%") and `zoom` into its Markdown file on GitHub, one commit per file, changing only those lines (adding them if missing) and leaving everything else exactly as it was. The site then rebuilds (about 2 minutes). Only known photo settings in article and About files can be changed. Clear messages if the GitHub key is missing, expired or refused, or the file changed at the same moment. | ✅ built; 🔨 Ben to add the `GITHUB_TOKEN` secret | Auto (with a pretend GitHub) |
-| CON-11 | Article template | `src/content/blog/_template.md` shows and explains every setting (with example photos in `_template/`). It's checked against the same rules as real articles on every build, and files starting with `_` are never published. | ✅ | Build + Auto |
+| CON-11 | Keystatic editor | `/keystatic` edits articles and pages with forms and a text editor (bold, italic, links, headings, lists, photo blocks). Locally it saves to the files; on the live site it signs in with GitHub and saves commits, then the site rebuilds. Its settings (`keystatic.config.ts`) match the build rules (`src/content.config.ts`). Hidden from search engines. Crop settings stay in the photo crop editor. | ✅ 🔨 trial; Ben to set up the GitHub App | Build + Manual |
+| CON-13 | Tests use sample content | Automated tests build from a frozen copy of the content (`tests/fixtures/content/`), so editing real articles never breaks the tests. The real content is still checked by a build on every push. | ✅ | Build |
 | CON-05 | Real photos | Placeholder photos (downloaded into the article and About folders with descriptive names) replaced with Ben's real photos by uploading files with the same names. | 🔨 | None |
-| CON-06 | No-code editing | The author can publish articles without editing files. | 🔨 (CMS not chosen) | None |
+| CON-06 | No-code editing | The author can publish articles without editing files. | ✅ via Keystatic (CON-11), 🔨 trial | Manual |
 
 ## 8. Quality (non-functional)
 

@@ -52,7 +52,7 @@ test.describe('Article content', () => {
 
   test('text runs full width once it passes the bottom of the photo (desktop)', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop only');
-    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-and-finale']) {
+    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-circle-finale']) {
       const sec = page.locator(`#${id}`);
       const img = (await sec.locator('.sec-img').boundingBox())!;
       const text = (await sec.locator('.sec-text').boundingBox())!;
@@ -73,7 +73,7 @@ test.describe('Article content', () => {
 
   test('desktop photos line up with the top of their section', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop only');
-    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-and-finale']) {
+    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-circle-finale']) {
       const img = await page.locator(`#${id} .sec-img`).boundingBox();
       const heading = await page.locator(`#${id} h2`).boundingBox();
       expect(Math.abs(img!.y - heading!.y)).toBeLessThan(20);
@@ -113,12 +113,12 @@ test.describe('Article interactions', () => {
     const bar = page.locator('[data-progress]');
     const width = () => bar.evaluate((el) => parseFloat((el as HTMLElement).style.width) || 0);
     expect(await width()).toBeLessThan(5);
-    await page.locator('#yoga-final-day').scrollIntoViewIfNeeded();
+    await page.locator('#using-grass-to-do-yoga-final-day').scrollIntoViewIfNeeded();
     await expect.poll(width).toBeGreaterThan(50);
   });
 
   test('photos zoom in once they scroll into view', async ({ page }) => {
-    const img = page.locator('#final-sharing-and-finale .sec-img');
+    const img = page.locator('#final-sharing-circle-finale .sec-img');
     await expect(img).not.toHaveClass(/is-visible/);
     await img.scrollIntoViewIfNeeded();
     await expect(img).toHaveClass(/is-visible/);
@@ -264,7 +264,7 @@ test.describe('Comments', () => {
 
   test('Policy link opens the comments policy', async ({ page }) => {
     await form(page).getByRole('link', { name: 'Policy' }).click();
-    await expect(page).toHaveURL('/policy/#comments');
+    await expect(page).toHaveURL('/policy/#comments-policy');
     await expect(page.getByRole('heading', { name: 'Comments policy' })).toBeVisible();
   });
 });

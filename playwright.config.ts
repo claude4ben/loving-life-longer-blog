@@ -18,11 +18,12 @@ export default defineConfig({
   webServer: [
     // A pretend GitHub, so the photo crop editor's Save can be tested without touching the real one.
     { command: 'node tests/mock-github.mjs', port: 4399, reuseExistingServer: !process.env.CI },
-    // The built site on a local copy of Cloudflare, with a fresh, empty database each time.
+    // The built site on a local copy of Cloudflare, with a fresh, empty database each time. It's built from
+    // a frozen sample of the content (tests/fixtures/content), so Ben's edits in Keystatic never break tests.
     // The admin password and GitHub key here are for local tests only; the real ones are Cloudflare secrets.
     {
       command:
-        'npm run build && rm -rf .wrangler/test-state && wrangler pages dev dist --port 4321 --persist-to .wrangler/test-state' +
+        'LLL_CONTENT=tests/fixtures/content npm run build && rm -rf .wrangler/test-state && wrangler pages dev dist --port 4321 --persist-to .wrangler/test-state' +
         ' --binding ADMIN_PASSWORD=test-admin-password --binding GITHUB_TOKEN=test-github-token' +
         ' --binding GITHUB_API_URL=http://127.0.0.1:4399',
       env: { WRANGLER_SEND_METRICS: 'false', NO_PROXY: 'localhost,127.0.0.1', no_proxy: 'localhost,127.0.0.1' },

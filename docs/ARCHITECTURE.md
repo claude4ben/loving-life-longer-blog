@@ -67,40 +67,43 @@ checks that each article has a title, pillar, photos and so on.
 *Later:* the handoff asks for a no-code CMS. A Git-based CMS (such as Decap or TinaCMS) could sit on
 top of these same Markdown files, so moving to one won't require rewriting the site.
 
-*Article template:* `src/content/blog/_template.md` explains every setting. It's loaded as its own
-collection (`blogTemplate`) using the same rules as articles, so the build fails if the template and
-the rules ever drift apart. Files starting with `_` are excluded from the published articles.
+*Editing:* since 2026-10-27 the files are edited through Keystatic (decision 21), which saves to the
+same files; the old `_template.md` was removed because Keystatic's "Create" form does its job.
 
 *Links per article:* a `links` list in the settings (name, url, description, optional type, icon and
 `affiliate`) renders as cards after the article (`src/components/ArticleLinks.astro`). Affiliate links
 are labelled, explained (text in `src/content/pages/links.md`) and marked `rel="sponsored"`, as
 search engines require for paid links.
 
-### 3. Article sections come from `## Heading {#id}` ✅
+### 3. Article sections: "## Heading" in Markdoc text, photos as blocks ✅
 
-**Why:** the design needs per-section layouts (text only, or text beside a photo) and a table of
-contents. `src/lib/sections.ts` splits the Markdown at each `## ` heading (and is unit-tested).
-Section text supports normal Markdown: **bold**, bullet and numbered lists, links. Section photos are listed under
-`sectionImages:` at the top of the file and matched by the `{#id}`.
+**Why:** the article text is Markdoc (standard Markdown plus `{% … %}` blocks), which is what the Keystatic
+editor saves. `src/lib/sections.ts` starts a new section at each `## ` heading and makes its id from the
+heading text (e.g. "Mealtime fun" → `mealtime-fun`). A `{% photo src=… alt=… side=… caption=… focus=…
+zoom=… /%}` block in a section becomes that section's photo. Photos in the text are found by
+`src/lib/images.ts` and resized like any other.
 
 | Pros | Cons |
 | --- | --- |
-| Writing stays plain Markdown | A typo in an id means the photo silently doesn't show |
+| Photos sit where they belong in the text, which is natural in an editor | Renaming a heading changes its section id (and any link to it) |
 | Table of contents builds itself from the headings | Only one heading level (`##`) creates sections |
+| Raw HTML typed into the text is shown as text, never run | |
 
-### 4. Page text in Markdown files (`src/content/pages/`) ✅
+*Earlier:* section ids were written by hand (`{#id}`) and section photos were listed in the settings;
+changed for Keystatic.
 
-**Why:** Ben edits all the words himself on GitHub. Each fixed page has its own Markdown file:
-`home.md`, `about.md`, `policy.md`, plus `signup.md` for the email box shown on several pages. Like
-articles, each file is checked against a schema, so a missing field stops the build. Formatting
-(bold, italic, links, bullet and numbered lists) uses standard Markdown marks, handled by
-`src/lib/markdown.ts`. Only design settings (pillar colours, sample comments) stay in `src/data/site.ts`.
+### 4. Page text in files, edited in Keystatic ✅
+
+**Why:** Ben edits all the words himself. Home, About and Policy are Markdown files with settings
+(`src/content/pages/`); the email signup box and the article-links heading are small YAML files
+(`signup.yaml`, `links.yaml`). All appear under **Pages** in Keystatic. Each is checked against a
+schema, so a missing field stops the build. Only design settings (pillar colours, the
+hide-from-search switch) stay in `src/data/site.ts`.
 
 | Pros | Cons |
 | --- | --- |
-| All words editable on github.com without touching code | Settings at the top of each file must keep their format (quotes, indentation) |
-| Same formatting marks everywhere | Bullet lists only work in the main text, not in short settings fields |
-| Every change is saved in history and can be undone | |
+| All words editable in a friendly editor, with history and undo in git | Short interface labels (buttons, menu) are still in code |
+| Same formatting everywhere (bold, italic, links, lists) | |
 
 ### 5. Styling: plain CSS with design tokens ✅
 
@@ -306,6 +309,12 @@ server function verifies the result before saving anything.
 
 ### 18. Automated testing: Playwright + axe, run by GitHub Actions ✅
 
+*Update 2026-10-27:* tests build the site from a frozen **sample copy of the content**
+(`tests/fixtures/content/`, chosen with `LLL_CONTENT`), so Ben's edits in Keystatic never break them.
+GitHub separately checks that the real content builds. Test builds use their own cache folder so they
+can never leak into a normal build.
+
+
 **Why:** the site should be checked automatically whenever the code changes. Playwright opens the real
 site in a browser at desktop (1280px) and phone (390px) sizes and clicks through it like a reader would.
 axe scans each page for accessibility problems. GitHub Actions (`.github/workflows/test.yml`) runs
@@ -359,6 +368,10 @@ a test-only admin password passed on the command line (the real password exists 
 
 ### 20. Photo crop editor saves to GitHub ✅
 
+*Update 2026-10-27:* section photos are now `{% photo %}` blocks in the text, so Save edits that block's
+`focus` and `zoom` (`src/lib/frontmatter.ts`); other photos still use their settings lines.
+
+
 **Why:** Ben wants to drag and zoom photos into place visually. The editor (`/admin/photos/`,
 `src/scripts/crop-editor.ts`) shows each photo whole beside every frame it appears in. Save sends the new
 focus and zoom to `/api/admin/photos`, which uses the GitHub API (`src/lib/github.ts`) to edit just those
@@ -380,6 +393,33 @@ one place where every setting lives.
 *Alternatives considered:* storing crops in the D1 database and applying them in the browser (live
 instantly, but the photo would jump after the page loads, and crop settings would live in two places);
 building article pages on request (slower pages, more server cost).
+
+### 21. Writing and editing with Keystatic 🔨 (trial on the `keystatic-trial` branch)
+
+**Why:** editing Markdown files on github.com was slow and error-prone (settings formatting, separate
+photo uploads, no preview), which works against publishing regularly (goals G1, G2). Keystatic is a free,
+open-source editor made for Astro that edits the **same files** in the repository: a form for the
+settings, a rich-text editor (paste from Google Docs or Word keeps bold and lists), photo upload, and a
+"Photo beside this section" block. On the live site it saves to GitHub (Ben signs in with GitHub; a
+small GitHub App limits it to this repository); locally (`npm run dev`) it saves straight to the files.
+Config: `keystatic.config.ts`, which must match `src/content.config.ts`.
+
+| Pros | Cons |
+| --- | --- |
+| Friendly writing and photo upload; no settings formatting to get right | Signing in uses GitHub, separate from the admin password |
+| Same files and git history as before; nothing locked into a service | One-time GitHub App setup (about 10 minutes) and three Cloudflare secrets |
+| Required fields and photos are checked before saving | Keystatic tidies files when saving (rewraps settings, renames photos to standard names) |
+| Free, no extra hosting; adds about 0.5MB to the server code (well within limits) | Each save is a commit and rebuild (about 2 minutes to go live) |
+
+*Content changes made for it:* section photos became `{% photo %}` blocks in the text (3); section ids
+come from headings; the date label and read time are worked out automatically; the signup and links
+settings became YAML; the article template was removed.
+
+*Version note:* uses `@keystatic/astro` 5.2 (6.0 needs a newer Astro); it reads its secrets
+(`KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`) from Cloudflare.
+
+*Alternatives considered:* a custom "New article" page in our admin (a lot to build and maintain well);
+Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude (not self-serve).
 
 ---
 
@@ -403,3 +443,4 @@ building article pages on request (slower pages, more server cost).
 | 2026-10-27 | Styling (5): one shared page width (`.wide`) across all pages; wider desktop layouts for About, Policy, signup, article header, links, Q&A and comments. |
 | 2026-10-27 | Photo crop preview (11) now admin-only: checks the admin sign-in on the server. |
 | 2026-10-27 | Photo zoom setting (11) and a drag-and-zoom crop editor that saves to GitHub (20). |
+| 2026-10-27 | Keystatic editor (21) on a trial branch: articles and pages editable at /keystatic; section photos as `{% photo %}` blocks (3); pages in Keystatic (4); tests use a frozen sample of the content (18); crop editor edits photo blocks (20). |

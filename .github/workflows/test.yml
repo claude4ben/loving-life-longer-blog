@@ -20,8 +20,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Check the real content builds
+        run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - name: Automated tests (on a frozen sample of the content)
+        run: npm test
         env:
           WRANGLER_SEND_METRICS: 'false'
       - name: Upload test report

@@ -107,7 +107,7 @@ test.describe('Shared page width on desktop', () => {
     await page.goto('/policy/');
     const nav = page.getByRole('navigation', { name: 'On this page' });
     await expect(nav.getByRole('link')).toHaveText(['Comments policy', 'Data & privacy', 'Cookies']);
-    expect((await page.locator('#comments h2').boundingBox())!.x).toBeGreaterThan((await nav.boundingBox())!.x + 200);
+    expect((await page.locator('#comments-policy h2').boundingBox())!.x).toBeGreaterThan((await nav.boundingBox())!.x + 200);
   });
 
   test('signup: words on the left, email and button on one row', async ({ page }) => {

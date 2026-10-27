@@ -14,109 +14,71 @@ npm test         # builds the site and runs the automated tests (with a local, t
 The first time you run tests on a new computer, also run `npx playwright install chromium`.
 Tests live in `tests/` and run automatically on GitHub for every code change (see the **Actions** tab).
 
-## Where to edit things
+## Writing and editing: Keystatic
 
-| To change… | Edit this file |
-| --- | --- |
-| An article's text, title, photos, FAQ or links | `src/content/blog/<article>.md` (start from `_template.md`) |
-| "Links from this article" heading and affiliate note | `src/content/pages/links.md` |
-| Home page introduction and home Q&A | `src/content/pages/home.md` |
-| About page | `src/content/pages/about.md` |
-| Policy page | `src/content/pages/policy.md` |
-| Email signup box text | `src/content/pages/signup.md` |
-| Header, menu, footer | `src/layouts/Base.astro` |
-| Comment approval on/off | `wrangler.toml` |
-| Hide from search engines (until launch) | `HIDE_FROM_SEARCH` in `src/data/site.ts` |
-| Colours and fonts | top of `src/styles/global.css` |
-| Logo | replace `public/logo.png` |
+Go to **/keystatic** on the site (for example `https://loving-life-longer-blog.pages.dev/keystatic`) and
+sign in with GitHub (as claude4ben). Everything you save there is saved to this repository on GitHub, and
+the site updates about 2 minutes later.
 
-Every Markdown (`.md`) file has two parts: **settings** at the top between the two `---` lines (short
-text fields like titles, photos and Q&A), and the **main text** below. You can edit them directly on
-github.com: open the file, click the pencil icon, change the words, and click **Commit changes**. The
-site updates about 2 minutes later.
-
-### Formatting marks
-
-| You type | You get | Where it works |
-| --- | --- | --- |
-| `**words**` | **bold** | everywhere |
-| `*words*` | *italic* | everywhere |
-| `[link text](https://example.com)` | a link | everywhere |
-| a line starting with `- ` | • bullet point | main text |
-| a line starting with `1. ` | 1. numbered point | main text |
-| a blank line | new paragraph | main text |
-| `## Heading {#some-id}` | a new section (articles and Policy) | main text |
-| `{think}`, `{move}`, `{live}` | the word in its pillar colour | home headline |
-
-Leave a blank line before and after a list. If a settings value contains a `:` or starts with a
-special character, keep it inside quotes, like the existing ones.
+- **Articles → Create**: title, pillar, standfirst, date, photos, common questions and links in the panel
+  on the right; the article itself in the editor on the left.
+- **Pages**: the Home page introduction and questions, About page, Policy page, email signup box, and
+  the heading and affiliate note for article links.
 
 ### Writing an article
 
-Each article is one Markdown file in `src/content/blog/`. The file name becomes the web address
-(`blindfolded-with-50-strangers.md` → `/blog/blindfolded-with-50-strangers/`).
-
-- The settings at the top (between the `---` lines) hold the title, pillar (`Think`, `Move` or `Live`),
-  standfirst, date, photos and FAQ.
-- Each `## Heading {#some-id}` starts a new section and appears in the table of contents.
-- To put a photo beside a section, add its id under `sectionImages:` with `src`, `side` (`left`/`right`)
-  and an optional `caption`.
-
-To add a new article, **copy `src/content/blog/_template.md`**: it lists every setting with an explanation. Rename it (the name becomes the web address), make a folder with the same name for its photos, and fill it in. Files starting with `_` are never published. Set `featured: true` on the
-one you want at the top of the home page. Once there are two or more articles, the home page lists them.
+- Use the toolbar for **bold**, *italic*, links and bullet or numbered lists. You can paste from
+  Google Docs or Word and keep the formatting.
+- Each **Heading 2** starts a new section and appears in the table of contents.
+- To put a photo beside a section, click **+** (Insert) → **Photo beside this section**, straight after
+  the section's heading. Choose the photo, write a short description, pick left or right, and add an
+  optional caption. On desktop the text wraps around it; on phones it shows after the text.
+- The date label ("Jul 2026") and read time ("15 min read") are worked out automatically.
+- **Feature on the home page** puts the article at the top of the home page (the newest featured one).
+- **Links from this article**: add websites, social accounts, people or shops, each with an optional
+  round icon. Tick **Affiliate or paid link** for affiliate links: they're labelled, explained
+  underneath (UK advertising rules require this), and marked for search engines as sponsored.
+- If something is wrong (for example a required photo is missing), Keystatic tells you before saving,
+  and the live site always keeps the previous version until a new one builds successfully.
 
 ### Photos
 
-Each article's photos live in a folder with **the same name as the article file**:
+Upload photos straight from your phone or computer in Keystatic; you don't need to resize them. The site
+makes small, fast copies automatically. Keystatic stores each article's photos in a folder named after
+the article (`src/content/blog/<article>/`).
 
-```
-src/content/blog/my-new-article.md
-src/content/blog/my-new-article/hero.jpg
-src/content/blog/my-new-article/sunrise.jpg
-```
+**Adjust the crops** at **/admin/photos/** (admin password). Every photo is shown whole next to each
+frame it appears in (desktop and phone). **Drag inside a frame** (or move the red dot on the whole
+photo) to choose what stays in view, and use the **Zoom** slider to zoom in. Press **Save**: the change
+is saved to GitHub and the site updates in about 2 minutes.
 
-On github.com: open `src/content/blog/my-new-article/` (or type the folder name when uploading),
-click **Add file → Upload files**, and drag your photos in. To replace a photo, upload one with the
-same name. Then point to them in the article's settings:
+**Tips:** top photo: landscape, at least 2000px wide, subject in the middle band. Photos beside text:
+portrait or square, at least 1200px. Keep important detail out of the bottom fifth if there's a
+caption. Ask permission from anyone recognisable.
 
-```yaml
-heroImage: ./my-new-article/hero.jpg
-heroAlt: "Ben dancing barefoot in the marquee at sunrise"   # describe the photo
-heroFocus: top                                               # which part to keep in view
-sectionImages:
-  final-sharing:
-    src: ./my-new-article/sunrise.jpg
-    alt: "The closing circle at sunrise"
-    focus: center
-    side: right
-    caption: "You're welcome… Feel free."   # optional
-```
+### Where things live (for reference)
 
-**Focus** says which part of the photo stays in view when a frame crops it: `center`, `top`,
-`bottom`, `left`, `right`, two together (`top left`), or exact percentages across then down
-(`"50% 30%"`). A typo stops the build, so the live site is never affected.
+| What | File |
+| --- | --- |
+| Articles | `src/content/blog/<article>.md` and its photo folder |
+| Home, About, Policy pages | `src/content/pages/home.md`, `about.md`, `policy.md` (About photos in `about/`) |
+| Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
+| Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
+| Header, menu, footer | `src/layouts/Base.astro` |
+| Colours and fonts | top of `src/styles/global.css` |
+| Logo | `public/logo.png` |
+| Comment approval on/off | `wrangler.toml` |
+| Hide from search engines (until launch) | `HIDE_FROM_SEARCH` in `src/data/site.ts` |
 
-**Adjust the crops** at **/admin/photos/** (admin sign-in needed). Every photo is shown whole next to
-each frame it appears in (desktop and phone). **Drag inside a frame** (or move the red dot on the whole
-photo) to choose what stays in view, and use the **Zoom** slider to zoom in. Every frame updates as you
-go. Press **Save**: the change is written into the photo's Markdown file on GitHub and the site updates in
-about 2 minutes. You can also type `focus` and `zoom` (1 to 3) into the settings yourself.
+Articles are Markdown files with [Markdoc](https://markdoc.dev) blocks for photos
+(`{% photo src="./my-article/x.jpg" alt="…" side="right" /%}`), so they can still be edited by hand on
+github.com if needed.
 
-You don't need to resize photos: the site makes small, fast copies automatically. Phone photos are fine.
+### Automated tests use a sample copy of the content
 
-**Tips:** top photo: landscape, at least 2000px wide, subject in the middle band. Photos beside
-text: portrait or square, at least 1200px. Keep important detail out of the bottom fifth if there's a
-caption. Ask permission from anyone recognisable. About page photos work the same way, in
-`src/content/pages/about/`.
-
-### Links from an article
-
-Under `links:` in an article's settings, add websites, social accounts, people or shops you mention.
-Each shows as a card after the article with a small round icon (`icon:`, a photo in the article's
-folder; without one, the first letter is shown), its `name`, a `type` label (Website, Instagram,
-Shop…) and a one-line `description` of what the reader gets. **Mark paid or affiliate links with
-`affiliate: true`**: they're labelled "Affiliate", explained underneath (UK advertising rules require
-this), and tagged for search engines as sponsored. See `_template.md` for an example.
+The tests build the site from a frozen sample of the content in `tests/fixtures/content/`, so your edits
+never break them. GitHub separately checks that your real content builds. If the content format changes
+(new fields), update the sample copy too.
 
 ## Managing comments
 
@@ -145,6 +107,30 @@ device, change the password.
 
 The key can only change files in this one repository. If it expires or is removed, Save says so and
 nothing else on the site is affected.
+
+**One-time setup: let Keystatic sign you in with GitHub**
+
+Keystatic uses a small GitHub App so that only people with access to this repository can edit.
+1. On github.com (as claude4ben): profile picture → **Settings → Developer settings → GitHub Apps →
+   New GitHub App**.
+2. **GitHub App name:** `Loving Life Longer editor` (it must be unique on GitHub; add something if it's
+   taken). **Homepage URL:** `https://loving-life-longer-blog.pages.dev`.
+3. **Callback URLs** (add both):
+   `https://loving-life-longer-blog.pages.dev/api/keystatic/github/oauth/callback` and
+   `https://keystatic-trial.loving-life-longer-blog.pages.dev/api/keystatic/github/oauth/callback`.
+   Tick **Request user authorization (OAuth) during installation**.
+4. **Webhook:** untick **Active**.
+5. **Permissions → Repository permissions:** Contents **Read and write**, Metadata **Read-only**,
+   Pull requests **Read-only**.
+6. **Where can this GitHub App be installed?** Only on this account. Click **Create GitHub App**.
+7. On the app's page: copy the **Client ID**; click **Generate a new client secret** and copy it.
+   Note the app's short name in the address bar (`github.com/apps/<this-part>`).
+8. Click **Install App** (left menu) → install on **Only select repositories** → `loving-life-longer-blog`.
+9. In Cloudflare: **Workers & Pages → loving-life-longer-blog → Settings → Variables and Secrets**. Add
+   three **Secrets**, for both **Production** and **Preview**: `KEYSTATIC_GITHUB_CLIENT_ID` (the Client
+   ID), `KEYSTATIC_GITHUB_CLIENT_SECRET` (the client secret), and `KEYSTATIC_SECRET` (a long random
+   password of 40+ characters from your password manager; it's never typed anywhere else).
+10. Redeploy (**Deployments → ⋯ → Retry deployment**), then open `/keystatic` and sign in with GitHub.
 
 ## Launch checklist
 

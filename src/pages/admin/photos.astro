@@ -8,6 +8,9 @@ import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
 import { isAdmin } from '../../lib/admin-auth';
 import { focusPosition } from '../../lib/photos';
+import { splitSections } from '../../lib/sections';
+import { photoFor } from '../../lib/images';
+import { CONTENT_ROOT } from '../../lib/content-root';
 
 export const prerender = false;
 
@@ -34,21 +37,22 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf()
 const about = (await getEntry('about', 'about'))!.data;
 
 const groups: { title: string; file: string; shots: Shot[] }[] = [
-  ...posts.map((p) => ({
+  ...(await Promise.all(posts.map(async (p) => ({
     title: p.data.title,
-    file: `src/content/blog/${p.id}.md`,
+    file: `${CONTENT_ROOT}/blog/${p.id}.md`,
     shots: [
       { id: 'hero', what: 'Top photo', src: p.data.heroImage, alt: p.data.heroAlt, focus: p.data.heroFocus, zoom: p.data.heroZoom, frames: HERO },
-      ...Object.entries(p.data.sectionImages).map(([id, img]) => ({
-        id: `section:${id}`, what: `Section photo: ${id}`, src: img.src, alt: img.alt, focus: img.focus, zoom: img.zoom,
-        frames: SECTION.map((f) => ({ ...f, caption: img.caption })),
-      })),
+      ...(await Promise.all(splitSections(p.body ?? '').filter((sec) => sec.photo).map(async (sec) => ({
+        id: `section:${sec.id}`, what: `Section photo: ${sec.heading}`, src: await photoFor(sec.photo!.src, 'blog'),
+        alt: sec.photo!.alt, focus: sec.photo!.focus, zoom: sec.photo!.zoom,
+        frames: SECTION.map((f) => ({ ...f, caption: sec.photo!.caption })),
+      })))),
       { id: 'avatar', what: 'Byline photo (next to your name)', src: p.data.avatar, alt: p.data.author, focus: p.data.avatarFocus, zoom: p.data.avatarZoom, frames: ROUND(88) },
     ],
-  })),
+  })))),
   {
     title: 'About page',
-    file: 'src/content/pages/about.md',
+    file: `${CONTENT_ROOT}/pages/about.md`,
     shots: [
       { id: 'photo', what: 'Main photo', src: about.photo, alt: about.photoAlt, focus: about.photoFocus, zoom: about.photoZoom,
         frames: [{ label: 'Desktop', w: 507, h: 380 }, { label: 'Phone', w: 390, h: 292 }] },

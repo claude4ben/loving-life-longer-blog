@@ -5,6 +5,8 @@ import PillarTag from '../../components/PillarTag.astro';
 import Faq from '../../components/Faq.astro';
 import SignupBlock from '../../components/SignupBlock.astro';
 import { splitSections } from '../../lib/sections';
+import { photoFor } from '../../lib/images';
+import { dateLabel, readTime } from '../../lib/article-meta';
 import Photo from '../../components/Photo.astro';
 import ArticleLinks from '../../components/ArticleLinks.astro';
 
@@ -16,7 +18,13 @@ export async function getStaticPaths() {
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
 const d = post.data;
 
-const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sectionImages[s.id] }));
+// Photos placed in the text are resolved next to the article file, e.g. ./my-article/photo.jpg.
+const sections = await Promise.all(
+  splitSections(post.body ?? '').map(async (s) => ({
+    ...s,
+    image: s.photo && { ...s.photo, src: await photoFor(s.photo.src, 'blog') },
+  })),
+);
 ---
 <Base title={d.title} description={d.standfirst}>
   <div class="progress" aria-hidden="true"><div data-progress></div></div>
@@ -32,7 +40,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
       <div class="by-text">
         <div class="by-name">{d.author}</div>
         <div class="by-note">{d.disclosure}</div>
-        <div class="by-meta"><span>{d.dateLabel}</span><span aria-hidden="true">·</span><span>{d.readTime}</span></div>
+        <div class="by-meta"><span>{dateLabel(d.date)}</span><span aria-hidden="true">·</span><span>{readTime(post.body)}</span></div>
       </div>
     </div>
   </header>
@@ -126,7 +134,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
       <!-- Hidden from people; bots that fill it in are ignored. -->
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="form-foot">
-        <a href="/policy/#comments">Policy</a>
+        <a href="/policy/#comments-policy">Policy</a>
         <button class="btn" type="submit">Post comment</button>
       </div>
     </form>
