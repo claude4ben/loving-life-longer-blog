@@ -55,7 +55,7 @@ Every feature and design change should move at least one of these forward, and s
 
 | Question | Notes |
 | --- | --- |
-| ~~Should desktop article text stretch almost to the edge?~~ | **Decided 2026-10-27: option B.** Article column widened from 680px to 820px on desktop: fills more of the screen while lines stay readable (G2). |
+| ~~Should desktop article text stretch almost to the edge?~~ | **Decided 2026-10-27:** first option B (820px), then Ben chose to line text-only sections up with the text-and-photo rows (about 125 characters per line on wide screens). If readers find long lines tiring, reverting is one line in `src/pages/blog/[slug].astro`. |
 | ~~What is the comment form's email for?~~ | **Decided 2026-10-27:** "Email me when someone replies" (see ART-49). Built with the comments database; until then the field stays as it is, with no promise shown. |
 | Home page Q&A | Now edited in `src/content/pages/home.md`, but still holds the ecstatic dance questions. For G1 it should answer questions about LLL itself ("What is Loving Life Longer?", "Who writes it?"). |
 
@@ -160,7 +160,7 @@ change better serves the goals in Part 1.
 | ART-02 | Byline | 44px round avatar; name (600 14px) and disclosure (13px grey); read time and date right-aligned. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9, max 300px tall, square corners; edge to edge on mobile. | ✅ 📝 photo | Manual |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
-| ART-05 | Text-only sections | Centred column, 820px desktop (widened from 680px at Ben's request, option B) / 720px mobile. The header, table of contents, Q&A and comments use the same column. | ✅ | Auto |
+| ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
 | ART-06 | Photo sections, desktop | Two equal columns, 56px gap, max width 1320px, 96px side padding (keeps text clear of the Like/Share rail); photo column 460px tall and **lined up with the top of the section**, not centred. The photo's side (left/right) comes from the article file. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
 | ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
@@ -287,7 +287,7 @@ Small, deliberate differences; each still meets the handoff's intent.
 | Likes, comments | Lost on page reload | Saved in the Cloudflare D1 database | Real, shared comments and likes |
 | Signup | Did nothing | Requires email and consent, then says thanks | Clear feedback; consent captured in the form |
 | Home introduction | Mission paragraph in large serif | Purpose as the H1 headline with a "Welcome" label and a short line about Ben | Clearer purpose, especially on mobile (G1, G4) |
-| Article text width | 680px | 820px on desktop | Ben's choice (option B): fills more of the screen while staying readable |
+| Article text width | 680px | Text-only sections as wide as the text-and-photo rows; header, contents, Q&A and comments 820px | Ben's choice: sections line up edge to edge |
 | Desktop photo sections | Photo centred beside the text | Photo lined up with the top of the section; wider side padding | Ben's request; the rail was covering text |
 | Mobile/desktop switch | JavaScript | CSS | Correct layout before scripts load (ARCHITECTURE decision 6) |
 

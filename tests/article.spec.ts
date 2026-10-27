@@ -48,13 +48,15 @@ test.describe('Article content', () => {
     await expect(page.locator('#dancing-in-the-dark ul > li').first()).toContainText('Yes you can make noise');
   });
 
-  test('desktop reading column is 820px wide; mobile uses the screen width', async ({ page, isMobile }) => {
-    const box = await page.locator('#arriving').evaluate((el) => {
-      const cs = getComputedStyle(el);
-      return el.getBoundingClientRect().width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  test('text-only sections line up with the text-and-photo rows on desktop; mobile uses the screen width', async ({ page, isMobile }) => {
+    const inner = (sel: string) => page.locator(sel).evaluate((el) => {
+      const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+      return { left: r.left + parseFloat(cs.paddingLeft), right: r.right - parseFloat(cs.paddingRight) };
     });
-    if (isMobile) expect(box).toBe(350);
-    else expect(box).toBe(780); // 820px column minus 20px padding each side
+    const plain = await inner('#arriving');
+    if (isMobile) return expect(plain.right - plain.left).toBe(350);
+    const split = await inner('#mealtime-fun');
+    expect(plain).toEqual(split);
   });
 
   test('article FAQ', async ({ page }) => {

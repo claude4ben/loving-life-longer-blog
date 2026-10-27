@@ -198,6 +198,8 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     .sec-img { aspect-ratio: auto; max-height: none; height: 460px; margin-bottom: 0; }
     .img-left .sec-img { order: 1; }
     .img-left .sec-text { order: 2; }
+    /* Text-only sections span the same width as the text-and-photo rows (Ben's request, 2026-10-27). */
+    .sec-plain.col-article { max-width: 1320px; padding-left: 96px; padding-right: 96px; }
   }
 
   .faq-wrap { padding-top: 8px; padding-bottom: 40px; }
