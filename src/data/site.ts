@@ -1,28 +1,8 @@
-// Site-wide copy and settings. Edit text here.
+// Site-wide settings. Page text lives in Markdown files in src/content/pages/.
 export const SITE_NAME = 'Loving Life Longer';
 
 export const PILLAR_COLORS = { Think: '#3d5a76', Move: '#40763d', Live: '#a15c3e' } as const;
 export type Pillar = keyof typeof PILLAR_COLORS;
-
-// Home page introduction. The headline is LLL's purpose; {think}, {move} and {live} show in pillar colours.
-export const HOME_INTRO = {
-  label: 'Welcome to Loving Life Longer',
-  headline: 'Helping you get the most out of your human experience, in how you {think}, {move} and {live}.',
-  body: "Written by Ben: first-person accounts of things he's actually tried. No credentials, no prescriptions, just what worked, what didn't, and why.",
-};
-
-export const SIGNUP = {
-  title: 'Get new pieces by email',
-  body: 'Practical, no-noise updates when something new is published. No spam, unsubscribe any time.',
-  consent: "I'd like to receive occasional emails. I can unsubscribe any time.",
-};
-
-// Placeholder — pending final copy from Ben.
-export const PILLARS: { name: Pillar; text: string }[] = [
-  { name: 'Think', text: 'Placeholder — how this maps to Think.' },
-  { name: 'Move', text: 'Placeholder — how this maps to Move.' },
-  { name: 'Live', text: 'Placeholder — how this maps to Live.' },
-];
 
 // Sample comments shown until a real comments backend exists.
 export const SEED_COMMENTS = [

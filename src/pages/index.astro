@@ -1,24 +1,28 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PillarTag from '../components/PillarTag.astro';
 import Faq from '../components/Faq.astro';
 import SignupBlock from '../components/SignupBlock.astro';
-import { HOME_INTRO, PILLAR_COLORS, type Pillar } from '../data/site';
+import { PILLAR_COLORS, type Pillar } from '../data/site';
+import { block, inline } from '../lib/markdown';
 
 const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = posts.find((p) => p.data.featured) ?? posts[0];
 
-// Split the headline so {think}, {move} and {live} can be coloured.
-const headline = HOME_INTRO.headline.split(/\{(think|move|live)\}/).map((part, i) =>
-  i % 2 ? { pillar: (part[0].toUpperCase() + part.slice(1)) as Pillar, text: part } : { text: part },
+const home = (await getEntry('home', 'home'))!;
+const intro = home.data;
+
+// {think}, {move} and {live} in the headline show in their pillar colours.
+const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w: string) =>
+  `<span style="color:${PILLAR_COLORS[(w[0].toUpperCase() + w.slice(1)) as Pillar]}">${w}</span>`,
 );
 ---
 <Base>
   <section class="col intro">
-    <div class="intro-label">{HOME_INTRO.label}</div>
-    <h1>{headline.map((h) => (h.pillar ? <span style={`color:${PILLAR_COLORS[h.pillar]}`}>{h.text}</span> : h.text))}</h1>
-    <p>{HOME_INTRO.body}</p>
+    <div class="intro-label" set:html={inline(intro.label)} />
+    <h1 set:html={headline} />
+    <div class="intro-body" set:html={block(home.body)} />
   </section>
 
   {featured && (
@@ -34,11 +38,11 @@ const headline = HOME_INTRO.headline.split(/\{(think|move|live)\}/).map((part, i
     </a>
   )}
 
-  {featured && featured.data.faqs.length > 0 && (
+  {intro.faqs.length > 0 && (
     <div class="col" style="padding-bottom:8px">
       <details class="home-faq">
         <summary>Common questions</summary>
-        <div style="margin-top:14px"><Faq faqs={featured.data.faqs} /></div>
+        <div style="margin-top:14px"><Faq faqs={intro.faqs} /></div>
       </details>
     </div>
   )}
@@ -67,7 +71,10 @@ const headline = HOME_INTRO.headline.split(/\{(think|move|live)\}/).map((part, i
     text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
   }
   .intro h1 { font-size: 28px; line-height: 1.2; margin: 0 0 14px; }
-  .intro p { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 560px; }
+  .intro-body { font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 560px; }
+  .intro-body :global(p) { margin: 0 0 10px; }
+  .intro-body :global(p:last-child) { margin-bottom: 0; }
+  .intro-body :global(ul), .intro-body :global(ol) { margin: 0 0 10px; padding-left: 1.3em; }
   .feature-label { padding: 28px 20px 0; }
   .feature { display: block; color: inherit; max-width: 1120px; margin: 0 auto; padding: 0; }
   .feature:hover { text-decoration: none; color: inherit; }
@@ -81,7 +88,7 @@ const headline = HOME_INTRO.headline.split(/\{(think|move|live)\}/).map((part, i
   @media (min-width: 960px) {
     .intro { padding-top: 56px; padding-bottom: 48px; }
     .intro h1 { font-size: 40px; line-height: 1.15; }
-    .intro p { font-size: 18px; }
+    .intro-body { font-size: 18px; }
     .feature { padding: 40px 20px 0; }
     .feature-label { padding: 0; }
     .feature-text { padding: 28px 0; }

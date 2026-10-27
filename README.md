@@ -19,12 +19,34 @@ Tests live in `tests/` and run automatically on GitHub for every code change (se
 | To change… | Edit this file |
 | --- | --- |
 | An article's text, title, photos or FAQ | `src/content/blog/<article>.md` |
-| Home page introduction, signup text, pillar cards, sample comments | `src/data/site.ts` |
-| About page | `src/pages/about.astro` |
-| Policy page | `src/pages/policy.astro` |
+| Home page introduction and home Q&A | `src/content/pages/home.md` |
+| About page | `src/content/pages/about.md` |
+| Policy page | `src/content/pages/policy.md` |
+| Email signup box text | `src/content/pages/signup.md` |
 | Header, menu, footer | `src/layouts/Base.astro` |
 | Colours and fonts | top of `src/styles/global.css` |
 | Logo | replace `public/logo.png` |
+
+Every Markdown (`.md`) file has two parts: **settings** at the top between the two `---` lines (short
+text fields like titles, photos and Q&A), and the **main text** below. You can edit them directly on
+github.com: open the file, click the pencil icon, change the words, and click **Commit changes**. The
+site updates about 2 minutes later.
+
+### Formatting marks
+
+| You type | You get | Where it works |
+| --- | --- | --- |
+| `**words**` | **bold** | everywhere |
+| `*words*` | *italic* | everywhere |
+| `[link text](https://example.com)` | a link | everywhere |
+| a line starting with `- ` | • bullet point | main text |
+| a line starting with `1. ` | 1. numbered point | main text |
+| a blank line | new paragraph | main text |
+| `## Heading {#some-id}` | a new section (articles and Policy) | main text |
+| `{think}`, `{move}`, `{live}` | the word in its pillar colour | home headline |
+
+Leave a blank line before and after a list. If a settings value contains a `:` or starts with a
+special character, keep it inside quotes, like the existing ones.
 
 ### Writing an article
 
@@ -34,8 +56,6 @@ Each article is one Markdown file in `src/content/blog/`. The file name becomes 
 - The settings at the top (between the `---` lines) hold the title, pillar (`Think`, `Move` or `Live`),
   standfirst, date, photos and FAQ.
 - Each `## Heading {#some-id}` starts a new section and appears in the table of contents.
-- Inside a section: `**words**` makes them **bold**, lines starting `- ` become a bullet list, and
-  lines starting `1. ` a numbered list. Leave a blank line before and after a list.
 - To put a photo beside a section, add its id under `sectionImages:` with `src`, `side` (`left`/`right`)
   and an optional `caption`.
 

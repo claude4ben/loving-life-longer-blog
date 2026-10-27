@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { block } from './markdown';
 
 export type Section = { id: string; heading: string; html: string };
 
@@ -15,6 +15,6 @@ export function splitSections(markdown: string): Section[] {
       const m = first.match(/^(.*?)\s*\{#([\w-]+)\}\s*$/);
       const heading = (m ? m[1] : first).trim();
       const id = m ? m[2] : slugify(heading);
-      return { id, heading, html: marked.parse(rest.join('\n').trim(), { async: false }) };
+      return { id, heading, html: block(rest.join('\n')) };
     });
 }

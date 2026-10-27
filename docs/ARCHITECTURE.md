@@ -76,14 +76,19 @@ Section text supports normal Markdown: **bold**, bullet and numbered lists, link
 | Writing stays plain Markdown | A typo in an id means the photo silently doesn't show |
 | Table of contents builds itself from the headings | Only one heading level (`##`) creates sections |
 
-### 4. Site-wide text in one file (`src/data/site.ts`) ✅
+### 4. Page text in Markdown files (`src/content/pages/`) ✅
 
-**Why:** the mission line, signup text, pillar colours and pillar cards are used on several pages.
-Keeping them in one place means one edit updates every page.
+**Why:** Ben edits all the words himself on GitHub. Each fixed page has its own Markdown file:
+`home.md`, `about.md`, `policy.md`, plus `signup.md` for the email box shown on several pages. Like
+articles, each file is checked against a schema, so a missing field stops the build. Formatting
+(bold, italic, links, bullet and numbered lists) uses standard Markdown marks, handled by
+`src/lib/markdown.ts`. Only design settings (pillar colours, sample comments) stay in `src/data/site.ts`.
 
 | Pros | Cons |
 | --- | --- |
-| One place to change shared copy | It's a code file, so the syntax (quotes, commas) has to stay intact |
+| All words editable on github.com without touching code | Settings at the top of each file must keep their format (quotes, indentation) |
+| Same formatting marks everywhere | Bullet lists only work in the main text, not in short settings fields |
+| Every change is saved in history and can be undone | |
 
 ### 5. Styling: plain CSS with design tokens ✅
 
@@ -285,3 +290,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | Hosting (14): site stays private behind Cloudflare Access until launch. |
 | 2026-10-27 | Hosting (14) live: Cloudflare Pages project `loving-life-longer-blog` connected and deploying from `main`. |
 | 2026-10-27 | Article section parsing moved to `src/lib/sections.ts` (3) so it can be tested directly; supports bold and lists. |
+| 2026-10-27 | Page text (4) moved from `src/data/site.ts` into Markdown files in `src/content/pages/`; formatting marks work in all of them. |

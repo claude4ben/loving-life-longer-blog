@@ -7,7 +7,9 @@ test.describe('Home', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('.intro h1')).toHaveText('Helping you get the most out of your human experience, in how you think, move and live.');
     await expect(page.locator('.intro-label')).toHaveText('Welcome to Loving Life Longer');
-    await expect(page.locator('.intro p')).toContainText('Written by Ben');
+    await expect(page.locator('.intro-body p')).toContainText('Written by Ben');
+    await expect(page.locator('.intro h1 span')).toHaveText(['think', 'move', 'live']);
+    await expect(page.locator('.intro h1 span').nth(1)).toHaveCSS('color', 'rgb(64, 118, 61)');
   });
 
   test('featured article links to the article', async ({ page }) => {

@@ -47,7 +47,7 @@ Every feature and design change should move at least one of these forward, and s
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
-| **Easy publishing**: articles as simple text files with **bold** and bullet lists | G2 | ✅ |
+| **Easy publishing**: all articles and page text in simple Markdown files on GitHub, with **bold** and bullet lists | G2 | ✅ |
 | **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
 | **Private until launch** | — | 🔨 |
 
@@ -57,7 +57,7 @@ Every feature and design change should move at least one of these forward, and s
 | --- | --- |
 | Should desktop article text stretch almost to the edge? | Requested 2026-10-27. Very long lines (about 125 characters) are harder to read (G2). Options under consideration: keep 680px, widen to about 820px, or full width. |
 | What is the comment form's email for? | Today it's collected but not used. Options: reply notifications, newsletter opt-in, or remove it. See the recommendation in the 2026-10-27 discussion. |
-| Home page Q&A | Currently repeats the ecstatic dance article's questions. For G1 it should answer questions about LLL itself ("What is Loving Life Longer?", "Who writes it?"). |
+| Home page Q&A | Now edited in `src/content/pages/home.md`, but still holds the ecstatic dance questions. For G1 it should answer questions about LLL itself ("What is Loving Life Longer?", "Who writes it?"). |
 
 ## How Claude uses this
 
@@ -145,7 +145,7 @@ change better serves the goals in Part 1.
 | HOME-01 | Purpose introduction | Small label "Welcome to Loving Life Longer"; the page heading (H1) is LLL's purpose, "Helping you get the most out of your human experience, in how you think, move and live.", with think/move/live in their pillar colours (28px mobile / 40px desktop); then a short line about Ben (Inter 16px mobile / 18px desktop, grey). Divider below. Text is edited in `src/data/site.ts`. | ✅ | Auto |
 | HOME-02 | Featured article | Labelled "Latest article". The whole block links to the article. Shows a 16:9 photo (max 300px tall, square corners, no zoom), pillar tag, title as a sub-heading (H2; 36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
 | HOME-03 | Featured choice | Shows the newest article marked `featured: true` (or the newest article if none are). | ✅ | None |
-| HOME-04 | Home FAQ | Collapsed "Common questions" section; opening it shows each question (600 15px) and answer (14px grey). | ✅ 📝 answers | Auto |
+| HOME-04 | Home FAQ | Questions come from `home.md` (separate from the article's). Collapsed "Common questions" section; opening it shows each question (600 15px) and answer (14px grey). | ✅ 📝 answers | Auto |
 | HOME-05 | One-article note | With one article: italic note "Only one article published so far…". | ✅ | Auto |
 | HOME-06 | Article list | With two or more articles: the note is replaced by a list of the other articles. | ✅ basic version, not designed yet | None |
 | HOME-07 | Signup block | Full signup block (see CMP-04). | ✅ | Auto |
@@ -240,7 +240,8 @@ change better serves the goals in Part 1.
 | CON-01 | Articles as files | Each article is one Markdown file in `src/content/blog/`; the file name is its web address. | ✅ | Build |
 | CON-02 | Article settings checked | Title, pillar (Think/Move/Live only), standfirst, date, photos and FAQ are checked; a mistake stops the build. | ✅ | Build |
 | CON-03 | Section photos | A photo is attached to a section by its `{#id}`, with side and optional caption. | ✅ | None |
-| CON-04 | Shared text in one place | Mission line, signup text, pillar cards and colours are edited in `src/data/site.ts`. | ✅ | None |
+| CON-04 | Page text in Markdown | All words on Home, About, Policy and the signup box come from Markdown files in `src/content/pages/`, editable on GitHub. A missing or wrong field stops the build. | ✅ | Build + Auto |
+| CON-07 | Formatting marks | In any Markdown file: `**bold**`, `*italic*`, `[links](...)`; in main text also `- ` bullets and `1. ` numbered lists. Home headline: `{think}`, `{move}`, `{live}` show in pillar colours. | ✅ | Auto |
 | CON-05 | Real photos | All picsum.photos placeholders replaced with real photos: Home hero, article hero, three section photos, byline avatar, About photo, Ben and Emma avatars, three strip photos. | 🔨 | None |
 | CON-06 | No-code editing | The author can publish articles without editing files. | 🔨 (CMS not chosen) | None |
 

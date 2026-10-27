@@ -1,17 +1,19 @@
 ---
-import { SIGNUP } from '../data/site';
+import { getEntry } from 'astro:content';
+import { inline } from '../lib/markdown';
+const SIGNUP = (await getEntry('signup', 'signup'))!.data;
 // compact = the smaller About-page version (no body text, no checkbox)
 interface Props { compact?: boolean; style?: string; }
 const { compact = false, style } = Astro.props;
 ---
 <section class:list={['signup', { 'signup-compact': compact }]} style={style}>
-  <h2>{SIGNUP.title}</h2>
-  {!compact && <p>{SIGNUP.body}</p>}
+  <h2 set:html={inline(SIGNUP.title)} />
+  {!compact && <p set:html={inline(SIGNUP.body)} />}
   <!-- TODO: connect to an email provider (double opt-in + consent record). -->
   <form data-signup>
     <input class="field" type="email" name="email" placeholder="Email address" required />
     {!compact && (
-      <label><input type="checkbox" name="consent" required /><span>{SIGNUP.consent}</span></label>
+      <label><input type="checkbox" name="consent" required /><span set:html={inline(SIGNUP.consent)} /></label>
     )}
     <button class="btn btn-block" type="submit">Subscribe</button>
   </form>
