@@ -6,7 +6,7 @@ test.describe('Home', () => {
   test('introduction leads with the LLL purpose as the page heading', async ({ page }) => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('.intro h1')).toHaveText('Helping you get the most out of your human experience, in how you think, move and live.');
-    await expect(page.locator('.intro-label')).toHaveText('Welcome to Loving Life Longer');
+    await expect(page.locator('.intro .label')).toHaveText('Welcome to Loving Life Longer');
     await expect(page.locator('.intro-body p')).toContainText('Written by Ben');
     await expect(page.locator('.intro h1 span')).toHaveText(['think', 'move', 'live']);
     await expect(page.locator('.intro h1 span').nth(1)).toHaveCSS('color', 'rgb(64, 118, 61)');
@@ -15,7 +15,8 @@ test.describe('Home', () => {
   test('featured article links to the article', async ({ page }) => {
     const feature = page.locator('a.feature');
     await expect(feature.locator('.pillar-tag')).toHaveText('Move');
-    await expect(page.locator('.feature-label')).toHaveText('Latest article');
+    await expect(page.locator('.feature .label')).toHaveText('Latest article');
+    await expect(feature.locator('.read-more')).toHaveText('Read the article →');
     await expect(feature.locator('h2')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
     await expect(feature).toContainText('15 min read');
     await feature.click();
@@ -27,6 +28,17 @@ test.describe('Home', () => {
     await expect(faq.locator('.qa-q').first()).toBeHidden();
     await faq.locator('summary').click();
     await expect(faq.locator('.qa-q').first()).toHaveText('What is ecstatic dance?');
+  });
+
+  test('introduction, photo and article summary share one width on desktop', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    const left = async (sel: string) => (await page.locator(sel).boundingBox())!.x;
+    const img = (await page.locator('.feature-img').boundingBox())!;
+    expect(await left('.intro h1')).toBe(img.x);
+    expect(await left('.feature-title')).toBe(img.x);
+    const summary = (await page.locator('.feature-summary').boundingBox())!;
+    expect(Math.round(summary.x + summary.width)).toBe(Math.round(img.x + img.width)); // reaches the photo's right edge
+    expect((await page.locator('.intro-body').boundingBox())!.width).toBeGreaterThan(700);
   });
 
   test('one-article note shows while there is one article', async ({ page }) => {

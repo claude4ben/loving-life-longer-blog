@@ -20,84 +20,105 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
 );
 ---
 <Base>
-  <section class="col intro">
-    <div class="intro-label" set:html={inline(intro.label)} />
-    <h1 set:html={headline} />
-    <div class="intro-body" set:html={block(home.body)} />
-  </section>
+  <div class="home">
+    <section class="intro">
+      <div class="label" set:html={inline(intro.label)} />
+      <h1 set:html={headline} />
+      <div class="intro-body" set:html={block(home.body)} />
+    </section>
 
-  {featured && (
-    <a class="feature" href={`/blog/${featured.id}/`}>
-      <div class="feature-label">Latest article</div>
-      <div class="feature-img"><Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} sizes="(min-width: 1120px) 1080px, 100vw" eager /></div>
-      <div class="feature-text">
-        <PillarTag pillar={featured.data.pillar} />
-        <h2>{featured.data.title}</h2>
-        <p>{featured.data.standfirst}</p>
-        <span class="meta">{featured.data.readTime}</span>
-      </div>
-    </a>
-  )}
+    {featured && (
+      <a class="feature" href={`/blog/${featured.id}/`}>
+        <div class="label">Latest article</div>
+        <div class="feature-img breakout">
+          <Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} sizes="(min-width: 1120px) 1080px, 100vw" eager />
+        </div>
+        <div class="feature-text">
+          <div class="feature-title">
+            <PillarTag pillar={featured.data.pillar} />
+            <h2>{featured.data.title}</h2>
+          </div>
+          <div class="feature-summary">
+            <p>{featured.data.standfirst}</p>
+            <div class="feature-meta">
+              <span class="meta">{featured.data.readTime}</span>
+              <span class="read-more">Read the article →</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    )}
 
-  {intro.faqs.length > 0 && (
-    <div class="col" style="padding-bottom:8px">
+    {intro.faqs.length > 0 && (
       <details class="home-faq">
         <summary>Common questions</summary>
-        <div style="margin-top:14px"><Faq faqs={intro.faqs} /></div>
+        <div class="faq-body"><Faq faqs={intro.faqs} /></div>
       </details>
-    </div>
-  )}
+    )}
 
-  {posts.length < 2 ? (
-    <div class="col note">Only one article published so far — the index list grid appears once more are added.</div>
-  ) : (
-    <div class="col grid">
-      {posts.filter((p) => p !== featured).map((p) => (
-        <a class="card" href={`/blog/${p.id}/`}>
-          <PillarTag pillar={p.data.pillar} />
-          <h2>{p.data.title}</h2>
-          <span class="meta">{p.data.readTime}</span>
-        </a>
-      ))}
-    </div>
-  )}
+    {posts.length < 2 ? (
+      <div class="note">Only one article published so far — the index list grid appears once more are added.</div>
+    ) : (
+      <div class="grid">
+        {posts.filter((p) => p !== featured).map((p) => (
+          <a class="card" href={`/blog/${p.id}/`}>
+            <PillarTag pillar={p.data.pillar} />
+            <h2>{p.data.title}</h2>
+            <span class="meta">{p.data.readTime}</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
 
   <SignupBlock style="margin-top:24px" />
 </Base>
 
 <style>
-  .intro { padding-top: 36px; padding-bottom: 32px; border-bottom: 1px solid var(--subtle); }
-  .intro-label, .feature-label {
+  /* Everything on the home page shares one width (the photo's), so all left edges line up. */
+  .home { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .label {
     font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
     text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
   }
-  .intro h1 { font-size: 28px; line-height: 1.2; margin: 0 0 14px; }
-  .intro-body { font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 560px; }
+
+  .intro { padding: 36px 0 32px; border-bottom: 1px solid var(--subtle); }
+  .intro h1 { font-size: 30px; line-height: 1.2; margin: 0 0 16px; max-width: 960px; }
+  .intro-body { font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 760px; }
   .intro-body :global(p) { margin: 0 0 10px; }
   .intro-body :global(p:last-child) { margin-bottom: 0; }
   .intro-body :global(ul), .intro-body :global(ol) { margin: 0 0 10px; padding-left: 1.3em; }
-  .feature-label { padding: 28px 20px 0; }
-  .feature { display: block; color: inherit; max-width: 1120px; margin: 0 auto; padding: 0; }
+
+  .feature { display: block; color: inherit; padding-top: 28px; }
   .feature:hover { text-decoration: none; color: inherit; }
+  .feature:hover h2 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
   .feature-img { width: 100%; aspect-ratio: 16 / 9; max-height: 480px; overflow: hidden; }
-  .feature-text { padding: 20px; max-width: 680px; }
-  .feature-text :global(.pillar-tag) { margin-bottom: 14px; }
+  .feature-text { padding: 20px 0 8px; }
+  .feature-title :global(.pillar-tag) { margin-bottom: 14px; }
   .feature h2 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
-  .feature p { font-size: 18px; line-height: 1.6; color: var(--muted); margin: 0 0 14px; }
+  .feature-summary p { font-size: 18px; line-height: 1.6; color: var(--muted); margin: 0 0 14px; }
+  .feature-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .meta { font-size: 14px; color: var(--muted); }
-  @media (min-width: 960px) {
-    .intro { padding-top: 56px; padding-bottom: 48px; }
-    .intro h1 { font-size: 40px; line-height: 1.15; }
-    .intro-body { font-size: 18px; }
-    .feature { padding: 40px 20px 0; }
-    .feature-label { padding: 0; }
-    .feature-text { padding: 28px 0; }
-    .feature h2 { font-size: 36px; }
-  }
-  .home-faq { border-top: 1px solid var(--subtle); padding-top: 16px; }
-  .home-faq summary { font-family: var(--font-label); font-size: 13px; color: var(--muted); cursor: pointer; }
-  .note { padding-top: 32px; padding-bottom: 8px; font-size: 12px; color: var(--muted); font-style: italic; }
+  .read-more { font-size: 15px; font-weight: 600; color: var(--accent); }
+
+  .home-faq { border-top: 1px solid var(--subtle); margin-top: 24px; padding-top: 16px; max-width: 760px; }
+  .home-faq summary { font-family: var(--font-label); font-size: 13px; color: var(--muted); cursor: pointer; min-height: 32px; }
+  .faq-body { margin-top: 14px; }
+  .note { padding: 32px 0 8px; font-size: 12px; color: var(--muted); font-style: italic; }
   .grid { display: grid; gap: 20px; padding-top: 32px; }
   .card { color: inherit; border-top: 1px solid var(--subtle); padding-top: 16px; }
   .card h2 { font-size: 22px; line-height: 1.2; margin: 10px 0 6px; }
+
+  @media (min-width: 960px) {
+    .intro { padding: 64px 0 56px; }
+    .intro h1 { font-size: 48px; line-height: 1.12; margin-bottom: 20px; }
+    .intro-body { font-size: 20px; }
+    .feature { padding-top: 48px; }
+    /* Title on the left, summary on the right, spanning the photo's width. */
+    .feature-text { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; padding: 28px 0 8px; }
+    .feature h2 { font-size: 38px; margin: 0; }
+    .feature-summary { padding-top: 38px; }
+    .feature-summary p { font-size: 19px; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  }
 </style>

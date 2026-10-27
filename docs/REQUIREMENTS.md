@@ -142,8 +142,8 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| HOME-01 | Purpose introduction | Small label "Welcome to Loving Life Longer"; the page heading (H1) is LLL's purpose, "Helping you get the most out of your human experience, in how you think, move and live.", with think/move/live in their pillar colours (28px mobile / 40px desktop); then a short line about Ben (Inter 16px mobile / 18px desktop, grey). Divider below. Text is edited in `src/data/site.ts`. | ✅ | Auto |
-| HOME-02 | Featured article | Labelled "Latest article". The whole block links to the article. Shows a 16:9 photo (max 480px tall, square corners, no zoom), pillar tag, title as a sub-heading (H2; 36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
+| HOME-01 | Purpose introduction | All home content shares one width (max 1120px, same as the photo) so left edges line up. Small label "Welcome to Loving Life Longer"; the page heading (H1) is LLL's purpose with think/move/live in pillar colours (30px phone / 48px desktop, up to 960px wide); then the line about Ben (17px / 20px, grey, up to 760px wide). Divider below. Text in `src/content/pages/home.md`. | ✅ | Auto |
+| HOME-02 | Featured article | Labelled "Latest article"; the whole block links to the article. Photo full width (16:9, max 480px tall; edge to edge on phones). Below it on desktop, two columns spanning the photo's width: pillar tag and title (38px) on the left; summary (19px), read time and "Read the article →" on the right. Stacked on phones. | ✅ | Auto |
 | HOME-03 | Featured choice | Shows the newest article marked `featured: true` (or the newest article if none are). | ✅ | None |
 | HOME-04 | Home FAQ | Questions come from `home.md` (separate from the article's). Collapsed "Common questions" section; opening it shows each question (600 15px) and answer (14px grey). | ✅ 📝 answers | Auto |
 | HOME-05 | One-article note | With one article: italic note "Only one article published so far…". | ✅ | Auto |
