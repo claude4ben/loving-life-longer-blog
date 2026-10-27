@@ -199,6 +199,15 @@ every push to `main`. Hosting, database (D1), server code (Pages Functions) and 
 | Everything in one account | |
 | Every branch/pull request gets its own preview link | |
 
+*Private until launch:* the whole site (the main `.pages.dev` address and every preview link) sits
+behind **Cloudflare Access**, so only allowed email addresses can see it. Visitors sign in with a one-time
+code sent by email. At launch, remove the main address from the Access application and keep previews private.
+
+| Pros | Cons |
+| --- | --- |
+| Free for up to 50 people, in the same Cloudflare account | Extra setup screens (Zero Trust may ask for a card even on the free plan) |
+| Search engines and strangers can't see it | You sign in with an emailed code every so often |
+
 *Alternatives considered:*
 - **Vercel:** no built-in database, so we'd need a separate service such as Supabase or Neon. Its free
   plan is for non-commercial use only, and bandwidth is capped.
@@ -271,3 +280,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | First version: documents the initial build from the design handoff. |
 | 2026-10-27 | Hosting decided: Cloudflare Pages (14). Comments and likes move to Cloudflare D1 (8); signup moves to a newsletter service, D1 as fallback (9). Added Pages Functions (16) and Turnstile (17). Vercel and Netlify ruled out. |
 | 2026-10-27 | Added automated testing (18): Playwright behaviour tests and axe accessibility scans at desktop and phone sizes, run by GitHub Actions on every code change. |
+| 2026-10-27 | Hosting (14): site stays private behind Cloudflare Access until launch. |
