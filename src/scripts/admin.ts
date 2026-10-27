@@ -94,6 +94,9 @@ export function initAdmin() {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return say(data.error || 'Sign-in failed. Please try again.', true);
     login.reset();
+    // Came here from another admin page (e.g. photo crops)? Go back there.
+    const next = new URLSearchParams(location.search).get('next');
+    if (next && /^\/admin\/[\w/-]*$/.test(next)) return location.assign(next);
     await load();
   });
 

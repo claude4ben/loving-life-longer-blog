@@ -46,8 +46,26 @@ test.describe('Photos on the article', () => {
 test.describe('Crop preview page', () => {
   test.skip(({ isMobile }) => isMobile, 'checked at desktop size');
 
+  const signIn = async (page) => {
+    await page.getByLabel('Admin password').fill('test-admin-password');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+  };
+
+  test('needs the admin password, then returns to the photos', async ({ page, request }) => {
+    const res = await request.get('/admin/photos/', { maxRedirects: 0 });
+    expect(res.status()).toBe(302);
+    expect(res.headers()['location']).toBe('/admin/?next=/admin/photos/');
+
+    await page.goto('/admin/photos/');
+    await expect(page).toHaveURL('/admin/?next=/admin/photos/');
+    await signIn(page);
+    await expect(page).toHaveURL('/admin/photos/');
+    await expect(page.locator('h1')).toHaveText('Photo crops');
+  });
+
   test('shows every photo in each of its frames', async ({ page }) => {
     await page.goto('/admin/photos/');
+    await signIn(page);
     await expect(page.locator('h1')).toHaveText('Photo crops');
     // Article: top photo in 3 frames + 3 section photos in 2 frames each; About: 1 frame.
     await expect(page.locator('figure')).toHaveCount(3 + 3 * 2 + 1);
@@ -59,6 +77,7 @@ test.describe('Crop preview page', () => {
 
   test('is linked from the admin page', async ({ page }) => {
     await page.goto('/admin/');
+    await signIn(page);
     await page.getByRole('link', { name: 'Check photo crops →' }).click();
     await expect(page).toHaveURL('/admin/photos/');
   });

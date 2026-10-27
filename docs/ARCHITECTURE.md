@@ -208,7 +208,7 @@ About page photos in `src/content/pages/about/`), referenced from the Markdown s
 built, Astro's image tools (using `sharp`) make several sizes of each photo in the WebP format, and
 each browser downloads the size it needs (`src/components/Photo.astro`). A **focus** setting per photo
 (`center`, `top`, `top left`, `"50% 30%"`…) controls which part stays in view when a frame crops it
-(`src/lib/photos.ts`). A private page, `/admin/photos/`, shows every photo in every frame shape.
+(`src/lib/photos.ts`). An admin-only page, `/admin/photos/`, shows every photo in every frame shape. It's built on request (not pre-built) so it can check the admin sign-in first; signed-out visitors are sent to the `/admin` sign-in and back.
 Web links (`https://…`) still work for photos stored elsewhere, but aren't resized.
 
 | Pros | Cons |
@@ -377,3 +377,4 @@ a test-only admin password passed on the command line (the real password exists 
 | 2026-10-27 | Photos (11): stored next to the content, resized to WebP at build, focus setting per photo, crop preview at `/admin/photos/`; top photo up to 480px tall on desktop. |
 | 2026-10-27 | Content (2): article template checked on every build; per-article links with icons and affiliate disclosure. |
 | 2026-10-27 | Styling (5): one shared page width (`.wide`) across all pages; wider desktop layouts for About, Policy, signup, article header, links, Q&A and comments. |
+| 2026-10-27 | Photo crop preview (11) now admin-only: checks the admin sign-in on the server. |

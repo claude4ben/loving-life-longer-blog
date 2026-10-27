@@ -1,10 +1,19 @@
 ---
 // Crop preview: every photo in every frame shape it's shown in, so Ben can check nothing important
 // is cut off. Change a photo's "focus" setting in its Markdown file to move the crop.
+// Admin only: built on request, and anyone not signed in is sent to the admin sign-in first.
 import { getCollection, getEntry } from 'astro:content';
+import { isAdmin } from '../../lib/admin-auth';
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
 import { focusPosition } from '../../lib/photos';
+
+export const prerender = false;
+
+if (!(await isAdmin(Astro.request, Astro.locals.runtime.env))) {
+  return Astro.redirect('/admin/?next=/admin/photos/');
+}
+Astro.response.headers.set('cache-control', 'private, no-store');
 
 type Frame = { label: string; w: number; h: number; caption?: string };
 const HERO: Frame[] = [
