@@ -1,13 +1,82 @@
 # Requirements
 
-What the Loving Life Longer site must do, what is built today, and how each requirement is tested.
+Why the Loving Life Longer blog exists, the key features that serve that purpose, and (in Part 2) the
+detailed specification with build status and test coverage.
 
-**Sources:** the designer's handoff (`design_handoff_lll_blog/README.md` and the `LLL Blog.dc.html`
-prototype), the author's article draft (`Ecstatic Dance Blog v003.pdf`), and the decisions in
-[ARCHITECTURE.md](ARCHITECTURE.md). The handoff is **high fidelity**: colours, type, spacing and
-interactions are final.
+**Keep this file up to date.** When a goal, feature or requirement is added, changed, built or tested,
+update it here in the same commit.
 
-**Keep this file up to date.** When a requirement is added, changed, built or tested, update its row.
+---
+
+# Part 1: Purpose and key features
+
+## Purpose
+
+> **Loving Life Longer (LLL) helps you get the most out of your human experience, in how you think,
+> move and live.**
+
+LLL is growing into an **ecosystem of content**: this blog first, then a podcast, social media and a
+festival. The blog is the first place LLL content is shared, and the hub the rest will link back to.
+
+Ben writes first-person accounts of things he has actually tried: what worked, what didn't, and why. No
+credentials and no prescriptions. Content sits under three pillars: **Think**, **Move** and **Live**.
+
+## Goals
+
+Every feature and design change should move at least one of these forward, and shouldn't set any back.
+
+| # | Goal | What success looks like |
+| --- | --- | --- |
+| G1 | **Be discovered** | People find LLL through search engines (SEO) and when they ask AI assistants such as ChatGPT, Claude or Perplexity (often called GEO or LLM visibility). |
+| G2 | **Be genuinely useful** | Readers finish articles, take something practical away, and come back. Easy to read on any device. |
+| G3 | **Build engagement and community** | Readers comment, like, share and join the email list; Ben replies to comments. |
+| G4 | **Be the hub of the LLL ecosystem** | A clear, consistent LLL brand that will connect to the podcast, social channels and festival. |
+| G5 | **Be trustworthy and safe** | Honest about not being medical advice; respectful comments (moderated); readers' data handled properly. |
+
+## Key features
+
+| Feature | Serves | Status |
+| --- | --- | --- |
+| **Articles by pillar** (Think, Move, Live), first-person and practical | G2, G4 | ✅ |
+| **Purpose-led home page**: LLL's purpose as the headline, then the latest article | G1, G4 | ✅ |
+| **Q&A (FAQ)** on articles and the home page, answering the questions people search for and ask AI | G1, G2 | ✅ layout; 📝 answers are placeholders |
+| **Discoverability basics**: page titles and descriptions | G1 | ✅ |
+| **Discoverability extras**: structured data (Article, FAQ, author), sitemap, share previews (Open Graph), canonical links | G1 | 🔨 not built yet; needed before launch |
+| **Comments** with Ben's replies, plus an **admin panel** to reply to and delete comments | G3, G5 | 🕒 comments only in the reader's browser; 🔨 D1 + admin panel |
+| **Likes and sharing** (copy link, email, WhatsApp, X, Facebook, Instagram, Snapchat) | G1, G3 | ✅ sharing; 🕒 likes only in the reader's browser |
+| **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
+| **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
+| **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
+| **Easy publishing**: articles as simple text files with **bold** and bullet lists | G2 | ✅ |
+| **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
+| **Private until launch** | — | 🔨 |
+
+## Open questions
+
+| Question | Notes |
+| --- | --- |
+| Should desktop article text stretch almost to the edge? | Requested 2026-10-27. Very long lines (about 125 characters) are harder to read (G2). Options under consideration: keep 680px, widen to about 820px, or full width. |
+| What is the comment form's email for? | Today it's collected but not used. Options: reply notifications, newsletter opt-in, or remove it. See the recommendation in the 2026-10-27 discussion. |
+| Home page Q&A | Currently repeats the ecstatic dance article's questions. For G1 it should answer questions about LLL itself ("What is Loving Life Longer?", "Who writes it?"). |
+
+## How Claude uses this
+
+Before making a change, Claude checks it against the goals above. If a request could work against a
+goal (for example, hurting readability, discoverability or trust), Claude says so, explains why in plain
+language, and suggests an alternative, then does what Ben decides.
+
+Note: while the site is private behind Cloudflare Access, search engines and AI tools can't see it, so
+the discoverability goal (G1) only starts working at launch.
+
+---
+
+# Part 2: Detailed specification
+
+The detailed design and behaviour, originally from the designer's handoff
+(`design_handoff_lll_blog/README.md` and the `LLL Blog.dc.html` prototype), the author's article draft
+(`Ecstatic Dance Blog v003.pdf`), and the decisions in [ARCHITECTURE.md](ARCHITECTURE.md). Exact
+colours, sizes and spacing are recorded here so changes are deliberate; they can change whenever a
+change better serves the goals in Part 1.
 
 ### How to read this
 
@@ -73,8 +142,8 @@ interactions are final.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| HOME-01 | Mission line | Source Serif 4 20px in a 680px column: "Loving Life Longer is written by Ben — first-person accounts…" | ✅ | Auto |
-| HOME-02 | Featured article | The whole block links to the article. Shows a 16:9 photo (max 300px tall, square corners, no zoom), pillar tag, title (36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
+| HOME-01 | Purpose introduction | Small label "Welcome to Loving Life Longer"; the page heading (H1) is LLL's purpose, "Helping you get the most out of your human experience, in how you think, move and live.", with think/move/live in their pillar colours (28px mobile / 40px desktop); then a short line about Ben (Inter 16px mobile / 18px desktop, grey). Divider below. Text is edited in `src/data/site.ts`. | ✅ | Auto |
+| HOME-02 | Featured article | Labelled "Latest article". The whole block links to the article. Shows a 16:9 photo (max 300px tall, square corners, no zoom), pillar tag, title as a sub-heading (H2; 36px desktop / 28px mobile), standfirst (18px grey) and read time. | ✅ | Auto |
 | HOME-03 | Featured choice | Shows the newest article marked `featured: true` (or the newest article if none are). | ✅ | None |
 | HOME-04 | Home FAQ | Collapsed "Common questions" section; opening it shows each question (600 15px) and answer (14px grey). | ✅ 📝 answers | Auto |
 | HOME-05 | One-article note | With one article: italic note "Only one article published so far…". | ✅ | Auto |
@@ -92,11 +161,13 @@ interactions are final.
 | ART-03 | Hero photo | 16:9, max 300px tall, square corners; edge to edge on mobile. | ✅ 📝 photo | Manual |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | Centred column, 680px desktop / 720px mobile. | ✅ | Manual |
-| ART-06 | Photo sections, desktop | Two equal columns, 56px gap, max width 1320px; photo column 460px tall. The photo's side (left/right) comes from the article file. | ✅ 📝 photos | Auto |
+| ART-06 | Photo sections, desktop | Two equal columns, 56px gap, max width 1320px, 96px side padding (keeps text clear of the Like/Share rail); photo column 460px tall and **lined up with the top of the section**, not centred. The photo's side (left/right) comes from the article file. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
 | ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
 | ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers. | ✅ 📝 answers | Auto |
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
+| ART-11 | Bold and lists | In an article file, `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
+| ART-12 | Rail never covers text | On desktop, the Like/Share rail never overlaps article text. | ✅ | Auto |
 
 ### Interactions
 
@@ -209,6 +280,8 @@ Small, deliberate differences; each still meets the handoff's intent.
 | Copy link | Closed the sheet at once | Shows "Copied!", then closes | So the confirmation is visible |
 | Likes, comments | Lost on page reload | Kept in the visitor's browser | Closer to the real behaviour until D1 is built |
 | Signup | Did nothing | Requires email and consent, then says thanks | Clear feedback; consent captured in the form |
+| Home introduction | Mission paragraph in large serif | Purpose as the H1 headline with a "Welcome" label and a short line about Ben | Clearer purpose, especially on mobile (G1, G4) |
+| Desktop photo sections | Photo centred beside the text | Photo lined up with the top of the section; wider side padding | Ben's request; the rail was covering text |
 | Mobile/desktop switch | JavaScript | CSS | Correct layout before scripts load (ARCHITECTURE decision 6) |
 
 ## Testing still to add

@@ -27,6 +27,22 @@ test.describe('Article content', () => {
     else expect(img!.x).toBeLessThan(text!.x); // image on the left for this section
   });
 
+  test('desktop photos line up with the top of their section', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-and-finale']) {
+      const img = await page.locator(`#${id} .sec-img`).boundingBox();
+      const heading = await page.locator(`#${id} h2`).boundingBox();
+      expect(Math.abs(img!.y - heading!.y)).toBeLessThan(20);
+    }
+  });
+
+  test('Like/Share rail never covers article text', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    const rail = await page.locator('.engage-rail').boundingBox();
+    const rightEdges = await page.locator('#article-body p').evaluateAll((ps) => ps.map((p) => p.getBoundingClientRect().right));
+    expect(Math.max(...rightEdges)).toBeLessThan(rail!.x);
+  });
+
   test('article FAQ', async ({ page }) => {
     await expect(page.locator('.faq-card .qa-q')).toHaveCount(2);
   });

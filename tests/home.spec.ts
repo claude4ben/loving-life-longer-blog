@@ -3,14 +3,18 @@ import { test, expect, ARTICLE } from './fixtures';
 test.describe('Home', () => {
   test.beforeEach(async ({ page }) => page.goto('/'));
 
-  test('mission line', async ({ page }) => {
-    await expect(page.locator('.mission')).toContainText('Loving Life Longer is written by Ben');
+  test('introduction leads with the LLL purpose as the page heading', async ({ page }) => {
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('.intro h1')).toHaveText('Helping you get the most out of your human experience, in how you think, move and live.');
+    await expect(page.locator('.intro-label')).toHaveText('Welcome to Loving Life Longer');
+    await expect(page.locator('.intro p')).toContainText('Written by Ben');
   });
 
   test('featured article links to the article', async ({ page }) => {
     const feature = page.locator('a.feature');
     await expect(feature.locator('.pillar-tag')).toHaveText('Move');
-    await expect(feature.locator('h1')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
+    await expect(page.locator('.feature-label')).toHaveText('Latest article');
+    await expect(feature.locator('h2')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
     await expect(feature).toContainText('15 min read');
     await feature.click();
     await expect(page).toHaveURL(ARTICLE);

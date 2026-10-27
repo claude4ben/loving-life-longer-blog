@@ -1,5 +1,9 @@
 # Project instructions
 
+- Read the Purpose, Goals and Key features at the top of docs/REQUIREMENTS.md. Before making a change,
+  check it against those goals. If a request could work against a goal (readability, discoverability by
+  search engines and AI, engagement, trust), say so in plain language and suggest an alternative, then
+  follow Ben's decision.
 - Whenever an architecture decision changes, update docs/ARCHITECTURE.md in the same commit.
 - `docs/ARCHITECTURE.md` records every architecture decision with simple pros and cons. Whenever a change
   affects the architecture (framework, content storage, styling approach, scripts, backends or services,

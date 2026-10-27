@@ -4,8 +4,12 @@ export const SITE_NAME = 'Loving Life Longer';
 export const PILLAR_COLORS = { Think: '#3d5a76', Move: '#40763d', Live: '#a15c3e' } as const;
 export type Pillar = keyof typeof PILLAR_COLORS;
 
-export const MISSION =
-  "Loving Life Longer is written by Ben — first-person accounts of things he's actually tried in order to think, move, and live better. No credentials, no prescriptions: just what worked, what didn't, and why.";
+// Home page introduction. The headline is LLL's purpose; {think}, {move} and {live} show in pillar colours.
+export const HOME_INTRO = {
+  label: 'Welcome to Loving Life Longer',
+  headline: 'Helping you get the most out of your human experience, in how you {think}, {move} and {live}.',
+  body: "Written by Ben: first-person accounts of things he's actually tried. No credentials, no prescriptions, just what worked, what didn't, and why.",
+};
 
 export const SIGNUP = {
   title: 'Get new pieces by email',

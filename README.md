@@ -19,7 +19,7 @@ Tests live in `tests/` and run automatically on GitHub for every code change (se
 | To change… | Edit this file |
 | --- | --- |
 | An article's text, title, photos or FAQ | `src/content/blog/<article>.md` |
-| Mission line, signup text, pillar cards, sample comments | `src/data/site.ts` |
+| Home page introduction, signup text, pillar cards, sample comments | `src/data/site.ts` |
 | About page | `src/pages/about.astro` |
 | Policy page | `src/pages/policy.astro` |
 | Header, menu, footer | `src/layouts/Base.astro` |
@@ -34,6 +34,8 @@ Each article is one Markdown file in `src/content/blog/`. The file name becomes 
 - The settings at the top (between the `---` lines) hold the title, pillar (`Think`, `Move` or `Live`),
   standfirst, date, photos and FAQ.
 - Each `## Heading {#some-id}` starts a new section and appears in the table of contents.
+- Inside a section: `**words**` makes them **bold**, lines starting `- ` become a bullet list, and
+  lines starting `1. ` a numbered list. Leave a blank line before and after a list.
 - To put a photo beside a section, add its id under `sectionImages:` with `src`, `side` (`left`/`right`)
   and an optional `caption`.
 

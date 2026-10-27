@@ -1,11 +1,11 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { marked } from 'marked';
 import Base from '../../layouts/Base.astro';
 import PillarTag from '../../components/PillarTag.astro';
 import Faq from '../../components/Faq.astro';
 import SignupBlock from '../../components/SignupBlock.astro';
 import { SEED_COMMENTS } from '../../data/site';
+import { splitSections } from '../../lib/sections';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -15,18 +15,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
 const d = post.data;
 
-// Each "## Heading {#id}" in the Markdown starts a new section.
-const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const sections = (post.body ?? '')
-  .split(/^## /m)
-  .slice(1)
-  .map((chunk) => {
-    const [first, ...rest] = chunk.split('\n');
-    const m = first.match(/^(.*?)\s*\{#([\w-]+)\}\s*$/);
-    const heading = (m ? m[1] : first).trim();
-    const id = m ? m[2] : slugify(heading);
-    return { id, heading, html: marked.parse(rest.join('\n').trim()) as string, image: d.sectionImages[id] };
-  });
+const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sectionImages[s.id] }));
 ---
 <Base title={d.title} description={d.standfirst}>
   <div class="progress" aria-hidden="true"><div data-progress></div></div>
@@ -183,7 +172,14 @@ const sections = (post.body ?? '')
 
   #article-body { padding: 24px 0 8px; }
   #article-body h2 { font-size: 24px; margin: 0 0 14px; }
-  #article-body :global(p) { font-size: 17px; line-height: 1.65; margin: 0 0 16px; }
+  #article-body :global(p),
+  #article-body :global(li) { font-size: 17px; line-height: 1.65; }
+  #article-body :global(p) { margin: 0 0 16px; }
+  #article-body :global(ul),
+  #article-body :global(ol) { margin: 0 0 16px; padding-left: 1.4em; }
+  #article-body :global(li) { margin: 0 0 8px; padding-left: 4px; }
+  #article-body :global(li::marker) { color: var(--accent); }
+  #article-body :global(strong) { font-weight: 700; }
   .sec-plain { padding-bottom: 40px; }
   .sec-split { padding: 0 20px 40px; }
   .sec-img { aspect-ratio: 4 / 3; max-height: 300px; position: relative; overflow: hidden; margin-bottom: 24px; }
@@ -193,10 +189,11 @@ const sections = (post.body ?? '')
 
   @media (min-width: 960px) {
     .article-head h1 { font-size: 40px; }
-    #article-body :global(p) { font-size: 19px; }
+    #article-body :global(p),
+    #article-body :global(li) { font-size: 19px; }
     .sec-split {
-      max-width: 1320px; margin: 0 auto 64px; padding: 0 24px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+      max-width: 1320px; margin: 0 auto 64px; padding: 0 96px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;
     }
     .sec-img { aspect-ratio: auto; max-height: none; height: 460px; margin-bottom: 0; }
     .img-left .sec-img { order: 1; }

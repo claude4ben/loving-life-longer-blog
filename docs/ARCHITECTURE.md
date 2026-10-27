@@ -67,7 +67,8 @@ top of these same Markdown files, so moving to one won't require rewriting the s
 ### 3. Article sections come from `## Heading {#id}` ✅
 
 **Why:** the design needs per-section layouts (text only, or text beside a photo) and a table of
-contents. The article page splits the Markdown at each `## ` heading. Section photos are listed under
+contents. `src/lib/sections.ts` splits the Markdown at each `## ` heading (and is unit-tested).
+Section text supports normal Markdown: **bold**, bullet and numbered lists, links. Section photos are listed under
 `sectionImages:` at the top of the file and matched by the `{#id}`.
 
 | Pros | Cons |
@@ -283,3 +284,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | Added automated testing (18): Playwright behaviour tests and axe accessibility scans at desktop and phone sizes, run by GitHub Actions on every code change. |
 | 2026-10-27 | Hosting (14): site stays private behind Cloudflare Access until launch. |
 | 2026-10-27 | Hosting (14) live: Cloudflare Pages project `loving-life-longer-blog` connected and deploying from `main`. |
+| 2026-10-27 | Article section parsing moved to `src/lib/sections.ts` (3) so it can be tested directly; supports bold and lists. |
