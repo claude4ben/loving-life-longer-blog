@@ -139,6 +139,7 @@ change better serves the goals in Part 1.
 | GEN-13 | Link style | Links are `#40763d` with no underline; on hover, ink with underline. | ✅ | None |
 | GEN-14 | Fonts | Source Serif 4 for headings, Inter for body, Rubik for labels (loaded from Google Fonts). | ✅ | None |
 | GEN-15 | Page titles | Browser tab shows "<Page> · Loving Life Longer" (Home shows the site name only). | ✅ | Auto |
+| GEN-16 | Shared page width | On desktop every page's content uses one width (`.wide`: max 1320px with 96px side padding, so up to 1128px of content and room for the article's Like/Share panel), and left edges line up across Home, About, Policy and every part of an article. Long reading text keeps a comfortable maximum width inside it. Phones: 20px gutters, max 760px. | ✅ | Auto |
 
 ## 2. Home (`/`)
 
@@ -158,7 +159,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ART-01 | Article header | Pillar tag; title Source Serif 4 600 (40px desktop / 28px mobile); standfirst 19px grey. Column 820px desktop / 720px mobile. | ✅ 📝 standfirst | Auto |
+| ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop, up to 960px wide); standfirst grey (19px / 21px, up to 820px wide); byline row across the page width. Aligned with the article text. | ✅ 📝 standfirst | Auto |
 | ART-02 | Byline | 44px round avatar; name (600 14px) and disclosure (13px grey); read time and date right-aligned. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
@@ -166,11 +167,11 @@ change better serves the goals in Part 1.
 | ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it**: beside the photo it's a column, and once it passes the bottom of the photo it runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
 | ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
-| ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers. | ✅ 📝 answers | Auto |
+| ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers, two across on desktop. | ✅ 📝 answers | Auto |
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
 | ART-11 | Bold and lists | In an article file, `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
 | ART-12 | Rail never covers text | On desktop, the Like/Share rail never overlaps article text. | ✅ | Auto |
-| ART-13 | Links from this article | After the article text and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Two columns on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
+| ART-13 | Links from this article | After the article text and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Three across on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
 | ART-14 | Affiliate links | Links with `affiliate: true` show an "Affiliate" label, use `rel="sponsored noopener"`, and the affiliate note from `links.md` appears under the list. | ✅ | Auto |
 
 ### Interactions
@@ -195,7 +196,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ART-40 | Comment form | Name, "Email (optional, not published)" and "Add a comment" (3 rows) fields; "Policy" link on the left and "Post comment" on the right. | ✅ | Auto |
+| ART-40 | Comment form | Name, "Email (optional, not published)" and "Add a comment" (3 rows) fields; "Policy" link on the left and "Post comment" on the right. On desktop the form sits on the left (stays in view while scrolling) with comments on the right; with no comments yet, a "No comments yet. Be the first to share your thoughts." message shows. | ✅ | Auto |
 | ART-41 | Validation | Name and comment are required (spaces alone don't count); email is optional. Nothing posts if a required field is empty. | ✅ | Auto |
 | ART-42 | New comment | Saved to the database and shown at the top of the list with the first letter of the name as its avatar and "Just now" as the time. The form clears. Times show as "5 minutes ago", "2 days ago", then the date. If saving fails, a red message explains why. | ✅ | Auto |
 | ART-43 | Comment list | 36px grey initial circle, name and time on one line, text 15px. Replies indented 48px with 32px circles. Comments 24px apart. | ✅ | Auto |
@@ -212,12 +213,12 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ABOUT-01 | Photo | 4:3, max 420px wide on desktop, max 300px tall, centred; edge to edge on mobile; no zoom. | ✅ 📝 photo | Manual |
+| ABOUT-01 | Photo and introduction | Desktop: photo (4:3) on the left, heading (40px) and bio beside it. Phones: photo edge to edge (max 300px tall), then heading and bio. | ✅ 📝 photo, bio | Auto |
 | ABOUT-02 | Heading and bio | H1 "I started this because I got tired of my own excuses." (32px), then two bio paragraphs (18px). | ✅ 📝 bio | Auto |
 | ABOUT-03 | What I believe | Three pillar cards (Think, Move, Live) in a row on desktop, stacked on mobile; label in the pillar colour. | ✅ 📝 card text | Auto |
-| ABOUT-04 | People behind it | Ben ("Writes and runs Loving Life Longer") and Emma ("Occasional contributor — separate brand (link pending)") with 56px round photos. | ✅ 📝 photos, Emma's link | Auto |
+| ABOUT-04 | People behind it | Ben ("Writes and runs Loving Life Longer") and Emma ("Occasional contributor — separate brand (link pending)") with 56px round photos. On desktop, people sit beside the qualifications note. | ✅ 📝 photos, Emma's link | Auto |
 | ABOUT-05 | Qualifications note | Dark card: "A note on qualifications" and "I'm not a therapist, doctor, or clinician…". | ✅ | Auto |
-| ABOUT-06 | Photo strip | Three square photos; 12px gaps on desktop, no gaps and edge to edge on mobile. | ✅ 📝 photos | Auto |
+| ABOUT-06 | Photo strip | Three photos across the full page width (4:3, 16px gaps) on desktop; square, no gaps and edge to edge on mobile. | ✅ 📝 photos | Auto |
 | ABOUT-07 | Compact signup | Smaller signup block: title, email and Subscribe only (no body text, no checkbox). | ✅ | Auto |
 
 ## 5. Policy (`/policy/`)
@@ -226,6 +227,7 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | POL-01 | Policy page | H1 "Policies" and an intro, then three sections: Comments policy, Data & privacy, Cookies. | ✅ 📝 all text | Auto |
 | POL-02 | Deep link | The comment form's Policy link opens the Comments policy section. | ✅ | Auto |
+| POL-03a | Policy layout | Desktop: title and intro across the page, then an "On this page" list on the left (stays in view while scrolling) beside the policy text (up to 820px wide). Phones: text only. | ✅ | Auto |
 | POL-03 | Real policy text | Covers what's collected (comments, emails), Google Fonts, Cloudflare, the newsletter service, and how to ask for data deletion. | 🔨 | None |
 
 ## 6. Shared components
@@ -235,7 +237,7 @@ change better serves the goals in Part 1.
 | CMP-01 | Pillar tag | White uppercase Rubik 600 12px label, 4px rounded. Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. | ✅ | Manual |
 | CMP-02 | Primary button | Ink background, white bold text, 6px rounded. Inline size 12px 22px / 15px; full-width size 14px / 16px. | ✅ | Manual |
 | CMP-03 | Text fields | 16px text (stops iPhones zooming in), 1px `#d8dcdf` border, 6px rounded. | ✅ | None |
-| CMP-04 | Signup block | Grey band: "Get new pieces by email", short body text, email field, consent checkbox ("I'd like to receive occasional emails…") and Subscribe. | ✅ | Auto |
+| CMP-04 | Signup block | Grey band (on desktop: title and text on the left, email field and Subscribe on one row on the right with the tick box below; on phones, centred and stacked): "Get new pieces by email", short body text, email field, consent checkbox ("I'd like to receive occasional emails…") and Subscribe. | ✅ | Auto |
 | CMP-05 | Signup validation | A valid email and the consent tick are required before submitting. | ✅ | Auto |
 | CMP-06 | Signup result | After submitting, the form is replaced by "Thanks — you're on the list." | 🕒 address is **not saved** | Auto |
 | CMP-07 | Signup saved | Address sent to the newsletter service with double opt-in and a record of consent (fallback: saved in D1). | 🔨 | None |

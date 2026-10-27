@@ -75,3 +75,46 @@ test.describe('Mobile menu', () => {
     await expect(page.locator('[data-menu]')).toBeHidden();
   });
 });
+
+test.describe('Shared page width on desktop', () => {
+  test.skip(({ isMobile }) => isMobile, 'desktop only');
+  const left = (page, sel: string) => page.locator(sel).first().evaluate((el) => {
+    const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+    return Math.round(r.left + parseFloat(cs.paddingLeft));
+  });
+
+  test('article blocks all line up with the article text', async ({ page }) => {
+    await page.goto('/blog/blindfolded-with-50-strangers/');
+    const edge = await left(page, '#arriving');
+    for (const sel of ['.article-head', '.toc-wrap', '#links', '.faq-wrap', '#comments-section', '.signup-inner'])
+      expect(await left(page, sel), sel).toBe(edge);
+  });
+
+  test('home, About and Policy use the same width', async ({ page }) => {
+    const edges: number[] = [];
+    for (const path of ['/', '/about/', '/policy/']) {
+      await page.goto(path);
+      edges.push(await left(page, 'main .wide'));
+    }
+    expect(new Set(edges).size).toBe(1);
+  });
+
+  test('About: photo beside the heading; Policy: "On this page" beside the text', async ({ page }) => {
+    await page.goto('/about/');
+    const photo = (await page.locator('.about-top .photo').boundingBox())!;
+    const h1 = (await page.locator('.about-top h1').boundingBox())!;
+    expect(h1.x).toBeGreaterThan(photo.x + photo.width);
+    await page.goto('/policy/');
+    const nav = page.getByRole('navigation', { name: 'On this page' });
+    await expect(nav.getByRole('link')).toHaveText(['Comments policy', 'Data & privacy', 'Cookies']);
+    expect((await page.locator('#comments h2').boundingBox())!.x).toBeGreaterThan((await nav.boundingBox())!.x + 200);
+  });
+
+  test('signup: words on the left, email and button on one row', async ({ page }) => {
+    await page.goto('/');
+    const email = (await page.locator('.signup input[type=email]').boundingBox())!;
+    const button = (await page.locator('.signup button').boundingBox())!;
+    expect(Math.abs(email.y - button.y)).toBeLessThan(4);
+    expect((await page.locator('.signup h2').boundingBox())!.x).toBeLessThan(email.x);
+  });
+});

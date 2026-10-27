@@ -14,7 +14,7 @@ const anyAffiliate = links.some((l) => l.affiliate);
 const initial = (name: string) => name.trim().charAt(0).toUpperCase();
 ---
 {links.length > 0 && (
-  <section class="col col-article links" id="links" aria-labelledby="links-title">
+  <section class="wide links" id="links" aria-labelledby="links-title">
     <h2 id="links-title" set:html={inline(title ?? settings.title)} />
     <ul class="link-list">
       {links.map((l) => (
@@ -44,7 +44,7 @@ const initial = (name: string) => name.trim().charAt(0).toUpperCase();
   .links { padding-top: 8px; padding-bottom: 32px; }
   h2 { font-size: 22px; margin: 0 0 16px; }
   .link-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  @media (min-width: 960px) { .link-list { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .link-list { grid-template-columns: repeat(3, 1fr); } }
   .link-card {
     display: flex; align-items: flex-start; gap: 14px; height: 100%; padding: 14px 16px; color: var(--ink);
     border: 1px solid var(--border-input); border-radius: 8px; background: var(--white);

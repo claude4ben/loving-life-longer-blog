@@ -39,8 +39,10 @@ button { font-family: inherit; }
 main { flex: 1; }
 .col { max-width: var(--reading); margin: 0 auto; padding-left: 20px; padding-right: 20px; }
 @media (max-width: 959px) { .col { max-width: 720px; } }
-/* Article pages use a wider reading column on desktop (Ben's choice B, 2026-10-27). */
-@media (min-width: 960px) { .col.col-article { max-width: 820px; } }
+/* Shared page width: every page's content lines up with the article text on desktop
+   (up to 1128px of content, with room on the right for the article's Like/Share panel). */
+.wide { max-width: 760px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+@media (min-width: 960px) { .wide { max-width: 1320px; padding-left: 96px; padding-right: 96px; } }
 .desktop-only { display: none !important; }
 @media (min-width: 960px) {
   .desktop-only { display: flex !important; }
@@ -118,19 +120,29 @@ main { flex: 1; }
 }
 textarea.field { resize: vertical; }
 
-.signup {
-  background: var(--subtle); padding: 48px 20px; display: flex; flex-direction: column;
-  align-items: center; text-align: center; gap: 12px;
-}
+.signup { background: var(--subtle); padding: 48px 0; }
+.signup-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
 .signup h2 { font-size: 26px; margin: 0; }
 .signup p { font-size: 15px; color: var(--muted); margin: 0; max-width: 440px; }
 .signup form { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 360px; margin-top: 8px; }
 .signup .field { padding: 14px 16px; }
 .signup label { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); text-align: left; }
 .signup label input { margin-top: 3px; }
-.signup-compact { padding: 36px 24px; border-radius: 8px; }
+.signup-compact { padding: 36px 0; }
 .signup-compact h2 { font-size: 22px; }
 .signup-done { font-size: 15px; color: var(--accent); }
+/* Desktop: words on the left, form on the right (email and button on one row). */
+@media (min-width: 960px) {
+  .signup { padding: 56px 0; }
+  .signup-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; text-align: left; }
+  .signup-copy { display: flex; flex-direction: column; gap: 10px; }
+  .signup h2 { font-size: 30px; }
+  .signup p { font-size: 17px; max-width: 520px; }
+  .signup form { max-width: none; margin-top: 0; display: grid; grid-template-columns: 1fr auto; gap: 10px 12px; }
+  .signup form .btn-block { width: auto; padding: 14px 28px; }
+  .signup form label { grid-column: 1 / -1; order: 3; } /* tick box under the email + button row */
+  .signup-compact { padding: 40px 0; }
+}
 
 .qa { display: flex; flex-direction: column; gap: 16px; }
 .qa-q { font-weight: 600; font-size: 15px; margin-bottom: 4px; }

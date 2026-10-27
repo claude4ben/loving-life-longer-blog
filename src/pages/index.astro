@@ -20,7 +20,7 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
 );
 ---
 <Base>
-  <div class="home">
+  <div class="wide home">
     <section class="intro">
       <div class="label" set:html={inline(intro.label)} />
       <h1 set:html={headline} />
@@ -31,7 +31,7 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
       <a class="feature" href={`/blog/${featured.id}/`}>
         <div class="label">Latest article</div>
         <div class="feature-img breakout">
-          <Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} sizes="(min-width: 1120px) 1080px, 100vw" eager />
+          <Photo src={featured.data.heroImage} alt={featured.data.heroAlt} focus={featured.data.heroFocus} sizes="(min-width: 1320px) 1128px, 100vw" eager />
         </div>
         <div class="feature-text">
           <div class="feature-title">
@@ -76,7 +76,6 @@ const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w:
 
 <style>
   /* Everything on the home page shares one width (the photo's), so all left edges line up. */
-  .home { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
   .label {
     font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
     text-transform: uppercase; color: var(--muted); margin-bottom: 12px;

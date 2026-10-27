@@ -198,6 +198,14 @@ test.describe('Comments', () => {
     await form(page).getByRole('button', { name: 'Post comment' }).click();
   };
 
+  test('says when there are no comments yet', async ({ page }) => {
+    // Pretend the article has no comments (other tests post some to the shared test database).
+    await page.route('**/api/comments?*', (r) => r.fulfill({ json: { comments: [] } }));
+    await page.reload();
+    await expect(page.locator('.c-empty')).toHaveText('No comments yet. Be the first to share your thoughts.');
+    await expect(page.locator('#comments-section h2')).toHaveText('Comments (0)');
+  });
+
   test('name and comment are required', async ({ page }) => {
     const text = unique();
     await post(page, '   ', text);

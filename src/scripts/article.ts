@@ -171,7 +171,9 @@ export function initArticle() {
       </div>
     </div>`;
   const renderComments = () => {
-    list.innerHTML = comments.map((c) => `<div>${item(c)}${c.replies.map((r) => item(r, true)).join('')}</div>`).join('');
+    list.innerHTML = comments.length
+      ? comments.map((c) => `<div>${item(c)}${c.replies.map((r) => item(r, true)).join('')}</div>`).join('')
+      : '<p class="c-empty">No comments yet. Be the first to share your thoughts.</p>';
     $$('[data-comment-count]').forEach((n) => (n.textContent = String(comments.length)));
   };
   renderComments();

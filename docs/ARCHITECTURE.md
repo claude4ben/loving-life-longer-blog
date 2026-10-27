@@ -113,6 +113,11 @@ articles, each file is checked against a schema, so a missing field stops the bu
 | No build tools or libraries to learn | |
 | Easy to match the design pixel for pixel | |
 
+*Shared page width:* one class, `.wide` in `src/styles/global.css`, sets the content width for every
+page on desktop (up to 1128px, matching the article text and leaving room for the Like/Share panel), so
+left edges line up everywhere. Pages use the extra space with side-by-side layouts (About, Policy,
+comments, signup) rather than very long lines.
+
 ### 6. Mobile vs desktop via CSS (breakpoint 960px) ✅
 
 **Why:** the prototype switched layouts with JavaScript. Here CSS media queries do it, and
@@ -371,3 +376,4 @@ a test-only admin password passed on the command line (the real password exists 
 | 2026-10-27 | Replaced Cloudflare Access (needs a payment method) with: admin password sign-in (19), and hiding the site from search engines until launch (14). Removed the `jose` library. |
 | 2026-10-27 | Photos (11): stored next to the content, resized to WebP at build, focus setting per photo, crop preview at `/admin/photos/`; top photo up to 480px tall on desktop. |
 | 2026-10-27 | Content (2): article template checked on every build; per-article links with icons and affiliate disclosure. |
+| 2026-10-27 | Styling (5): one shared page width (`.wide`) across all pages; wider desktop layouts for About, Policy, signup, article header, links, Q&A and comments. |

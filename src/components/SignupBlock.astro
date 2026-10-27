@@ -7,8 +7,11 @@ interface Props { compact?: boolean; style?: string; }
 const { compact = false, style } = Astro.props;
 ---
 <section class:list={['signup', { 'signup-compact': compact }]} style={style}>
-  <h2 set:html={inline(SIGNUP.title)} />
-  {!compact && <p set:html={inline(SIGNUP.body)} />}
+ <div class="wide signup-inner">
+  <div class="signup-copy">
+    <h2 set:html={inline(SIGNUP.title)} />
+    {!compact && <p set:html={inline(SIGNUP.body)} />}
+  </div>
   <!-- TODO: connect to an email provider (double opt-in + consent record). -->
   <form data-signup>
     <input class="field" type="email" name="email" placeholder="Email address" required />
@@ -17,6 +20,7 @@ const { compact = false, style } = Astro.props;
     )}
     <button class="btn btn-block" type="submit">Subscribe</button>
   </form>
+ </div>
 </section>
 
 <script>
