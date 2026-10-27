@@ -5,4 +5,6 @@
   affects the architecture (framework, content storage, styling approach, scripts, backends or services,
   hosting, routing, images, fonts, and so on), update the matching entry or add a new one, and add a
   dated line to its Change log in the same commit.
+- `docs/REQUIREMENTS.md` lists every requirement with its status and test coverage. When behaviour or
+  design changes, or tests are added, update the matching rows in the same commit.
 - Keep the README's "Where to edit things" table accurate when files move.
