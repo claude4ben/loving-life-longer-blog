@@ -68,19 +68,36 @@ export function initArticle() {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Scroll-reveal zoom (fires once per image)
+  // Scroll-reveal zoom (fires once per image). Nothing zooms until the reader first scrolls, so photos
+  // already on screen when the page opens (like the top photo) zoom on that first scroll, not on load.
+  const inView = new Set<Element>();
+  let scrolled = false;
+  const reveal = (el: Element) => {
+    el.classList.add('is-visible');
+    io.unobserve(el);
+    inView.delete(el);
+  };
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          io.unobserve(e.target);
-        }
+        if (!e.isIntersecting) inView.delete(e.target);
+        else if (scrolled) reveal(e.target);
+        else inView.add(e.target);
       }
     },
     { threshold: 0.12 },
   );
   $$('.reveal').forEach((el) => io.observe(el));
+  const onFirstScroll = () => {
+    // Ignore the browser restoring the scroll position on reload; wait for the reader to move.
+    if (scrolled) return;
+    scrolled = true;
+    window.removeEventListener('scroll', onFirstScroll);
+    [...inView].forEach(reveal);
+  };
+  const listen = () => setTimeout(() => window.addEventListener('scroll', onFirstScroll, { passive: true }), 100);
+  if (document.readyState === 'complete') listen();
+  else window.addEventListener('load', listen);
 
   // Table of contents
   const toc = $('[data-toc]')!;

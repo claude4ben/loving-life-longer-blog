@@ -58,8 +58,9 @@ main { flex: 1; }
 .site-header {
   position: sticky; top: 0; z-index: 50; background: var(--white);
   border-bottom: 1px solid var(--subtle);
-  display: flex; align-items: center; justify-content: space-between; padding: 16px 20px;
 }
+/* The white bar spans the screen; the logo and menu line up with the page content below. */
+.header-in { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); }
 .brand:hover { color: var(--ink); text-decoration: none; }
 .brand-logo { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }

@@ -45,8 +45,10 @@ const sections = await Promise.all(
     </div>
   </header>
 
-  <div class="hero reveal">
-    <Photo src={d.heroImage} alt={d.heroAlt} focus={d.heroFocus} zoom={d.heroZoom} sizes="100vw" eager />
+  <div class="wide">
+    <div class="hero reveal breakout">
+      <Photo src={d.heroImage} alt={d.heroAlt} focus={d.heroFocus} zoom={d.heroZoom} sizes="(min-width: 960px) 1128px, 100vw" eager />
+    </div>
   </div>
 
   <div class="wide toc-wrap">
@@ -80,6 +82,28 @@ const sections = await Promise.all(
       ),
     )}
   </article>
+
+  <!-- Comments come straight after the article; links and common questions follow. -->
+  <section id="comments-section" class="wide comments">
+    <h2>Comments (<span data-comment-count>0</span>)</h2>
+    <div class="comments-grid">
+    <form class="comment-form" data-comment-form novalidate>
+      <input class="field" name="name" placeholder="Name" />
+      <input class="field" name="email" type="email" placeholder="Email (optional, not published)" />
+      <textarea class="field" name="text" rows="3" placeholder="Add a comment"></textarea>
+      <!-- Hidden from people; bots that fill it in are ignored. -->
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <div class="form-foot">
+        <a href="/policy/#comments-policy">Policy</a>
+        <button class="btn" type="submit">Post comment</button>
+      </div>
+    </form>
+    <div class="comments-side">
+      <p class="comment-notice" data-comment-notice role="status" hidden></p>
+      <div class="comment-list" data-comments></div>
+    </div>
+    </div>
+  </section>
 
   <ArticleLinks links={d.links} title={d.linksTitle} />
 
@@ -124,26 +148,6 @@ const sections = await Promise.all(
     </div>
   </div>
 
-  <section id="comments-section" class="wide comments">
-    <h2>Comments (<span data-comment-count>0</span>)</h2>
-    <div class="comments-grid">
-    <form class="comment-form" data-comment-form novalidate>
-      <input class="field" name="name" placeholder="Name" />
-      <input class="field" name="email" type="email" placeholder="Email (optional, not published)" />
-      <textarea class="field" name="text" rows="3" placeholder="Add a comment"></textarea>
-      <!-- Hidden from people; bots that fill it in are ignored. -->
-      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <div class="form-foot">
-        <a href="/policy/#comments-policy">Policy</a>
-        <button class="btn" type="submit">Post comment</button>
-      </div>
-    </form>
-    <div class="comments-side">
-      <p class="comment-notice" data-comment-notice role="status" hidden></p>
-      <div class="comment-list" data-comments></div>
-    </div>
-    </div>
-  </section>
 
   <SignupBlock />
 
@@ -170,7 +174,7 @@ const sections = await Promise.all(
   /* Date and read time sit under the name, lined up with it, instead of floating on the right. */
   .by-meta { display: flex; flex-wrap: wrap; gap: 0 6px; margin-top: 2px; }
 
-  /* Top photo: 16:9 on phones; on desktop up to 480px tall (raised from 300px, 2026-10-27). */
+  /* Top photo: 16:9 and edge to edge on phones; on desktop up to 480px tall and lined up with the text. */
   .hero { width: 100%; aspect-ratio: 16 / 9; max-height: 480px; margin-bottom: 8px; overflow: hidden; }
 
   /* Scroll-reveal zoom */
@@ -273,7 +277,7 @@ const sections = await Promise.all(
   .row.last { border-bottom: none; }
   @media (max-width: 959px) { .row-x { border-bottom: none; } }
 
-  .comments { padding-top: 32px; padding-bottom: 100px; }
+  .comments { padding-top: 32px; padding-bottom: 48px; }
   .comments h2 { font-size: 22px; margin: 0 0 20px; }
   .comment-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
   .form-foot { display: flex; align-items: center; justify-content: space-between; }

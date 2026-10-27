@@ -32,6 +32,7 @@ Every feature and design change should move at least one of these forward, and s
 | G3 | **Build engagement and community** | Readers comment, like, share and join the email list; Ben replies to comments. |
 | G4 | **Be the hub of the LLL ecosystem** | A clear, consistent LLL brand that will connect to the podcast, social channels and festival. |
 | G5 | **Be trustworthy and safe** | Honest about not being medical advice; respectful comments (moderated); readers' data handled properly. |
+| G6 | **Easy to publish, great to read** | Ben can add a new article (text, photos, links, Q&A) quickly without technical help, and it automatically looks polished and is helpful to the reader, with no layout work per article. |
 
 ## Key features
 
@@ -47,9 +48,9 @@ Every feature and design change should move at least one of these forward, and s
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
-| **Easy publishing**: write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ 🔨 trial on the `keystatic-trial` branch |
+| **Easy publishing** (G6): write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ 🔨 trial on the `keystatic-trial` branch |
 | **Links from each article**: cards with round icons for people, brands, social accounts and shops, with clearly labelled affiliate links | G3, G4 (partners and the ecosystem), G5 (honest affiliate disclosure) | ✅ (demo links are placeholders) |
-| **Article form** in Keystatic, explaining every setting next to its field | G2 (easy, regular publishing) | ✅ 🔨 trial |
+| **Article form** in Keystatic, explaining every setting next to its field | G2, G6 | ✅ 🔨 trial |
 | **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
 | **Hidden from search engines until launch** (one switch to flip at launch) | G1 (no half-finished pages in search or AI answers) | ✅ |
 
@@ -125,7 +126,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | GEN-01 | Page layout | White `#ffffff` background, ink `#1d1d1d` text, Inter body font. Footer sits at the bottom even on short pages. | ✅ | Manual |
-| GEN-02 | Sticky header | Stays at the top while scrolling. White, 1px `#f3f5f7` bottom border, padding 16px 20px. | ✅ | Manual |
+| GEN-02 | Sticky header | Stays at the top while scrolling. White bar with a 1px `#f3f5f7` bottom border across the whole screen; the logo and menu sit inside the shared page width, so on desktop they line up with the page content's left and right edges (best practice: one edge for the eye to follow; changed 2026-10-27). | ✅ | Auto |
 | GEN-03 | Logo | 52×52 circle cropped from `logo.png`, 10px gap to the wordmark. | ✅ | Manual |
 | GEN-04 | Wordmark | "Loving Life Longer", Inter 600 22px. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
 | GEN-05 | Desktop nav | Home, Blog, About; 15px, 28px apart. Current page is bold `#40763d` with a 2px green underline; others weight 500 ink. | ✅ | Auto |
@@ -161,7 +162,7 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
 | ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). The date label ("Jul 2026") and read time (words ÷ 230) are worked out automatically. Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
-| ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
+| ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) and lined up with the text's left and right edges (changed from full screen width, 2026-10-27). Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` ("Heading 2" in Keystatic) is a section; its web id comes from the heading text (e.g. `#final-sharing-circle-finale`): H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
 | ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it, a paragraph at a time**: a paragraph (or bullet point) that starts beside the photo stays in that column to its end, even if it runs past the photo; the next one below the photo runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
@@ -171,7 +172,7 @@ change better serves the goals in Part 1.
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
 | ART-11 | Bold and lists | In an article (Keystatic toolbar or Markdown), `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
 | ART-12 | Rail never covers text | On desktop, the Like/Share rail never overlaps article text. | ✅ | Auto |
-| ART-13 | Links from this article | After the article text and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Three across on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
+| ART-13 | Links from this article | After the comments and before the Q&A, when the article has `links`: heading (default from `links.md`, or the article's `linksTitle`); a card per link with a 48px round icon (picture, or the first letter if none), name, optional type label, one-line description, and ↗. Three across on desktop, one on phones. Whole card is the link; opens in a new tab. | ✅ 📝 demo links | Auto |
 | ART-14 | Affiliate links | Links with `affiliate: true` show an "Affiliate" label, use `rel="sponsored noopener"`, and the affiliate note from `links.md` appears under the list. | ✅ | Auto |
 
 ### Interactions
@@ -179,7 +180,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | ART-20 | Reading progress bar | 3px bar fixed at the very top. Green fill grows from 0% to 100% as you scroll through the article body. | ✅ | Auto |
-| ART-21 | Photo zoom on scroll | Article photos (hero and sections) start slightly zoomed (108%) and ease to 100% over 1.1s the first time they scroll into view. Photos on Home, About and Policy don't zoom. | ✅ | Auto |
+| ART-21 | Photo zoom on scroll | Article photos (hero and sections) start slightly zoomed (108%) and ease to 100% over 1.1s the first time they scroll into view. Nothing zooms until the reader first scrolls, so the top photo zooms on that first scroll, not as the page loads. Photos on Home, About and Policy don't zoom. | ✅ | Auto |
 | ART-22 | Reduced motion | If the visitor's device asks for reduced motion, photos don't zoom. | ✅ | None |
 | ART-23 | Table of contents | Grey "Table of contents" button with "+"; opens a list of section headings and the glyph changes to "−". | ✅ | Auto |
 | ART-24 | TOC jump | Clicking a heading scrolls smoothly to that section (90px below the top, clear of the header) and closes the list. | ✅ | Auto |
@@ -207,7 +208,8 @@ change better serves the goals in Part 1.
 | ART-51 | Author badge | Ben's replies show under the comment with a green "Author" badge. | ✅ | Auto |
 | ART-46 | Comment safety | Text people type is shown as plain text, never run as code. | ✅ | Auto |
 | ART-47 | No invented comments or likes | The sample comments (Priya, Tom) and the starting like count of 24 were removed; everything shown is real (G5). | ✅ | Auto |
-| ART-48 | Signup block | Full signup block below the comments (see CMP-04). | ✅ | Auto |
+| ART-48 | Signup block | Full signup block at the end of the page (see CMP-04). | ✅ | Auto |
+| ART-52 | Order after the article | Comments come straight after the article text, then "Links from this article", then Common questions, then the signup block (Ben's choice, 2026-10-27). | ✅ | Auto |
 
 ## 4. About (`/about/`)
 

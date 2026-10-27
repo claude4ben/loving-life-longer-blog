@@ -124,6 +124,40 @@ test.describe('Article interactions', () => {
     await expect(img).toHaveClass(/is-visible/);
   });
 
+  test('the top photo waits for the first scroll before zooming', async ({ page }) => {
+    const hero = page.locator('.hero');
+    await page.waitForLoadState('load');
+    await page.waitForTimeout(400);
+    await expect(hero).not.toHaveClass(/is-visible/);
+    await page.mouse.wheel(0, 200);
+    await expect(hero).toHaveClass(/is-visible/);
+  });
+
+  test('comments come straight after the article, then links, then common questions', async ({ page }) => {
+    const top = (sel: string) => page.locator(sel).evaluate((el) => el.getBoundingClientRect().top + scrollY);
+    const [body, comments, links, faq] = [await top('#article-body'), await top('#comments-section'), await top('#links'), await top('.faq-wrap')];
+    expect(body).toBeLessThan(comments);
+    expect(comments).toBeLessThan(links);
+    expect(links).toBeLessThan(faq);
+  });
+
+  test('top photo and header line up with the text on desktop; photo is edge to edge on phones', async ({ page, isMobile }) => {
+    const hero = (await page.locator('.hero').boundingBox())!;
+    const text = (await page.locator('.article-head h1').boundingBox())!;
+    const vw = page.viewportSize()!.width;
+    if (isMobile) {
+      expect(Math.round(hero.x)).toBe(0);
+      expect(Math.round(hero.width)).toBe(vw);
+    } else {
+      expect(Math.round(hero.x)).toBe(Math.round(text.x));
+      expect(Math.round(hero.width)).toBe(vw - 2 * Math.round(text.x));
+      const logo = (await page.locator('.brand-logo').boundingBox())!;
+      const nav = (await page.locator('.site-header .nav').boundingBox())!;
+      expect(Math.round(logo.x)).toBe(Math.round(text.x));
+      expect(Math.round(nav.x + nav.width)).toBe(Math.round(hero.x + hero.width));
+    }
+  });
+
   test('table of contents opens, jumps to a section and closes', async ({ page }) => {
     const btn = page.locator('[data-toc-toggle]');
     const list = page.locator('[data-toc]');
