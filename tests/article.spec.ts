@@ -14,6 +14,17 @@ test.describe('Article content', () => {
     await expect(page.locator('#article-body section h2')).toHaveCount(SECTION_HEADINGS);
   });
 
+  test('desktop title fits on one line and the summary is exactly as wide as the title', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    const h1 = page.locator('.article-head h1');
+    const lineHeight = await h1.evaluate((el) => parseFloat(getComputedStyle(el).lineHeight));
+    const title = (await h1.boundingBox())!;
+    expect(title.height).toBeLessThan(lineHeight * 1.5); // one line
+    const summary = (await page.locator('.standfirst').boundingBox())!;
+    expect(Math.abs(summary.width - title.width)).toBeLessThan(2);
+    expect(summary.x).toBe(title.x);
+  });
+
   test('photo sections and captions', async ({ page }) => {
     await expect(page.locator('.sec-split')).toHaveCount(3);
     await expect(page.locator('.caption')).toHaveText(['50 dancers. Blindfolded. In the dark.', 'You’re welcome… Feel free.'.replace('’', "'")]);

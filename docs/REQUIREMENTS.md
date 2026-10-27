@@ -159,7 +159,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop, up to 960px wide); standfirst grey (19px / 21px, up to 820px wide); byline row across the page width. Aligned with the article text. | ✅ 📝 standfirst | Auto |
+| ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
 | ART-02 | Byline | 44px round avatar; name (600 14px) and disclosure (13px grey); read time and date right-aligned. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
