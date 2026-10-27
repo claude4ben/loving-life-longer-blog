@@ -160,7 +160,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
-| ART-02 | Byline | 44px round avatar; name (600 14px) and disclosure (13px grey); read time and date right-aligned. | ✅ 📝 avatar, disclosure | Auto |
+| ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) across the full width. Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
@@ -234,7 +234,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| CMP-01 | Pillar tag | White uppercase Rubik 600 12px label, 4px rounded. Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. | ✅ | Manual |
+| CMP-01 | Pillar tag | White uppercase Rubik 600 **14px** label with **square corners** (padding 6px 12px). Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. Used on the home page and articles. | ✅ | Auto |
 | CMP-02 | Primary button | Ink background, white bold text, 6px rounded. Inline size 12px 22px / 15px; full-width size 14px / 16px. | ✅ | Manual |
 | CMP-03 | Text fields | 16px text (stops iPhones zooming in), 1px `#d8dcdf` border, 6px rounded. | ✅ | None |
 | CMP-04 | Signup block | Grey band (on desktop: title and text on the left, email field and Subscribe on one row on the right with the tick box below; on phones, centred and stacked): "Get new pieces by email", short body text, email field, consent checkbox ("I'd like to receive occasional emails…") and Subscribe. | ✅ | Auto |

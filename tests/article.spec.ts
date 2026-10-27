@@ -11,6 +11,12 @@ test.describe('Article content', () => {
     await expect(page.locator('.byline')).toContainText('Ben Parker');
     await expect(page.locator('.byline')).toContainText('15 min read');
     await expect(page.locator('.byline')).toContainText('Jul 2026');
+    // Date and read time sit under the name, lined up with it (not floating on the right).
+    const name = (await page.locator('.by-name').boundingBox())!;
+    const meta = (await page.locator('.by-meta').boundingBox())!;
+    expect(meta.x).toBe(name.x);
+    expect(meta.y).toBeGreaterThan(name.y);
+    await expect(page.locator('.by-meta')).toHaveText('Jul 2026·15 min read');
     await expect(page.locator('#article-body section h2')).toHaveCount(SECTION_HEADINGS);
   });
 

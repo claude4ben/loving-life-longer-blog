@@ -28,12 +28,12 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
       <p class="standfirst">{d.standfirst}</p>
     </div>
     <div class="byline">
-      <span class="avatar"><Photo src={d.avatar} alt={d.author} focus={d.avatarFocus} zoom={d.avatarZoom} sizes="44px" widths={[88, 132]} /></span>
-      <div>
+      <span class="avatar"><Photo src={d.avatar} alt={d.author} focus={d.avatarFocus} zoom={d.avatarZoom} sizes="56px" widths={[112, 168]} /></span>
+      <div class="by-text">
         <div class="by-name">{d.author}</div>
         <div class="by-note">{d.disclosure}</div>
+        <div class="by-meta"><span>{d.dateLabel}</span><span aria-hidden="true">·</span><span>{d.readTime}</span></div>
       </div>
-      <div class="by-meta"><div>{d.readTime}</div><div>{d.dateLabel}</div></div>
     </div>
   </header>
 
@@ -156,10 +156,11 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   .article-head h1 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
   .standfirst { font-size: 19px; line-height: 1.6; color: var(--muted); margin: 0 0 6px; }
   .byline { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
   .by-name { font-size: 14px; font-weight: 600; }
   .by-note, .by-meta { font-size: 13px; color: var(--muted); }
-  .by-meta { margin-left: auto; text-align: right; white-space: nowrap; }
+  /* Date and read time sit under the name, lined up with it, instead of floating on the right. */
+  .by-meta { display: flex; flex-wrap: wrap; gap: 0 6px; margin-top: 2px; }
 
   /* Top photo: 16:9 on phones; on desktop up to 480px tall (raised from 300px, 2026-10-27). */
   .hero { width: 100%; aspect-ratio: 16 / 9; max-height: 480px; margin-bottom: 8px; overflow: hidden; }

@@ -106,8 +106,8 @@ main { flex: 1; }
 /* Components */
 .pillar-tag {
   display: inline-block; color: var(--white); font-family: var(--font-label);
-  font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 4px;
+  font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2;
+  padding: 6px 12px; border-radius: 0; /* square corners, larger text (Ben, 2026-10-27) */
 }
 .btn {
   background: var(--ink); color: var(--white); border: none; border-radius: 6px;
