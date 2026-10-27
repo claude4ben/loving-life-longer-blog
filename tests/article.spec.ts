@@ -21,10 +21,31 @@ test.describe('Article content', () => {
 
   test('photo side alternates on desktop and text comes first on mobile', async ({ page, isMobile }) => {
     const sec = page.locator('#dancing-in-the-dark');
-    const text = await sec.locator('.sec-text').boundingBox();
-    const img = await sec.locator('.sec-img').boundingBox();
-    if (isMobile) expect(img!.y).toBeGreaterThan(text!.y);
-    else expect(img!.x).toBeLessThan(text!.x); // image on the left for this section
+    // Where the heading's words actually sit (its box spans behind a floated photo).
+    const words = await sec.locator('h2').evaluate((h) => {
+      const r = document.createRange();
+      r.selectNodeContents(h);
+      const b = r.getBoundingClientRect();
+      return { x: b.left, y: b.top };
+    });
+    const img = (await sec.locator('.sec-img').boundingBox())!;
+    if (isMobile) expect(img.y).toBeGreaterThan(words.y);
+    else expect(words.x).toBeGreaterThan(img.x + img.width); // photo on the left for this section
+  });
+
+  test('text runs full width once it passes the bottom of the photo (desktop)', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    for (const id of ['mealtime-fun', 'dancing-in-the-dark', 'final-sharing-and-finale']) {
+      const sec = page.locator(`#${id}`);
+      const img = (await sec.locator('.sec-img').boundingBox())!;
+      const text = (await sec.locator('.sec-text').boundingBox())!;
+      const below = await sec.locator('.sec-text p, .sec-text li').evaluateAll(
+        (ps, imgBottom) => ps.map((p) => p.getBoundingClientRect()).filter((r) => r.top > imgBottom).map((r) => r.width),
+        img.y + img.height,
+      );
+      expect(below.length, `${id} has text below its photo`).toBeGreaterThan(0);
+      for (const w of below) expect(w).toBeGreaterThan(text.width - 40); // full width of the row (bullets are indented)
+    }
   });
 
   test('desktop photos line up with the top of their section', async ({ page, isMobile }) => {

@@ -50,13 +50,14 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     {sections.map((s) =>
       s.image ? (
         <section id={s.id} class:list={['sec-split', { 'img-left': s.image.side === 'left' }]}>
-          <div class="sec-text">
-            <h2>{s.heading}</h2>
-            <Fragment set:html={s.html} />
-          </div>
+          {/* Photo comes first so text can wrap around it on desktop; on mobile it shows after the text. */}
           <div class="sec-img reveal breakout">
             <div class="sec-img-inner" role="img" aria-label={s.image.alt} style={`background-image:url('${s.image.src}')`}></div>
             {s.image.caption && <div class="caption"><span>{s.image.caption}</span></div>}
+          </div>
+          <div class="sec-text">
+            <h2>{s.heading}</h2>
+            <Fragment set:html={s.html} />
           </div>
         </section>
       ) : (
@@ -181,7 +182,8 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   #article-body :global(li::marker) { color: var(--accent); }
   #article-body :global(strong) { font-weight: 700; }
   .sec-plain { padding-bottom: 40px; }
-  .sec-split { padding: 0 20px 40px; }
+  .sec-split { padding: 0 20px 40px; display: flex; flex-direction: column; }
+  .sec-split .sec-img { order: 2; } /* mobile: text first, then the photo */
   .sec-img { aspect-ratio: 4 / 3; max-height: 300px; position: relative; overflow: hidden; margin-bottom: 24px; }
   .sec-img-inner { width: 100%; height: 100%; background-size: cover; background-position: center; }
   .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 20px 18px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
@@ -191,13 +193,15 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     .article-head h1 { font-size: 40px; }
     #article-body :global(p),
     #article-body :global(li) { font-size: 19px; }
-    .sec-split {
-      max-width: 1320px; margin: 0 auto 64px; padding: 0 96px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;
+    /* Text wraps around the photo, then runs full width once it passes the bottom of the photo. */
+    .sec-split { display: flow-root; max-width: 1320px; margin: 0 auto 64px; padding: 0 96px; }
+    .sec-img {
+      float: right; width: calc(50% - 28px); margin: 6px 0 24px 56px;
+      aspect-ratio: auto; max-height: none; height: 460px;
     }
-    .sec-img { aspect-ratio: auto; max-height: none; height: 460px; margin-bottom: 0; }
-    .img-left .sec-img { order: 1; }
-    .img-left .sec-text { order: 2; }
+    .img-left .sec-img { float: left; margin: 6px 56px 24px 0; }
+    /* Each bullet point sits beside the photo or below it at full width, with its bullet always visible. */
+    .sec-split :global(li) { display: list-item flow-root; }
     /* Text-only sections span the same width as the text-and-photo rows (Ben's request, 2026-10-27). */
     .sec-plain.col-article { max-width: 1320px; padding-left: 96px; padding-right: 96px; }
   }

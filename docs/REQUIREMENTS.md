@@ -161,7 +161,7 @@ change better serves the goals in Part 1.
 | ART-03 | Hero photo | 16:9, max 300px tall, square corners; edge to edge on mobile. | ✅ 📝 photo | Manual |
 | ART-04 | Sections | Each `## Heading` in the article file is a section: H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
-| ART-06 | Photo sections, desktop | Two equal columns, 56px gap, max width 1320px, 96px side padding (keeps text clear of the Like/Share rail); photo column 460px tall and **lined up with the top of the section**, not centred. The photo's side (left/right) comes from the article file. | ✅ 📝 photos | Auto |
+| ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it**: beside the photo it's a column, and once it passes the bottom of the photo it runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
 | ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
 | ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers. | ✅ 📝 answers | Auto |
@@ -288,7 +288,7 @@ Small, deliberate differences; each still meets the handoff's intent.
 | Signup | Did nothing | Requires email and consent, then says thanks | Clear feedback; consent captured in the form |
 | Home introduction | Mission paragraph in large serif | Purpose as the H1 headline with a "Welcome" label and a short line about Ben | Clearer purpose, especially on mobile (G1, G4) |
 | Article text width | 680px | Text-only sections as wide as the text-and-photo rows; header, contents, Q&A and comments 820px | Ben's choice: sections line up edge to edge |
-| Desktop photo sections | Photo centred beside the text | Photo lined up with the top of the section; wider side padding | Ben's request; the rail was covering text |
+| Desktop photo sections | Photo centred beside the text in a fixed column | Photo at the top of the section with text wrapping around it, then full width below it | Ben's request; also fixed the rail covering text |
 | Mobile/desktop switch | JavaScript | CSS | Correct layout before scripts load (ARCHITECTURE decision 6) |
 
 ## Testing still to add
