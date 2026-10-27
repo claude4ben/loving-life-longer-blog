@@ -192,8 +192,8 @@ interactions are final.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| OPS-01 | Hosting | Site served by Cloudflare Pages from `claude4ben/loving-life-longer-blog`. | 🔨 (setup instructions given; not yet confirmed) | None |
-| OPS-02 | Auto deploy | Every push to `main` goes live; other branches get preview links. | 🔨 | None |
+| OPS-01 | Hosting | Site served by Cloudflare Pages (project `loving-life-longer-blog`, https://loving-life-longer-blog.pages.dev) from `claude4ben/loving-life-longer-blog`. | ✅ | Manual (Cloudflare check passed on GitHub, 2026-10-27) |
+| OPS-02 | Auto deploy | Every push to `main` goes live; other branches get preview links. | ✅ | Manual (each commit shows a "Cloudflare Pages" check on GitHub) |
 | OPS-04 | Private until launch | Only allowed email addresses can open the site (main address and previews); everyone else sees a Cloudflare sign-in page. Removed at launch. | 🔨 (steps given; not yet confirmed) | None |
 | OPS-03 | Moderation admin | A private view to approve, delete and reply to comments. | 🔨 | None |
 

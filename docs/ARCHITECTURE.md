@@ -188,7 +188,8 @@ Instagram has no web share link, so it copies the article link.
 
 ### 14. Hosting: Cloudflare Pages ✅
 
-**Why:** Cloudflare Pages is connected to `claude4ben/loving-life-longer-blog` and rebuilds the site on
+**Why:** Cloudflare Pages (project `loving-life-longer-blog`, https://loving-life-longer-blog.pages.dev) is
+connected to `claude4ben/loving-life-longer-blog` and rebuilds the site on
 every push to `main`. Hosting, database (D1), server code (Pages Functions) and spam protection
 (Turnstile) are all in one Cloudflare account.
 
@@ -281,3 +282,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | Hosting decided: Cloudflare Pages (14). Comments and likes move to Cloudflare D1 (8); signup moves to a newsletter service, D1 as fallback (9). Added Pages Functions (16) and Turnstile (17). Vercel and Netlify ruled out. |
 | 2026-10-27 | Added automated testing (18): Playwright behaviour tests and axe accessibility scans at desktop and phone sizes, run by GitHub Actions on every code change. |
 | 2026-10-27 | Hosting (14): site stays private behind Cloudflare Access until launch. |
+| 2026-10-27 | Hosting (14) live: Cloudflare Pages project `loving-life-longer-blog` connected and deploying from `main`. |
