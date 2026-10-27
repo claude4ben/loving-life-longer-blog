@@ -44,6 +44,12 @@ test.describe('Article content', () => {
         img.y + img.height,
       );
       expect(below.length, `${id} has text below its photo`).toBeGreaterThan(0);
+      // A paragraph that starts beside the photo keeps that column width all the way to its end.
+      const beside = await sec.locator('.sec-text p, .sec-text li').evaluateAll(
+        (ps, imgBottom) => ps.map((p) => p.getBoundingClientRect()).filter((r) => r.top < imgBottom).map((r) => r.width),
+        img.y + img.height,
+      );
+      for (const w of beside) expect(w).toBeLessThan(text.width * 0.6);
       for (const w of below) expect(w).toBeGreaterThan(text.width - 40); // full width of the row (bullets are indented)
     }
   });

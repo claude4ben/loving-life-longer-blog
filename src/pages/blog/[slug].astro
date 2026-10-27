@@ -217,7 +217,9 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
       aspect-ratio: auto; max-height: none; height: 460px;
     }
     .img-left .sec-img { float: left; margin: 6px 56px 24px 0; }
-    /* Each bullet point sits beside the photo or below it at full width, with its bullet always visible. */
+    /* Each paragraph and bullet point keeps one width: a paragraph that starts beside the photo stays in
+       that column to its end; the next one below the photo runs full width. Bullets stay visible. */
+    .sec-split :global(p) { display: flow-root; }
     .sec-split :global(li) { display: list-item flow-root; }
   }
 
