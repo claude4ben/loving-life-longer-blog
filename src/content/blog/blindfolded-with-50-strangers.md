@@ -80,7 +80,13 @@ After each ED come down, there was an option to break into 'sharing circles' of 
 
 A lot of the great people we met raved about the 'Trance Dance' experience on Friday night in the marquee but they wouldn't spoil the surprise. I had a guess, from some pictures, that it might involve dancing blindfolded but nothing more. In the marquee, which is adorned with wonderful bright spiritual hippy screen prints, we each had a yoga mat, a pillow and yes a blind fold. Spaces were limited to 50ish because, as you can imagine, if you are letting loose blindfolded, you may end up whacking your neighbour.
 
-Seth talked us through the prep for the main event: A) yes you can make noise but loud screams should be done into the pillow (I really couldn't imagine myself screaming but could envision that some of my fellow 'trance trippers' might require a pillow). B) Use the 'Breath of Fire' (in-in-out @ pace) to focus yourself and build energy. C) Relax knees and shake whole body to let go and get out of your head. D) Remember to breathe (Seth probably requested this 50 times over the 5 days and every time I found it useful, as somehow I was indeed holding some tension). E) If you find yourself caught in thought, then shake and change the pattern of your dance (this turned out to be the best cue for me so when I noticed I was stuck, I jiggled my way back into the flow of the dance).
+Seth talked us through the prep for the main event:
+
+- Yes you can make noise but loud screams should be done into the pillow (I really couldn't imagine myself screaming but could envision that some of my fellow 'trance trippers' might require a pillow).
+- Use the 'Breath of Fire' (in-in-out @ pace) to focus yourself and build energy.
+- Relax knees and shake whole body to let go and get out of your head.
+- Remember to breathe (Seth probably requested this 50 times over the 5 days and every time I found it useful, as somehow I was indeed holding some tension).
+- If you find yourself caught in thought, then shake and change the pattern of your dance (this turned out to be the best cue for me so when I noticed I was stuck, I jiggled my way back into the flow of the dance).
 
 We donned our blindfolds and the music started. It was a strange sensation at first… thinking of the 50 people all around you, all slowly moving and trying to navigate not coming off the yoga mat. For me dancing has always been about the connection with others around me and feeling the collective energy, so I had big doubts about my ability to enjoy dancing blindfolded for 1.5 hrs. I thought I might get bored… I was very wrong.
 

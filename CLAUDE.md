@@ -11,8 +11,10 @@
   dated line to its Change log in the same commit.
 - `docs/REQUIREMENTS.md` lists every requirement with its status and test coverage. When behaviour or
   design changes, or tests are added, update the matching rows in the same commit.
-- All words shown on the site live in Markdown files (`src/content/blog/` and `src/content/pages/`),
-  never hard-coded in pages or components. Keep the README's formatting-marks table accurate.
+- All page content (articles, page text, Q&A, signup text) lives in Markdown files (`src/content/blog/`
+  and `src/content/pages/`), never hard-coded. Short interface labels (buttons, menu items, form
+  placeholders such as "Post comment") are still in the code; move them to Markdown when Ben wants to
+  edit them. Keep the README's formatting-marks table accurate.
 - Keep the README's "Where to edit things" table accurate when files move.
 - Before pushing any change to code, styles or content, run `npm test` and only push if it passes.
   Add or update tests in `tests/` for new or changed behaviour, and set the Test column in

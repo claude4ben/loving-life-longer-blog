@@ -43,6 +43,20 @@ test.describe('Article content', () => {
     expect(Math.max(...rightEdges)).toBeLessThan(rail!.x);
   });
 
+  test('Seth\'s prep list shows as five bullet points', async ({ page }) => {
+    await expect(page.locator('#dancing-in-the-dark ul > li')).toHaveCount(5);
+    await expect(page.locator('#dancing-in-the-dark ul > li').first()).toContainText('Yes you can make noise');
+  });
+
+  test('desktop reading column is 820px wide; mobile uses the screen width', async ({ page, isMobile }) => {
+    const box = await page.locator('#arriving').evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return el.getBoundingClientRect().width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    });
+    if (isMobile) expect(box).toBe(350);
+    else expect(box).toBe(780); // 820px column minus 20px padding each side
+  });
+
   test('article FAQ', async ({ page }) => {
     await expect(page.locator('.faq-card .qa-q')).toHaveCount(2);
   });

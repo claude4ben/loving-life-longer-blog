@@ -20,7 +20,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
 <Base title={d.title} description={d.standfirst}>
   <div class="progress" aria-hidden="true"><div data-progress></div></div>
 
-  <header class="col article-head">
+  <header class="col col-article article-head">
     <PillarTag pillar={d.pillar} />
     <h1>{d.title}</h1>
     <p class="standfirst">{d.standfirst}</p>
@@ -38,7 +38,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     <img src={d.heroImage} alt={d.heroAlt} />
   </div>
 
-  <div class="col toc-wrap">
+  <div class="col col-article toc-wrap">
     <button class="toc-btn" data-toc-toggle aria-expanded="false">
       <span>Table of contents</span><span data-toc-glyph>+</span>
     </button>
@@ -61,7 +61,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
           </div>
         </section>
       ) : (
-        <section id={s.id} class="col sec-plain">
+        <section id={s.id} class="col col-article sec-plain">
           <h2>{s.heading}</h2>
           <Fragment set:html={s.html} />
         </section>
@@ -70,7 +70,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
   </article>
 
   {d.faqs.length > 0 && (
-    <div class="col faq-wrap">
+    <div class="col col-article faq-wrap">
       <div class="faq-card">
         <div class="faq-label">Common questions</div>
         <Faq faqs={d.faqs} />
@@ -110,7 +110,7 @@ const sections = splitSections(post.body ?? '').map((s) => ({ ...s, image: d.sec
     </div>
   </div>
 
-  <section id="comments-section" class="col comments">
+  <section id="comments-section" class="col col-article comments">
     <h2>Comments (<span data-comment-count>0</span>)</h2>
     <!-- TODO: comments are in-browser only until a backend with moderation is added. -->
     <form class="comment-form" data-comment-form novalidate>

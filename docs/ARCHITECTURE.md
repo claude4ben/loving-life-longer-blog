@@ -132,6 +132,11 @@ This replaces the temporary in-browser storage (`localStorage`) used in the firs
 | Free and built into Cloudflare, no extra account | We write the SQL tables and the moderation ourselves |
 | Same place as hosting and server code | Free plan has daily read/write limits (far above what a personal blog needs) |
 
+*Reply notifications:* commenters can choose "Email me when someone replies". This needs an
+**email-sending service** ❓ to choose. Options: Cloudflare's own email sending (if available on the
+account; keeps everything in one place), or a dedicated service such as Resend or Postmark (generous
+free tiers). Each email must include an unsubscribe link, and we only send to people who ticked the box.
+
 *Still to build:* tables for comments and likes, one like per visitor, a moderation queue, and an admin
 view to approve, delete and reply to comments.
 
@@ -291,3 +296,4 @@ everything on every push to `main` and every pull request, skipping changes that
 | 2026-10-27 | Hosting (14) live: Cloudflare Pages project `loving-life-longer-blog` connected and deploying from `main`. |
 | 2026-10-27 | Article section parsing moved to `src/lib/sections.ts` (3) so it can be tested directly; supports bold and lists. |
 | 2026-10-27 | Page text (4) moved from `src/data/site.ts` into Markdown files in `src/content/pages/`; formatting marks work in all of them. |
+| 2026-10-27 | Comments (8): added "email me when someone replies" notifications; email-sending service still to choose. Article reading column widened to 820px on desktop (styling only). |
