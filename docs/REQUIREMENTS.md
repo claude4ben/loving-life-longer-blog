@@ -270,7 +270,7 @@ change better serves the goals in Part 1.
 | OPS-01 | Hosting | Site served by Cloudflare Pages (project `loving-life-longer-blog`, https://loving-life-longer-blog.pages.dev) from `claude4ben/loving-life-longer-blog`. | ✅ | Manual (Cloudflare check passed on GitHub, 2026-10-27) |
 | OPS-02 | Auto deploy | Every push to `main` goes live; other branches get preview links. | ✅ | Manual (each commit shows a "Cloudflare Pages" check on GitHub) |
 | OPS-04 | Private until launch | Only allowed email addresses can open the site (main address and previews); everyone else sees a Cloudflare sign-in page. Removed at launch. | 🔨 (steps given; not yet confirmed) | None |
-| OPS-05 | Database | Cloudflare D1 database `lll-blog`, connected through `wrangler.toml`. Tables are created automatically on first use. | 🔨 waiting for the database to be created | Auto (local copy in tests) |
+| OPS-05 | Database | Cloudflare D1 database `lll-blog` (id `0bc01f85-fd80-48ed-b0b8-633fad218774`), connected through `wrangler.toml`. Tables are created automatically on first use. | ✅ | Auto (local copy in tests) |
 | OPS-03 | Comment admin | `/admin` lists every comment (with commenters' emails), grouped by article: reply as Ben, delete (with confirmation), restore, approve. Hidden from search engines. Only works for Ben once signed in through Cloudflare Access; anyone else gets "Not signed in as an admin". | ✅ built; 🔨 Access sign-in to set up | Auto |
 
 ---

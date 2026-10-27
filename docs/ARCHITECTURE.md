@@ -24,8 +24,8 @@ The site is a **static website**: all pages are built once into plain files. Onl
 (comments, likes, signup) will run as small server functions. Today the functions, database, Turnstile
 and newsletter service are decided but not built yet (🔨), so the live site is fully static.
 
-*Update 2026-10-27:* Pages Functions and the D1 database are now built (decisions 8, 16, 19); they go
-live once the database is created in Cloudflare and its id is added to `wrangler.toml`.
+*Update 2026-10-27:* Pages Functions and the D1 database are now built (decisions 8, 16, 19); they are
+live: database `lll-blog` was created and its id added to `wrangler.toml`.
 
 | Page | Address | File |
 | --- | --- | --- |
@@ -339,3 +339,4 @@ command line and never set on Cloudflare.
 | 2026-10-27 | Page text (4) moved from `src/data/site.ts` into Markdown files in `src/content/pages/`; formatting marks work in all of them. |
 | 2026-10-27 | Comments (8): added "email me when someone replies" notifications; email-sending service still to choose. Article reading column widened to 820px on desktop (styling only). |
 | 2026-10-27 | Built comments and likes on D1 (8) via Pages Functions (16); added `wrangler.toml` config and Access-protected admin (19); removed sample comments and fake like count. Goes live once the database id is added. |
+| 2026-10-27 | D1 database `lll-blog` created and connected; comments and likes live. |

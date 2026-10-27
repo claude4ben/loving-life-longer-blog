@@ -8,7 +8,7 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "lll-blog"
-database_id = "REPLACE_WITH_DATABASE_ID"
+database_id = "0bc01f85-fd80-48ed-b0b8-633fad218774"
 
 [vars]
 # "true" = comments wait for Ben's approval before appearing; "false" = appear straight away.
