@@ -1,51 +1,72 @@
 ---
-title: "Blindfolded With 50 Strangers: My First Ecstatic Dance"
+title: 'Blindfolded With 50 Strangers: My First Ecstatic Dance'
 pillar: Move
-standfirst: "A trip to an Ecstatic Dance festival in Dorset — cacao circles, sharing circles, a hugging workshop with five levels, and 1.5 hours dancing blindfolded with 50 strangers."
+standfirst: >-
+  A trip to an Ecstatic Dance festival in Dorset — cacao on tap, sharing
+  circles, a five level hugging workshop and dancing blindfolded with 50
+  strangers for an hour and a half.
 date: 2026-07-01
-author: "Ben Parker"
-disclosure: "First-person account — Ben’s first Ecstatic Dance festival."
-avatar: ./blindfolded-with-50-strangers/ben-byline.jpg
-heroImage: ./blindfolded-with-50-strangers/hero.jpg
-heroAlt: "Festival venue and grounds"
-heroFocus: center
+author: Ben Parker
+disclosure: First-person account — Ben’s first Ecstatic Dance festival.
+avatar: ./blindfolded-with-50-strangers/avatar.jpg
 featured: true
+heroImage: ./blindfolded-with-50-strangers/heroImage.jpg
+heroAlt: Festival venue and grounds
+heroFocus: center
 faqs:
-  - q: "What is ecstatic dance?"
-    a: "Placeholder — short definitional answer pending final copy. Broadly: free-form, unchoreographed movement to music, usually without talking or set steps."
-  - q: "Do you need dance experience to go on a retreat like this?"
-    a: "Placeholder — short answer pending final copy. No — most attendees have none."
+  - q: What is ecstatic dance?
+    a: >-
+      Placeholder — short definitional answer pending final copy. Broadly:
+      free-form, unchoreographed movement to music, usually without talking or
+      set steps.
+  - q: Do you need dance experience to go on a retreat like this?
+    a: >-
+      Placeholder — short answer pending final copy. No — most attendees have
+      none.
 links:
-  - name: "Pulse Music & Dance Festival, Angsbacka"
-    url: "https://www.angsbacka.com/product/pulse-music-dance-festival/"
+  - name: Pulse Music & Dance Festival, Angsbacka
+    url: https://www.angsbacka.com/product/pulse-music-dance-festival/
     type: Website
-    description: "The Swedish community festival we looked at first: music, dance and retreat-style workshops."
-  - name: "Ecstatic Dance Festival"
-    url: "https://example.com/placeholder-ed-festival"
+    description: >-
+      The Swedish community festival we looked at first: music, dance and
+      retreat-style workshops.
+    affiliate: false
+  - name: Ecstatic Dance Festival
+    url: https://example.com/placeholder-ed-festival
     type: Website
-    icon: ./blindfolded-with-50-strangers/link-1.jpg
-    description: "Placeholder: the Dorset festival this article is about. Dates, tickets and what a weekend looks like."
-  - name: "Seth Newman"
-    url: "https://example.com/placeholder-seth"
+    description: >-
+      Placeholder: the Dorset festival this article is about. Dates, tickets and
+      what a weekend looks like.
+    icon: ./blindfolded-with-50-strangers/links/1/icon.jpg
+    affiliate: false
+  - name: Seth Newman
+    url: https://example.com/placeholder-seth
     type: Instagram
-    icon: ./blindfolded-with-50-strangers/link-2.jpg
-    description: "Placeholder: DJ and co-founder of ED Festival, who guided every dance."
-  - name: "URUBU Collective"
-    url: "https://example.com/placeholder-urubu"
+    description: 'Placeholder: DJ and co-founder of ED Festival, who guided every dance.'
+    icon: ./blindfolded-with-50-strangers/links/2/icon.jpg
+    affiliate: false
+  - name: URUBU Collective
+    url: https://example.com/placeholder-urubu
     type: Music
-    icon: ./blindfolded-with-50-strangers/link-3.jpg
-    description: "Placeholder: the live musicians (sax, keys and three drummers) who moved through the dancers."
-  - name: "Contoured sleep mask"
-    url: "https://example.com/placeholder-affiliate"
+    description: >-
+      Placeholder: the live musicians (sax, keys and three drummers) who moved
+      through the dancers.
+    icon: ./blindfolded-with-50-strangers/links/3/icon.jpg
+    affiliate: false
+  - name: Contoured sleep mask
+    url: https://example.com/placeholder-affiliate
     type: Shop
+    description: >-
+      Placeholder affiliate example: a comfortable blindfold for trance dance or
+      a good night's sleep.
     affiliate: true
-    description: "Placeholder affiliate example: a comfortable blindfold for trance dance or a good night's sleep."
 ---
-
 ## How did we end up at an Ecstatic Dance festival?
+
 Well, my wife Emma and I, had some free time without our children were looking for something to do over summer that enabled us to hang out with like-minded people, do some retreat like activities and Dance, we came across Angsbacka 'pulse-music-dance-festival'. Angsbacka is a community in Sweden that runs multiple festivals, a quick check with a Swedish friend confirmed they had been to Angsbacka to a 'Sexsibility festival' with a thousand people… To be honest the British prude in me thought 'I am not really up for keys in the bowl and wife swapping at this moment'.. We also thought if it turned out not to be our vibe, Sweden was a long way to go. So the search continued and we found (or my helpful AI friend ChatGPT found) 'Ecstatic Dance Festival 2026' based in Dorset, held at a community run location.
 
 ## Arriving
+
 We are arrived at the Leela community to be greeted by a very enthusiastic Jason – I instantly felt boringly dressed in comparison to explosion of colour in Jason's shirt. Later in the festival a fellow Ecstatic Dancer said, with love, I dressed like an 'IT manager on holiday'… to be fair an apt description ☺. Jason was a fan of Emma, due to the colourful floral number she was sporting, he then directed us to a park and the reception.
 
 On our drive down past Stonehenge, as well as getting ChatGpt to explain the 5000 yr history, we asked for good tips for remembering names at a festival.. Emma was on fire with the tactic of putting the person's name into almost everything you said. By time we had sat down at random tables with soon to be festival friends, she had mastered the art on Jason and others. “Thank you Jason, I love your shirt as well Jason, See you on the dance floor Jason…” She is a fast learner.
@@ -54,7 +75,13 @@ At Reception, signing in was like a hippy version of what I imagine army sign-up
 
 ## Mealtime fun
 
-{% photo src="./blindfolded-with-50-strangers/cacao-circle.jpg" alt="cacao fireside circle photo" side="right" focus="center" zoom=1 /%}
+{% photo
+   src="./blindfolded-with-50-strangers/cacao-circle.jpg"
+   alt="cacao fireside circle photo"
+   side="right"
+   focus="center"
+   zoom=1 /%}
+
 All meals are one option, community and volunteer prepared, all vegetarian/vegan, mix of served / self-service buffet and all very delicious. Leela's chef could write an incredible recipe book.
 
 If you like cacao, you are in for a treat - it's almost available on tap. As well as being on offer in fun fire-side singing circles, led by the master of festival organisation Diana (Co-founder of ED London etc), it's served in lots of the dances and activities. So, no drugs but plenty of delicious cacao to get you in the mood.
@@ -66,6 +93,7 @@ For example, over breakfast, I spotted some red cabbage in Lies's bowl of muesli
 Once during the five days, you are asked to help with clearing up the meal but even this was fun. Washing up I met Bruna and we exchanged our top health tips. We have both worked in logistics so geeked out about that for a while, but I suspect both our deep calling lies in something else…
 
 ## 1st Ecstatic Dance experience
+
 Some of our cooler friends had experienced Ecstatic dance (ED) but I honestly thought it was just going to be a sober rave (which I haven't been to either). I always felt I probably didn't need alcohol to let loose - the last 4 years of no drinking and the odd night out 'sans booze' have confirmed that. If you asked our friends who loves dance more, they would probably say me; but weirdly Emma seemed to take to ED more naturally than me.
 
 ED typically starts slow and builds into a frenzy – our journey to frenzy was guided by Seth Newman (co-founder of ED Festival), who is a brilliant DJ and is accompanied by the amazing 'URUBU Collective' that includes the multi-talented Carl playing sax, clarinet and keyboard and three incredible drummers; Alua, Jansen & Romerio. They seemed to have an unlimited number of percussion instruments and would regularly swap between them as the music took them. Seth explained the musicians are not there to perform for us but to co-create the experience with us. No phones are allowed on the dance floor to help people stay present and not in performance mode. It is also a non-verbal space; this helps you stay out of your head and get into your body.
@@ -79,11 +107,19 @@ It's at that point I realised I couldn't see Emma and my curiosity peaked. If I 
 After the peak of the dance, there are normally wind-down tracks played and the group is encouraged to find a way to mark the ending. My favourite of these was when, as a 100 dancers, we came close together and started to sing in harmony with the music. It was like having a 360 surround sound choir, the vibration of human voice lifting your soul (you might be able to tell, from my words, that by this point I was fully hooked on the whole experience, I was pretty sure ED would be in my life for years to come).
 
 ## Sharing is Caring
+
 After each ED come down, there was an option to break into 'sharing circles' of 7ish random people. The commitment was to meet with the same people for the 4 remaining days. Seth did a great job of explaining that this was an opportunity to be truly present and practice active listening. We were given a topic like 'What brought you to the ED festival?' and then took 2 mins each to share. Participants are encouraged to only share what they are comfortable sharing, yet almost all shared something personal to them and sometimes painful. My immediate reaction in such situations is to want to help solve the problem the person has shared. But Seth explained our job is to be present for the sharer and believe they have the capacity in them to deal with any challenges they raise, not to try and fix them. After each share we would wiggle our fingers to virtually shower down love on the person that had shared and they in turn opened their palms to receive. Over 4 days of sharing circles and spontaneously meeting your circle members outside the circle, you form a deep bond and understanding for their human essence. This positive experience will undoubtedly stay with me for a long time.
 
 ## Dancing in the Dark
 
-{% photo src="./blindfolded-with-50-strangers/trance-dance.jpg" alt="blindfolded trance dance photo" side="left" caption="50 dancers. Blindfolded. In the dark." focus="center" zoom=1 /%}
+{% photo
+   src="./blindfolded-with-50-strangers/trance-dance.jpg"
+   alt="blindfolded trance dance photo"
+   side="left"
+   caption="50 dancers. Blindfolded. In the dark."
+   focus="center"
+   zoom=1 /%}
+
 A lot of the great people we met raved about the 'Trance Dance' experience on Friday night in the marquee but they wouldn't spoil the surprise. I had a guess, from some pictures, that it might involve dancing blindfolded but nothing more. In the marquee, which is adorned with wonderful bright spiritual hippy screen prints, we each had a yoga mat, a pillow and yes a blind fold. Spaces were limited to 50ish because, as you can imagine, if you are letting loose blindfolded, you may end up whacking your neighbour.
 
 Seth talked us through the prep for the main event:
@@ -101,6 +137,7 @@ First of all, there is the freedom of dancing like no one is watching. Then, wit
 Like with all ED experiences, as Seth says “what goes up, must come down”, and so after the peak of this dance we started to move to the floor and lay belly down to the earth, still blindfolded, and just absorbed the whole experience. I felt very lucky to be present in that moment and grateful to be amongst other humans trying to get closer to the possibilities of our human experience; no sight, no drugs, no booze, just epic musicians, permission to be yourself and release through dance. Brilliant.
 
 ## Would you like a hug?
+
 I must admit committing to a 'hugging workshop' was the activity I felt least sure about.. but I figured 'when in Rome'. Some of my friends have commented that I give pretty good hugs, but I had no idea there are 5 levels!! Seth made it v clear this workshop was as much about consent as it was hugging. In fact we all practiced Level 1, which is when someone asks, “Can I have a hug?” and you say “No” (and because we are British, more likely “No thanks”).
 
 Level 2 is a good old British hug - your bodies are as far apart as possible, followed by a pat on the back and then break off. At this point I was a bit scared. How can there be 3 more levels and which person would I be hugging at level 5?! Emma was at the other end of the tent. Again, Seth emphasised that at each level it was totally cool to say 'no' and just chill. Talking to one of my hugging partners, she explained that sometimes she did feel peer pressure to say yes. So this set my radar going - maybe this was her more subtle way of telling me that she didn't want to hug me. I checked a further 10 times with her that she was absolutely sure she did want a hug, she reassured me she did and so we executed Level 3.
@@ -110,6 +147,7 @@ Level 3 is bending your knees and generally getting closer. Seth and Diana demoe
 As a guy at these events, I was very conscious of not making someone feel peer-pressured into a hug, so I let people come to me. When it got to Level 4 and 5, Emma and I decided to hang out and practice together. Level 4 is the same as 3, but you take time to feel the movement of the other person's breath. Level 5 is the same as 4, but focuses on opening your heart to the universe. In the workshop Emma and I both said we only really felt comfortable and enjoyed the hug if we had previously had an opportunity to get to know the person. It was later in the festival though I realised that what the workshop had given me was another tool to open up to another person. As the festival progressed and I became more emotionally open, people I now knew could see that and offered a hug. I was glad to receive it.
 
 ## Using Grass to do Yoga – Final day
+
 Our Somatic Yoga teacher David gave us the choice to practice directly on the grass or use plastic mats to create a barrier to nature! All mats got tossed aside ☺. The movement he teaches is very free flow and not stuck in yoga norms (my kinda guy). He combines getting into stretches with using your body to massage other parts of yourself.
 
 When the rain started to pour, David thanked the sky and encouraged us to sausage roll in the wet grass and notice our edge moving from something we thought was a bad idea, now into something we reframed and accepted, went with, and now felt right and freeing.
@@ -118,7 +156,14 @@ Next, he asked us to lay face down into the wet grass. In the back of my head I 
 
 ## Final Sharing Circle & Finale
 
-{% photo src="./blindfolded-with-50-strangers/sunrise-circle.jpg" alt="sunrise closing circle photo" side="right" caption="You're welcome… Feel free." focus="center" zoom=1 /%}
+{% photo
+   src="./blindfolded-with-50-strangers/sunrise-circle.jpg"
+   alt="sunrise closing circle photo"
+   side="right"
+   caption="You're welcome… Feel free."
+   focus="center"
+   zoom=1 /%}
+
 I had been sitting in my sharing circle for days, thinking 'this is a wonderful experience', but I am not quite connecting in the way others did to the moment. David's yoga had finally cracked me open and I knew instantly that when it would be my turn to share, that the tears would flow, and they wouldn't stop. I was right, they did. Even now I am not sure why I was crying, but as I shared to my group, I was trying not to identify the cause but just let it run through me. It was a very cathartic experience.
 
 As part of the final ritual of the event, you are allowed to ask your sharing circle for something. It could be as simple as sitting with you in silence, holding hands, asking advice, or asking for hands to be laid on you. It just had to be positive, what you wanted and what others would be prepared to give.
