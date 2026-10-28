@@ -115,7 +115,7 @@ Keystatic uses a small GitHub App so that only people with access to this reposi
    New GitHub App**.
 2. **GitHub App name:** `Loving Life Longer editor` (it must be unique on GitHub; add something if it's
    taken). **Homepage URL:** `https://loving-life-longer-blog.pages.dev`.
-3. **Callback URLs** (add both):
+3. **Redirect URI** (GitHub used to call it "Callback URL"; add both):
    `https://loving-life-longer-blog.pages.dev/api/keystatic/github/oauth/callback` and
    `https://keystatic-trial.loving-life-longer-blog.pages.dev/api/keystatic/github/oauth/callback`.
    Tick **Request user authorization (OAuth) during installation**.
