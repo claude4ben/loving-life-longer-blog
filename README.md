@@ -129,7 +129,8 @@ Keystatic uses a small GitHub App so that only people with access to this reposi
 9. In Cloudflare: **Workers & Pages → loving-life-longer-blog → Settings → Variables and Secrets**. Add
    three **Secrets**, for both **Production** and **Preview**: `KEYSTATIC_GITHUB_CLIENT_ID` (the Client
    ID), `KEYSTATIC_GITHUB_CLIENT_SECRET` (the client secret), and `KEYSTATIC_SECRET` (a long random
-   password of 40+ characters from your password manager; it's never typed anywhere else).
+   password of 40+ characters from your password manager; it's never typed anywhere else. It **must be at least
+   32 characters**, or sign-in fails with an error page).
    Also add one plain **Text** variable: `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` = the app's short name from
    step 7 (lets Keystatic show an "install the app" link if access is ever missing).
 10. Redeploy (**Deployments → ⋯ → Retry deployment**), then open `/keystatic` and sign in with GitHub.
