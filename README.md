@@ -31,8 +31,11 @@ the site updates about 2 minutes later.
   Google Docs or Word and keep the formatting.
 - Each **Heading 2** starts a new section and appears in the table of contents.
 - To put a photo beside a section, click **+** (Insert) → **Photo beside this section**, straight after
-  the section's heading. Choose the photo, write a short description, pick left or right, and add an
-  optional caption. On desktop the text wraps around it; on phones it shows after the text.
+  the section's heading. Choose the photo, write a short description, pick left or right, and add a
+  caption. On desktop the text wraps around it; on phones it shows after the text.
+- **Captions:** every photo (the top photo and section photos) has a **Caption** box. A few words there
+  appear over the bottom left of the photo in white on a soft dark fade, so they're readable on any photo.
+  Leave it empty for no caption.
 - The date label ("Jul 2026") and read time ("15 min read") are worked out automatically.
 - **Feature on the home page** puts the article at the top of the home page (the newest featured one).
 - **Links from this article**: add websites, social accounts, people or shops, each with an optional

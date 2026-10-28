@@ -122,7 +122,7 @@ export function initArticle() {
   let like = { count: 0, liked: false };
   const renderLike = () => {
     $$('[data-like]').forEach((b) => b.classList.toggle('liked', like.liked));
-    $$('[data-like-glyph]').forEach((g) => (g.textContent = like.liked ? '\u2665' : '\u2661'));
+    $$('[data-like]').forEach((b) => b.setAttribute('aria-pressed', String(like.liked)));
     $$('[data-like-count]').forEach((c) => (c.textContent = String(like.count)));
   };
   $$('[data-like]').forEach((b) =>

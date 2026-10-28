@@ -8,6 +8,7 @@ disclosure: "First-person account — Ben’s first Ecstatic Dance festival."
 avatar: ./blindfolded-with-50-strangers/ben-byline.jpg
 heroImage: ./blindfolded-with-50-strangers/hero.jpg
 heroAlt: "Festival venue and grounds"
+heroCaption: "Five days in Dorset."
 heroFocus: center
 featured: true
 faqs:

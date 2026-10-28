@@ -48,6 +48,7 @@ const sections = await Promise.all(
   <div class="wide">
     <div class="hero reveal breakout">
       <Photo src={d.heroImage} alt={d.heroAlt} focus={d.heroFocus} zoom={d.heroZoom} sizes="(min-width: 960px) 1128px, 100vw" eager />
+      {d.heroCaption && <div class="caption"><span>{d.heroCaption}</span></div>}
     </div>
   </div>
 
@@ -118,7 +119,7 @@ const sections = await Promise.all(
 
   <!-- Engagement: mobile bottom bar -->
   <div class="engage-bar mobile-only">
-    <button data-like><span class="glyph" data-like-glyph>♡</span><span data-like-count>0</span></button>
+    <button data-like aria-pressed="false"><span class="sr-only">Like</span><svg class="heart" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span data-like-count>0</span></button>
     <button data-to-comments><span>Comments (<span data-comment-count>0</span>)</span></button>
     <button data-share-open>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Share
@@ -127,7 +128,7 @@ const sections = await Promise.all(
 
   <!-- Engagement: desktop side rail -->
   <div class="engage-rail desktop-only">
-    <button data-like><span class="glyph" data-like-glyph>♡</span><span data-like-count>0</span></button>
+    <button data-like aria-pressed="false"><span class="sr-only">Like</span><svg class="heart" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span data-like-count>0</span></button>
     <button data-to-comments><span class="glyph-sm">💬</span><span data-comment-count>0</span></button>
     <button data-share-open>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Share
@@ -175,7 +176,7 @@ const sections = await Promise.all(
   .by-meta { display: flex; flex-wrap: wrap; gap: 0 6px; margin-top: 2px; }
 
   /* Top photo: 16:9 and edge to edge on phones; on desktop up to 480px tall and lined up with the text. */
-  .hero { width: 100%; aspect-ratio: 16 / 9; max-height: 480px; margin-bottom: 8px; overflow: hidden; }
+  .hero { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 480px; margin-bottom: 8px; overflow: hidden; }
 
   /* Scroll-reveal zoom */
   .reveal { --reveal: 1.08; }
@@ -206,12 +207,14 @@ const sections = await Promise.all(
   #article-body :global(li) { margin: 0 0 8px; padding-left: 4px; }
   #article-body :global(li::marker) { color: var(--accent); }
   #article-body :global(strong) { font-weight: 700; }
-  .sec-plain { padding-bottom: 40px; }
-  .sec-split { padding: 0 20px 40px; display: flex; flex-direction: column; }
+  /* Space before the next heading: 20% less than before (Ben, 2026-10-28). */
+  .sec-plain { padding-bottom: 29px; }
+  .sec-split { padding: 0 20px 27px; display: flex; flex-direction: column; }
   .sec-split .sec-img { order: 2; } /* mobile: text first, then the photo */
   .sec-img { aspect-ratio: 4 / 3; max-height: 300px; position: relative; overflow: hidden; margin-bottom: 24px; }
-  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 20px 18px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.55)); }
-  .caption span { color: var(--white); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 1.3; }
+  /* Caption over the bottom left of a photo: white text on a dark fade, with a soft shadow, so it's readable on any photo. */
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 18px; text-align: left; background: linear-gradient(transparent, rgba(0, 0, 0, 0.6)); }
+  .caption span { display: block; max-width: 80%; color: var(--white); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 1.3; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
 
   @media (min-width: 960px) {
     /* The title uses the full width (one line when it fits); the summary below matches the title's width. */
@@ -230,7 +233,7 @@ const sections = await Promise.all(
     #article-body :global(p),
     #article-body :global(li) { font-size: 19px; }
     /* Text wraps around the photo, then runs full width once it passes the bottom of the photo. */
-    .sec-split { display: flow-root; max-width: 1320px; margin: 0 auto 64px; padding: 0 96px; }
+    .sec-split { display: flow-root; max-width: 1320px; margin: 0 auto 48px; padding: 0 96px; }
     .sec-img {
       float: right; width: calc(50% - 28px); margin: 6px 0 24px 56px;
       aspect-ratio: auto; max-height: none; height: 460px;
@@ -263,7 +266,10 @@ const sections = await Promise.all(
   .engage-rail button[data-like] { font-size: 13px; }
   .glyph { font-size: 20px; }
   .glyph-sm { font-size: 18px; }
-  :global([data-like].liked) { color: var(--accent) !important; }
+  /* Like: the standard outline heart, filled red when liked (as on Instagram, Substack, X). */
+  .heart { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s ease; }
+  :global([data-like].liked) .heart { fill: var(--like); stroke: var(--like); }
+  :global([data-like]:active) .heart { transform: scale(0.88); }
 
   .scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 70; display: flex; align-items: flex-end; justify-content: center; }
   .scrim[hidden] { display: none; }

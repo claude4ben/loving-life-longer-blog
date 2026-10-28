@@ -127,8 +127,8 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | GEN-01 | Page layout | White `#ffffff` background, ink `#1d1d1d` text, Inter body font. Footer sits at the bottom even on short pages. | ✅ | Manual |
 | GEN-02 | Sticky header | Stays at the top while scrolling. White bar with a 1px `#f3f5f7` bottom border across the whole screen; the logo and menu sit inside the shared page width, so on desktop they line up with the page content's left and right edges (best practice: one edge for the eye to follow; changed 2026-10-27). | ✅ | Auto |
-| GEN-03 | Logo | Three stacked stones (Think blue, Move green, Live terracotta) in a 52px light-grey circle, 10px gap to the wordmark. Also the browser tab icon. Source: `public/logo.svg`. | ✅ | Auto |
-| GEN-04 | Wordmark | "Loving Life Longer", Inter 600 22px. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
+| GEN-03 | Logo | Three stacked stones (Think blue, Move green, Live terracotta) 52px, filling the space with no background (2026-10-28), 10px gap to the wordmark. Also the browser tab icon. Source: `public/logo.svg`. | ✅ | Auto |
+| GEN-04 | Wordmark | "Loving Life Longer" in **Fraunces** 600 24px, a soft, warm serif (changed from Inter 2026-10-28: less corporate). Only its letters are downloaded. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
 | GEN-05 | Desktop nav | Home, Blog, About; 15px, 28px apart. Current page is bold `#40763d` with a 2px green underline; others weight 500 ink. | ✅ | Auto |
 | GEN-06 | Mobile menu button | Below 960px the nav is replaced by a 44×44 three-bar menu button. | ✅ | Auto |
 | GEN-07 | Mobile menu | Opens a full-screen white overlay with a × close button (44×44) and Home, Blog, About in Source Serif 4 28px with dividers. × closes it. | ✅ | Auto |
@@ -163,11 +163,11 @@ change better serves the goals in Part 1.
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
 | ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). The date label ("Jul 2026") and read time (words ÷ 230) are worked out automatically. Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) and lined up with the text's left and right edges (changed from full screen width, 2026-10-27). Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
-| ART-04 | Sections | Each `## Heading` ("Heading 2" in Keystatic) is a section; its web id comes from the heading text (e.g. `#final-sharing-circle-finale`): H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. | ✅ | Auto |
+| ART-04 | Sections | Each `## Heading` ("Heading 2" in Keystatic) is a section; its web id comes from the heading text (e.g. `#final-sharing-circle-finale`): H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. The space between the end of one section and the next heading is 45px (20% less than before, 2026-10-28). | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
 | ART-06 | Photo sections, desktop | The photo (half the row, 460px tall) sits on the left or right as set in the article file, lined up with the section heading. Text **wraps around it, a paragraph at a time**: a paragraph (or bullet point) that starts beside the photo stays in that column to its end, even if it runs past the photo; the next one below the photo runs full width (max 1320px row, 96px side padding, so it lines up with text-only sections). Bullet points wrap the same way, with bullets always visible. | ✅ 📝 photos | Auto |
 | ART-07 | Photo sections, mobile | Text first, then the photo (4:3, max 300px tall, edge to edge). | ✅ 📝 photos | Auto |
-| ART-08 | Photo captions | Optional caption over the bottom of the photo: white Source Serif 4 600 20px on a dark fade. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
+| ART-08 | Photo captions | Every article photo (the top photo and section photos) can have a caption, set per photo in Keystatic and recommended for all. It sits over the **bottom left** of the photo: white Source Serif 4 600 20px with a soft shadow on a dark fade, so it's readable on any photo. Example captions: "50 dancers. Blindfolded. In the dark." and "You're welcome… Feel free." | ✅ | Auto |
 | ART-09 | Article FAQ | Grey card with a "COMMON QUESTIONS" label and the article's questions and answers, two across on desktop. | ✅ 📝 answers | Auto |
 | ART-10 | Article text | Uses the author's draft word for word, typos included, until the author approves corrections. | ✅ | None |
 | ART-11 | Bold and lists | In an article (Keystatic toolbar or Markdown), `**words**` show in bold, lines starting `- ` become a bullet list (green bullets) and lines starting `1. ` a numbered list. | ✅ | Auto |
@@ -186,7 +186,7 @@ change better serves the goals in Part 1.
 | ART-24 | TOC jump | Clicking a heading scrolls smoothly to that section (90px below the top, clear of the header) and closes the list. | ✅ | Auto |
 | ART-25 | Mobile engagement bar | Below 960px: bar fixed to the bottom with Like (♡ + count), "Comments (n)" and Share. Each tap target at least 44px. | ✅ | Auto |
 | ART-26 | Desktop engagement rail | 960px and wider: white rounded panel fixed at the right, vertically centred, with Like, 💬 count and Share stacked. | ✅ | Auto |
-| ART-27 | Like | Tapping Like turns ♡ into a green ♥ and adds 1 to the count straight away; tapping again undoes it. The count is the real number of visitors who liked it (starts at 0). | ✅ | Auto |
+| ART-27 | Like | The standard outline heart (as on Instagram, Substack and X); tapping Like fills it red (`#e0245e`), with a small press effect, and adds 1 to the count straight away; tapping again undoes it. The count is the real number of visitors who liked it (starts at 0). | ✅ | Auto |
 | ART-28 | Likes are shared | Likes are saved in the database for everyone, one per visitor (each browser has a random visitor id, not linked to who they are). A visitor's like is remembered when they come back. | ✅ | Auto |
 | ART-29 | Comments button | Scrolls to the comments section. | ✅ | Auto |
 | ART-30 | Share sheet | Share opens a dimmed background with a white sheet rising from the bottom, "Share this article". Clicking the dimmed area closes it. | ✅ | Auto |
@@ -236,7 +236,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| CMP-01 | Pillar tag | White uppercase Rubik 600 **14px** label with **square corners** (padding 6px 12px). Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. Used on the home page and articles. | ✅ | Auto |
+| CMP-01 | Pillar tag | White uppercase Rubik 600 **14px** label with **very slightly rounded corners** (2px; changed 2026-10-28) (padding 6px 12px). Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. Used on the home page and articles. | ✅ | Auto |
 | CMP-02 | Primary button | Ink background, white bold text, 6px rounded. Inline size 12px 22px / 15px; full-width size 14px / 16px. | ✅ | Manual |
 | CMP-03 | Text fields | 16px text (stops iPhones zooming in), 1px `#d8dcdf` border, 6px rounded. | ✅ | None |
 | CMP-04 | Signup block | Grey band (on desktop: title and text on the left, email field and Subscribe on one row on the right with the tick box below; on phones, centred and stacked): "Get new pieces by email", short body text, email field, consent checkbox ("I'd like to receive occasional emails…") and Subscribe. | ✅ | Auto |

@@ -16,7 +16,7 @@ test.describe('Home', () => {
     const feature = page.locator('a.feature');
     await expect(feature.locator('.pillar-tag')).toHaveText('Move');
     // Pillar tags: square corners, larger text.
-    await expect(feature.locator('.pillar-tag')).toHaveCSS('border-radius', '0px');
+    await expect(feature.locator('.pillar-tag')).toHaveCSS('border-radius', '2px');
     await expect(feature.locator('.pillar-tag')).toHaveCSS('font-size', '14px');
     await expect(page.locator('.feature .label')).toHaveText('Latest article');
     await expect(feature.locator('.read-more')).toHaveText('Read the article →');

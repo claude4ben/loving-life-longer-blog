@@ -227,7 +227,9 @@ was made taller on desktop (up to 480px, from 300px) so it has more impact.
 
 ### 12. Fonts: Google Fonts ✅
 
-**Why:** Source Serif 4, Inter and Rubik, as specified in the handoff.
+**Why:** Source Serif 4, Inter and Rubik, as specified in the handoff. The wordmark next to the logo uses
+**Fraunces** (soft, warm serif), loaded with `text=` so only the letters of "Loving Life Longer" are downloaded (a
+few KB).
 
 | Pros | Cons |
 | --- | --- |
@@ -447,3 +449,4 @@ Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude 
 | 2026-10-28 | Logo (11, images): the header logo and browser tab icon are now the three-stone mark in `public/logo.svg` (vector, so sharp at every size) instead of `logo.png`. |
 | 2026-10-28 | Keystatic (21) merged into `main` and live; the GitHub sign-in still needs setting up. |
 | 2026-10-28 | Keystatic (21) GitHub sign-in set up and working on the live site (GitHub App "Loving Life Longer editor"; secrets in Cloudflare). `KEYSTATIC_SECRET` must be 32+ characters. |
+| 2026-10-28 | Fonts (12): Fraunces added for the wordmark only (tiny, letters-only download). Logo (11) fills its space with no background. |

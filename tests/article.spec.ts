@@ -1,4 +1,4 @@
-import { test, expect, ARTICLE, GREEN } from './fixtures';
+import { test, expect, ARTICLE, LIKE_RED } from './fixtures';
 
 const SECTION_HEADINGS = 9;
 
@@ -33,7 +33,7 @@ test.describe('Article content', () => {
 
   test('photo sections and captions', async ({ page }) => {
     await expect(page.locator('.sec-split')).toHaveCount(3);
-    await expect(page.locator('.caption')).toHaveText(['50 dancers. Blindfolded. In the dark.', 'You’re welcome… Feel free.'.replace('’', "'")]);
+    await expect(page.locator('.caption')).toHaveText(['Five days in Dorset.', '50 dancers. Blindfolded. In the dark.', 'You’re welcome… Feel free.'.replace('’', "'")]);
   });
 
   test('photo side alternates on desktop and text comes first on mobile', async ({ page, isMobile }) => {
@@ -124,6 +124,27 @@ test.describe('Article interactions', () => {
     await expect(img).toHaveClass(/is-visible/);
   });
 
+  test('photo captions sit over the bottom left, on the top photo too', async ({ page }) => {
+    for (const sel of ['.hero', '#dancing-in-the-dark .sec-img']) {
+      const photo = (await page.locator(sel).boundingBox())!;
+      const text = (await page.locator(`${sel} .caption span`).boundingBox())!;
+      expect(text.x - photo.x).toBeLessThan(24);
+      expect(photo.y + photo.height - (text.y + text.height)).toBeLessThan(24);
+      await expect(page.locator(`${sel} .caption span`)).toHaveCSS('color', 'rgb(255, 255, 255)');
+    }
+    await expect(page.locator('.hero .caption')).toHaveText('Five days in Dorset.');
+  });
+
+  test('space between a section and the next heading is 20% less than before', async ({ page }) => {
+    const gaps = await page.locator('#article-body').evaluate((body) =>
+      [...body.querySelectorAll(':scope > section.sec-plain')]
+        .filter((s) => s.nextElementSibling && s.lastElementChild?.tagName === 'P')
+        .map((s) => s.nextElementSibling!.querySelector('h2')!.getBoundingClientRect().top - s.lastElementChild!.getBoundingClientRect().bottom),
+    );
+    expect(gaps.length).toBeGreaterThan(0);
+    for (const g of gaps) expect(Math.round(g)).toBe(45); // was 56
+  });
+
   test('the top photo waits for the first scroll before zooming', async ({ page }) => {
     const hero = page.locator('.hero');
     await page.waitForLoadState('load');
@@ -178,21 +199,24 @@ test.describe('Article interactions', () => {
   test('like toggles on and off and is saved', async ({ page, isMobile }) => {
     const like = page.locator(isMobile ? '.engage-bar [data-like]' : '.engage-rail [data-like]');
     const count = async () => Number(await like.locator('[data-like-count]').textContent());
-    await expect(like).toContainText('♡');
+    const heart = like.locator('svg.heart path');
+    await expect(like).toHaveAttribute('aria-pressed', 'false');
+    await expect(heart).toHaveCSS('fill', 'none');
     await page.waitForLoadState('networkidle');
     const before = await count();
 
     await like.click();
-    await expect(like).toContainText('♥');
-    await expect(like).toHaveCSS('color', GREEN);
+    await expect(like).toHaveAttribute('aria-pressed', 'true');
+    await expect(heart).toHaveCSS('fill', LIKE_RED); // standard outline heart, filled red when liked
     await page.waitForLoadState('networkidle');
     expect(await count()).toBeGreaterThanOrEqual(before + 1);
 
     await page.reload();
-    await expect(like).toContainText('♥'); // remembered by the database
+    await expect(like).toHaveAttribute('aria-pressed', 'true'); // remembered by the database
 
     await like.click();
-    await expect(like).toContainText('♡');
+    await expect(like).toHaveAttribute('aria-pressed', 'false');
+    await expect(heart).toHaveCSS('fill', 'none');
   });
 
   test('only the right engagement controls show for the screen size', async ({ page, isMobile }) => {

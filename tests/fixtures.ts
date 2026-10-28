@@ -2,6 +2,7 @@ import { test as base, expect } from '@playwright/test';
 
 export const ARTICLE = '/blog/blindfolded-with-50-strangers/';
 export const GREEN = 'rgb(64, 118, 61)'; // #40763d
+export const LIKE_RED = 'rgb(224, 36, 94)'; // #e0245e
 
 // Every test: block outside photos and fonts (placeholders, and they make tests slow and flaky),
 // and fail if the page throws a JavaScript error.

@@ -35,6 +35,8 @@ test.describe('Every page', () => {
     const res = await page.request.get('/logo.svg');
     expect(res.headers()['content-type']).toContain('image/svg+xml');
     expect(await res.text()).toContain('#a15c3e');
+    await expect(page.locator('.brand-logo')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)'); // no background circle
+    await expect(page.locator('.brand-name')).toHaveCSS('font-family', /Fraunces/);
   });
 
   test('Policy is not in the main nav', async ({ page }) => {

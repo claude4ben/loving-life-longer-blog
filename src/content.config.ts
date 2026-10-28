@@ -25,6 +25,7 @@ const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
     avatarZoom: zoom,
     heroImage: photo(image),
     heroAlt: z.preprocess(blank, z.string().default('')),
+    heroCaption: optionalText, // short text over the bottom left of the top photo
     heroFocus: focus,
     heroZoom: zoom,
     featured: z.boolean().default(false),
