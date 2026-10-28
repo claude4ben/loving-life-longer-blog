@@ -1,5 +1,6 @@
 import { config, collection, singleton, fields } from '@keystatic/core';
 import { block } from '@keystatic/core/content-components';
+import { SOCIAL_PLATFORMS, SOCIAL_PLATFORM_IDS } from './src/lib/social';
 
 // Keystatic: the writing screen at /keystatic. It edits the same files the site is built from
 // (src/content/), so these settings must match src/content.config.ts.
@@ -34,7 +35,7 @@ export default config({
   storage: import.meta.env.PROD ? { kind: 'github', repo: 'claude4ben/loving-life-longer-blog' } : { kind: 'local' },
   ui: {
     brand: { name: 'Loving Life Longer' },
-    navigation: { Articles: ['blog'], Pages: ['home', 'about', 'policy', 'signup', 'links'] },
+    navigation: { Articles: ['blog'], Pages: ['home', 'about', 'policy', 'signup', 'links', 'social'] },
   },
   collections: {
     blog: collection({
@@ -168,6 +169,27 @@ export default config({
         title: fields.text({ label: 'Title' }),
         body: fields.text({ label: 'Text', multiline: true }),
         consent: fields.text({ label: 'Consent tick-box text' }),
+      },
+    }),
+    social: singleton({
+      label: 'Social media links',
+      path: 'src/content/pages/social',
+      schema: {
+        links: fields.array(
+          fields.object({
+            platform: fields.select({
+              label: 'Platform',
+              options: SOCIAL_PLATFORM_IDS.map((id) => ({ label: SOCIAL_PLATFORMS[id].label, value: id })),
+              defaultValue: 'instagram',
+            }),
+            url: fields.url({ label: 'Web address', description: 'e.g. https://www.instagram.com/yourname. For Email, write mailto:you@example.com', validation: { isRequired: true } }),
+          }),
+          {
+            label: 'Social media links',
+            description: 'One round icon per link in the footer of every page, in this order. No links = no icons.',
+            itemLabel: (p) => SOCIAL_PLATFORMS[p.fields.platform.value as keyof typeof SOCIAL_PLATFORMS]?.label ?? 'Link',
+          },
+        ),
       },
     }),
     links: singleton({

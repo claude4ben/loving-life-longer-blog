@@ -1,0 +1,35 @@
+---
+// Footer social links: one round icon per link in Pages → "Social media links". Hidden when there are none.
+import { getEntry } from 'astro:content';
+import { SOCIAL_PLATFORMS } from '../lib/social';
+
+const links = (await getEntry('social', 'social'))?.data.links ?? [];
+---
+{links.length > 0 && (
+  <nav class="socials" aria-label="Loving Life Longer on social media">
+    {links.map((l) => {
+      const icon: { label: string; path?: string; outline?: boolean; letters?: string } = SOCIAL_PLATFORMS[l.platform];
+      return (
+        <a href={l.url} target={l.platform === 'email' ? undefined : '_blank'} rel="noopener" aria-label={icon.label} title={icon.label}>
+          {icon.letters ? (
+            <span class="letters" aria-hidden="true">{icon.letters}</span>
+          ) : (
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class:list={{ outline: icon.outline }}><path d={icon.path} /></svg>
+          )}
+        </a>
+      );
+    })}
+  </nav>
+)}
+
+<style>
+  .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .socials a {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--white);
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease;
+  }
+  .socials a:hover { background: var(--accent); text-decoration: none; }
+  svg { fill: currentColor; }
+  svg.outline { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .letters { font-family: var(--font-body); font-weight: 700; font-size: 17px; line-height: 1; }
+</style>

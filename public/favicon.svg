@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 84 84">
+  <!-- Browser tab icon: the stones on a white tile, so they stand out on dark or coloured tab bars. -->
+  <rect x="8" y="8" width="84" height="84" rx="18" fill="#ffffff"/>
+  <ellipse cx="50" cy="71" rx="31" ry="13" transform="rotate(-3 50 71)" fill="#a15c3e"/>
+  <ellipse cx="48" cy="44" rx="21" ry="10" transform="rotate(4 48 44)" fill="#40763d"/>
+  <ellipse cx="52" cy="24" rx="12" ry="7" transform="rotate(-6 52 24)" fill="#3d5a76"/>
+</svg>

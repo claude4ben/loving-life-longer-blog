@@ -2,6 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { FOCUS_HELP, FOCUS_PATTERN } from './lib/photos';
 import { CONTENT_ROOT } from './lib/content-root';
+import { SOCIAL_PLATFORM_IDS } from './lib/social';
 
 // A photo is either a file stored next to the Markdown file (e.g. ./my-article/hero.jpg) or a web link.
 const photo = (image: () => z.ZodTypeAny) => z.union([z.string().url(), image()]);
@@ -17,7 +18,7 @@ const article = ({ image }: { image: () => z.ZodTypeAny }) => z.object({
     title: z.string(),
     pillar: z.enum(['Think', 'Move', 'Live']),
     standfirst: z.string(),
-    date: z.coerce.date(), // the date label ("Jul 2026") and read time are worked out from the date and text
+    date: z.coerce.date(), // the date label ("1 Jul 2026") and read time are worked out from the date and text
     author: z.string(),
     disclosure: z.string(),
     avatar: photo(image),
@@ -95,4 +96,12 @@ const links = defineCollection({
   schema: z.object({ title: z.string(), affiliateNote: z.string() }),
 });
 
-export const collections = { blog, home, about, policy, signup, links };
+// Footer social links: one round icon per link; none = no icons. Must match keystatic.config.ts.
+const social = defineCollection({
+  loader: page('social.yaml'),
+  schema: z.object({
+    links: z.array(z.object({ platform: z.enum(SOCIAL_PLATFORM_IDS), url: z.string().url() })).default([]),
+  }),
+});
+
+export const collections = { blog, home, about, policy, signup, links, social };

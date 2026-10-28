@@ -14,7 +14,7 @@ const { compact = false, style } = Astro.props;
   </div>
   <!-- TODO: connect to an email provider (double opt-in + consent record). -->
   <form data-signup>
-    <input class="field" type="email" name="email" placeholder="Email address" required />
+    <input class="field" type="email" name="email" inputmode="email" autocomplete="email" placeholder="Email address" aria-label="Email address" required />
     {!compact && (
       <label><input type="checkbox" name="consent" required /><span set:html={inline(SIGNUP.consent)} /></label>
     )}

@@ -40,7 +40,7 @@ const sections = await Promise.all(
       <div class="by-text">
         <div class="by-name">{d.author}</div>
         <div class="by-note">{d.disclosure}</div>
-        <div class="by-meta"><span>{dateLabel(d.date)}</span><span aria-hidden="true">·</span><span>{readTime(post.body)}</span></div>
+        <div class="by-meta"><span>{readTime(post.body)}</span><span aria-hidden="true">·</span><time datetime={d.date.toISOString().slice(0, 10)}>{dateLabel(d.date)}</time></div>
       </div>
     </div>
   </header>
@@ -89,9 +89,13 @@ const sections = await Promise.all(
     <h2>Comments (<span data-comment-count>0</span>)</h2>
     <div class="comments-grid">
     <form class="comment-form" data-comment-form novalidate>
-      <input class="field" name="name" placeholder="Name" />
-      <input class="field" name="email" type="email" placeholder="Email (optional, not published)" />
-      <textarea class="field" name="text" rows="3" placeholder="Add a comment"></textarea>
+      <label class="sr-only" for="comment-name">Name</label>
+      <input class="field" id="comment-name" name="name" placeholder="Name" autocomplete="name" autocapitalize="words" maxlength="80" />
+      <label class="sr-only" for="comment-email">Email (optional, not published, used to let you know we have replied)</label>
+      <input class="field" id="comment-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Email (optional, not published)" aria-describedby="comment-email-hint" />
+      <p class="field-hint" id="comment-email-hint">Only used to let you know we have replied.</p>
+      <label class="sr-only" for="comment-text">Comment</label>
+      <textarea class="field" id="comment-text" name="text" rows="3" placeholder="Add a comment" autocomplete="off"></textarea>
       <!-- Hidden from people; bots that fill it in are ignored. -->
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="form-foot">
@@ -120,7 +124,7 @@ const sections = await Promise.all(
   <!-- Engagement: mobile bottom bar -->
   <div class="engage-bar mobile-only">
     <button data-like aria-pressed="false"><span class="sr-only">Like</span><svg class="heart" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span data-like-count>0</span></button>
-    <button data-to-comments><span>Comments (<span data-comment-count>0</span>)</span></button>
+    <button data-to-comments><span class="sr-only">Comments</span><svg class="icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span data-comment-count>0</span></button>
     <button data-share-open>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Share
     </button>
@@ -129,7 +133,7 @@ const sections = await Promise.all(
   <!-- Engagement: desktop side rail -->
   <div class="engage-rail desktop-only">
     <button data-like aria-pressed="false"><span class="sr-only">Like</span><svg class="heart" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span data-like-count>0</span></button>
-    <button data-to-comments><span class="glyph-sm">💬</span><span data-comment-count>0</span></button>
+    <button data-to-comments><span class="sr-only">Comments</span><svg class="icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span data-comment-count>0</span></button>
     <button data-share-open>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Share
     </button>
@@ -161,7 +165,7 @@ const sections = await Promise.all(
 </script>
 
 <style>
-  .progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: var(--subtle); z-index: 60; }
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--subtle); z-index: 60; }
   .progress > div { height: 100%; width: 0; background: var(--accent); transition: width 0.1s linear; }
 
   .article-head { padding-top: 32px; }
@@ -264,10 +268,8 @@ const sections = await Promise.all(
   }
   .engage-rail button { flex-direction: column; gap: 2px; font-size: 12px; }
   .engage-rail button[data-like] { font-size: 13px; }
-  .glyph { font-size: 20px; }
-  .glyph-sm { font-size: 18px; }
   /* Like: the standard outline heart, filled red when liked (as on Instagram, Substack, X). */
-  .heart { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s ease; }
+  .heart, .icon { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s ease; }
   :global([data-like].liked) .heart { fill: var(--like); stroke: var(--like); }
   :global([data-like]:active) .heart { transform: scale(0.88); }
 
@@ -285,6 +287,7 @@ const sections = await Promise.all(
 
   .comments { padding-top: 32px; padding-bottom: 48px; }
   .comments h2 { font-size: 22px; margin: 0 0 20px; }
+  .field-hint { font-size: 13px; color: var(--muted); margin: -4px 0 4px; }
   .comment-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
   .form-foot { display: flex; align-items: center; justify-content: space-between; }
   .form-foot a { font-size: 12px; }

@@ -67,7 +67,8 @@ main { flex: 1; }
 .brand-logo { width: 52px; height: 52px; flex-shrink: 0; }
 .brand-logo img { width: 100%; height: 100%; display: block; }
 /* Wordmark: Fraunces, a soft, warm serif (less corporate than the interface font; Ben, 2026-10-28). */
-.brand-name { font-family: 'Fraunces', var(--font-display); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 24px; letter-spacing: -0.01em; }
+.brand-name { font-family: 'Fraunces', var(--font-display); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; }
+@media (min-width: 960px) { .brand-name { font-size: 31px; } }
 .nav { align-items: center; gap: 28px; }
 .nav a {
   font-size: 15px; font-weight: 500; color: var(--ink); padding-bottom: 4px;
@@ -101,16 +102,14 @@ main { flex: 1; }
   background: var(--ink); color: var(--white); padding: 40px 20px;
   display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: auto;
 }
-.socials { display: flex; gap: 14px; }
-.socials span { width: 36px; height: 36px; border-radius: 50%; background: var(--muted); }
 .site-footer small { font-size: 13px; }
 .site-footer a { font-size: 13px; color: var(--sage); }
 
 /* Components */
 .pillar-tag {
   display: inline-block; color: var(--white); font-family: var(--font-label);
-  font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2;
-  padding: 6px 12px; border-radius: 2px; /* very slightly rounded corners, larger text (Ben, 2026-10-28) */
+  font-size: 17px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2;
+  padding: 4px 10px; border-radius: 2px; /* very slightly rounded corners, larger text (Ben, 2026-10-28) */
 }
 .btn {
   background: var(--ink); color: var(--white); border: none; border-radius: 6px;

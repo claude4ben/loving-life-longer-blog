@@ -66,10 +66,11 @@ caption. Ask permission from anyone recognisable.
 | Articles | `src/content/blog/<article>.md` and its photo folder |
 | Home, About, Policy pages | `src/content/pages/home.md`, `about.md`, `policy.md` (About photos in `about/`) |
 | Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
+| Footer social media links | Keystatic → Pages → Social media links (`src/content/pages/social.yaml`) |
 | Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
 | Header, menu, footer | `src/layouts/Base.astro` |
 | Colours and fonts | top of `src/styles/global.css` |
-| Logo (header and browser tab icon) | `public/logo.svg` (three stones in the pillar colours; edit the three colours and shapes in the file) |
+| Logo | `public/logo.svg` (header); `public/favicon.svg` (browser tab, on a white tile) and `public/apple-touch-icon.png` (phone home screen) |
 | Comment approval on/off | `wrangler.toml` |
 | Hide from search engines (until launch) | `HIDE_FROM_SEARCH` in `src/data/site.ts` |
 
@@ -147,5 +148,4 @@ Keystatic uses a small GitHub App so that only people with access to this reposi
 These need a backend or a third-party service (see `docs/ARCHITECTURE.md`):
 
 - **Email signup** shows a thank-you message but doesn't save the address yet. Planned: a newsletter service with double opt-in, and Turnstile spam protection on both forms.
-- **Footer social icons** are grey placeholder circles.
 - A CMS for publishing without editing files, and a cookie banner if analytics are added.

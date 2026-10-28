@@ -28,15 +28,30 @@ test.describe('Every page', () => {
     await expect(page).toHaveURL('/policy/');
   });
 
-  test('header shows the three-stone logo, also used as the tab icon', async ({ page }) => {
+  test('header shows the three-stone logo, also used as the tab icon', async ({ page, isMobile }) => {
     await page.goto('/');
     await expect(page.locator('.brand-logo img')).toHaveAttribute('src', '/logo.svg');
-    await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/logo.svg');
+    // Tab icon: the stones on a white tile, so they show on dark or coloured browser tabs.
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/favicon.svg');
+    expect(await (await page.request.get('/favicon.svg')).text()).toContain('fill="#ffffff"');
+    expect((await page.request.get('/apple-touch-icon.png')).headers()['content-type']).toContain('image/png');
     const res = await page.request.get('/logo.svg');
     expect(res.headers()['content-type']).toContain('image/svg+xml');
     expect(await res.text()).toContain('#a15c3e');
     await expect(page.locator('.brand-logo')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)'); // no background circle
     await expect(page.locator('.brand-name')).toHaveCSS('font-family', /Fraunces/);
+    await expect(page.locator('.brand-name')).toHaveCSS('font-size', isMobile ? '26px' : '31px');
+  });
+
+  test('footer shows one round icon per social link from the editor', async ({ page }) => {
+    await page.goto('/');
+    const links = page.locator('.site-footer .socials a');
+    await expect(links).toHaveCount(3); // the sample content has Instagram, YouTube and Email
+    await expect(links.nth(0)).toHaveAttribute('href', 'https://www.instagram.com/example');
+    await expect(links.nth(0)).toHaveAccessibleName('Instagram');
+    await expect(links.nth(2)).toHaveAccessibleName('Email');
+    const box = (await links.nth(0).boundingBox())!;
+    expect(Math.round(box.width)).toBe(44);
   });
 
   test('Policy is not in the main nav', async ({ page }) => {

@@ -96,7 +96,7 @@ changed for Keystatic.
 
 **Why:** Ben edits all the words himself. Home, About and Policy are Markdown files with settings
 (`src/content/pages/`); the email signup box and the article-links heading are small YAML files
-(`signup.yaml`, `links.yaml`). All appear under **Pages** in Keystatic. Each is checked against a
+(`signup.yaml`, `links.yaml`, and `social.yaml` for the footer social links). All appear under **Pages** in Keystatic. Each is checked against a
 schema, so a missing field stops the build. Only design settings (pillar colours, the
 hide-from-search switch) stay in `src/data/site.ts`.
 
@@ -450,3 +450,4 @@ Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude 
 | 2026-10-28 | Keystatic (21) merged into `main` and live; the GitHub sign-in still needs setting up. |
 | 2026-10-28 | Keystatic (21) GitHub sign-in set up and working on the live site (GitHub App "Loving Life Longer editor"; secrets in Cloudflare). `KEYSTATIC_SECRET` must be 32+ characters. |
 | 2026-10-28 | Fonts (12): Fraunces added for the wordmark only (tiny, letters-only download). Logo (11) fills its space with no background. |
+| 2026-10-28 | Footer social links (4) stored in `src/content/pages/social.yaml`, edited in Keystatic; brand icons from the free Simple Icons package, drawn at build time (no extra code for visitors). Separate browser-tab icon on a white tile (11). Like id only created on tapping Like (7), so readers get nothing stored. |

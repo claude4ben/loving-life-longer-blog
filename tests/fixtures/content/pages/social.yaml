@@ -1,0 +1,7 @@
+links:
+  - platform: instagram
+    url: https://www.instagram.com/example
+  - platform: youtube
+    url: https://www.youtube.com/@example
+  - platform: email
+    url: mailto:hello@example.com

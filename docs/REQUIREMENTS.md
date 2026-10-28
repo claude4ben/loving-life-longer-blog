@@ -51,7 +51,8 @@ Every feature and design change should move at least one of these forward, and s
 | **Easy publishing** (G6): write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ |
 | **Links from each article**: cards with round icons for people, brands, social accounts and shops, with clearly labelled affiliate links | G3, G4 (partners and the ecosystem), G5 (honest affiliate disclosure) | ✅ (demo links are placeholders) |
 | **Article form** in Keystatic, explaining every setting next to its field | G2, G6 | ✅ |
-| **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
+| **Links to the wider ecosystem** (podcast, social, festival) | G4 | ✅ footer social icons, edited in Keystatic (none shown until links are added); 🔨 podcast and festival pages later |
+| **Sub-topics within pillars** (e.g. Live → Nutrition, Toxins), so readers can browse narrower topics | G1, G2 | 🔨 later (Ben, 2026-10-28) |
 | **Hidden from search engines until launch** (one switch to flip at launch) | G1 (no half-finished pages in search or AI answers) | ✅ |
 
 ## Open questions
@@ -128,13 +129,14 @@ change better serves the goals in Part 1.
 | GEN-01 | Page layout | White `#ffffff` background, ink `#1d1d1d` text, Inter body font. Footer sits at the bottom even on short pages. | ✅ | Manual |
 | GEN-02 | Sticky header | Stays at the top while scrolling. White bar with a 1px `#f3f5f7` bottom border across the whole screen; the logo and menu sit inside the shared page width, so on desktop they line up with the page content's left and right edges (best practice: one edge for the eye to follow; changed 2026-10-27). | ✅ | Auto |
 | GEN-03 | Logo | Three stacked stones (Think blue, Move green, Live terracotta) 52px, filling the space with no background (2026-10-28), 10px gap to the wordmark. Also the browser tab icon. Source: `public/logo.svg`. | ✅ | Auto |
-| GEN-04 | Wordmark | "Loving Life Longer" in **Fraunces** 600 24px, a soft, warm serif (changed from Inter 2026-10-28: less corporate). Only its letters are downloaded. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
+| GEN-04 | Wordmark | "Loving Life Longer" in **Fraunces** 600, 31px on desktop and 26px on phones (30% bigger, 2026-10-28, to match the logo), a soft, warm serif (changed from Inter 2026-10-28: less corporate). Only its letters are downloaded. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
 | GEN-05 | Desktop nav | Home, Blog, About; 15px, 28px apart. Current page is bold `#40763d` with a 2px green underline; others weight 500 ink. | ✅ | Auto |
 | GEN-06 | Mobile menu button | Below 960px the nav is replaced by a 44×44 three-bar menu button. | ✅ | Auto |
 | GEN-07 | Mobile menu | Opens a full-screen white overlay with a × close button (44×44) and Home, Blog, About in Source Serif 4 28px with dividers. × closes it. | ✅ | Auto |
 | GEN-08 | Policy not in nav | Policy is reached only from the footer and the comment form. | ✅ | Auto |
-| GEN-09 | Footer | Dark `#1d1d1d` background; three grey social circles; "© 2026 Loving Life Longer" (13px white); "Policy" link (13px `#90a781`) to `/policy/`. | ✅ | Auto |
-| GEN-10 | Footer social links | Real icons linking to real social accounts. | 🔨 placeholder circles | None |
+| GEN-09 | Footer | Dark `#1d1d1d` background; social icons (GEN-10); "© 2026 Loving Life Longer" (13px white); "Policy" link (13px `#90a781`) to `/policy/`. | ✅ | Auto |
+| GEN-10 | Footer social links | One 44px round icon per link in Keystatic → Pages → "Social media links" (Instagram, YouTube, TikTok, Facebook, X, Threads, Bluesky, Pinterest, LinkedIn, Spotify, Apple Podcasts, Substack, WhatsApp, Strava, Email, Website), in the order listed; each opens the account. No links means no icons. | ✅ (no links yet) | Auto |
+| GEN-17 | Browser tab icon | The stones on a white rounded tile (`public/favicon.svg`), so they stay visible on dark or coloured tab bars; a 180px version for phone home screens. | ✅ | Auto |
 | GEN-11 | Page addresses | `/`, `/blog/<slug>/`, `/about/`, `/policy/`. Each page loads at the top. | ✅ | Auto |
 | GEN-12 | "Blog" nav link | Opens the newest article (there is no article list page yet). | ✅ | Auto |
 | GEN-13 | Link style | Links are `#40763d` with no underline; on hover, ink with underline. | ✅ | None |
@@ -161,7 +163,7 @@ change better serves the goals in Part 1.
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
 | ART-01 | Article header | Pillar tag; title Source Serif 4 600 (28px phone / 44px desktop) using the full page width, so it stays on one line when it fits; the standfirst (grey, 19px / 21px) wraps at exactly the title's width; byline row across the page width. Aligned with the article text. If a title is too long for one line, both use the full width. | ✅ 📝 standfirst | Auto |
-| ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and date · read time (13px grey). The date label ("Jul 2026") and read time (words ÷ 230) are worked out automatically. Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
+| ART-02 | Byline | 56px round photo, then three lines lined up together: name (600 14px), disclosure (13px grey), and read time · date (13px grey), e.g. "15 min read · 1 Jul 2026", the order used by Medium, Substack and The Guardian (2026-10-28). The date ("1 Jul 2026") and read time (words ÷ 230) are worked out automatically. Nothing floats on the right. | ✅ 📝 avatar, disclosure | Auto |
 | ART-03 | Hero photo | 16:9 on phones (edge to edge); on desktop up to **480px** tall (raised from 300px, 2026-10-27) and lined up with the text's left and right edges (changed from full screen width, 2026-10-27). Square corners. Loads first (not lazily). Cropped around its `heroFocus`. | ✅ 📝 photo | Auto |
 | ART-04 | Sections | Each `## Heading` ("Heading 2" in Keystatic) is a section; its web id comes from the heading text (e.g. `#final-sharing-circle-finale`): H2 Source Serif 4 600 24px; paragraphs 19px desktop / 17px mobile, line height 1.65. The space between the end of one section and the next heading is 45px (20% less than before, 2026-10-28). | ✅ | Auto |
 | ART-05 | Text-only sections | On desktop, span the same width as the text-and-photo rows (max 1320px with 96px side padding, so they line up edge to edge); Ben's request 2026-10-27, accepting longer lines. On mobile, the screen width (max 720px). The header, table of contents, Q&A and comments stay at 820px. | ✅ | Auto |
@@ -179,13 +181,13 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ART-20 | Reading progress bar | 3px bar fixed at the very top. Green fill grows from 0% to 100% as you scroll through the article body. | ✅ | Auto |
-| ART-21 | Photo zoom on scroll | Article photos (hero and sections) start slightly zoomed (108%) and ease to 100% over 1.1s the first time they scroll into view. Nothing zooms until the reader first scrolls, so the top photo zooms on that first scroll, not as the page loads. Photos on Home, About and Policy don't zoom. | ✅ | Auto |
+| ART-20 | Reading progress bar | 6px bar (deeper so it's easier to notice, 2026-10-28) fixed at the very top. Green fill grows from 0% to 100% as you scroll through the article body. | ✅ | Auto |
+| ART-21 | Photo zoom on scroll | Article photos (hero and sections) start slightly zoomed (108%) and ease to 100% over 1.1s the first time (nearly) all of the photo is on screen (90% of it, or 90% of the screen for very tall photos), so the reader sees the whole effect. Nothing zooms until the reader first scrolls, so the top photo zooms on that first scroll, not as the page loads. Photos on Home, About and Policy don't zoom. | ✅ | Auto |
 | ART-22 | Reduced motion | If the visitor's device asks for reduced motion, photos don't zoom. | ✅ | None |
 | ART-23 | Table of contents | Grey "Table of contents" button with "+"; opens a list of section headings and the glyph changes to "−". | ✅ | Auto |
 | ART-24 | TOC jump | Clicking a heading scrolls smoothly to that section (90px below the top, clear of the header) and closes the list. | ✅ | Auto |
-| ART-25 | Mobile engagement bar | Below 960px: bar fixed to the bottom with Like (♡ + count), "Comments (n)" and Share. Each tap target at least 44px. | ✅ | Auto |
-| ART-26 | Desktop engagement rail | 960px and wider: white rounded panel fixed at the right, vertically centred, with Like, 💬 count and Share stacked. | ✅ | Auto |
+| ART-25 | Mobile engagement bar | Below 960px: bar fixed to the bottom with Like (heart + count), Comments (speech bubble + count) and Share. Icons are the standard outline style used across blogs and social apps. Each tap target at least 44px. | ✅ | Auto |
+| ART-26 | Desktop engagement rail | 960px and wider: white rounded panel fixed at the right, vertically centred, with Like (heart), Comments (outline speech bubble) and Share stacked, each with its count or label. | ✅ | Auto |
 | ART-27 | Like | The standard outline heart (as on Instagram, Substack and X); tapping Like fills it red (`#e0245e`), with a small press effect, and adds 1 to the count straight away; tapping again undoes it. The count is the real number of visitors who liked it (starts at 0). | ✅ | Auto |
 | ART-28 | Likes are shared | Likes are saved in the database for everyone, one per visitor (each browser has a random visitor id, not linked to who they are). A visitor's like is remembered when they come back. | ✅ | Auto |
 | ART-29 | Comments button | Scrolls to the comments section. | ✅ | Auto |
@@ -197,7 +199,7 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| ART-40 | Comment form | Name, "Email (optional, not published)" and "Add a comment" (3 rows) fields; "Policy" link on the left and "Post comment" on the right. On desktop the form sits on the left (stays in view while scrolling) with comments on the right; with no comments yet, a "No comments yet. Be the first to share your thoughts." message shows. | ✅ | Auto |
+| ART-40 | Comment form | Name, "Email (optional, not published)" with "Only used to let you know we have replied." underneath, and "Add a comment" (3 rows) fields, each with a label for screen readers. Name and email carry autofill hints (`autocomplete="name"` / `"email"`), so browsers and Google can fill them in; the signup email does too; "Policy" link on the left and "Post comment" on the right. On desktop the form sits on the left (stays in view while scrolling) with comments on the right; with no comments yet, a "No comments yet. Be the first to share your thoughts." message shows. | ✅ | Auto |
 | ART-41 | Validation | Name and comment are required (spaces alone don't count); email is optional. Nothing posts if a required field is empty. | ✅ | Auto |
 | ART-42 | New comment | Saved to the database and shown at the top of the list with the first letter of the name as its avatar and "Just now" as the time. The form clears. Times show as "5 minutes ago", "2 days ago", then the date. If saving fails, a red message explains why. | ✅ | Auto |
 | ART-43 | Comment list | 36px grey initial circle, name and time on one line, text 15px. Replies indented 48px with 32px circles. Comments 24px apart. | ✅ | Auto |
@@ -227,16 +229,17 @@ change better serves the goals in Part 1.
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| POL-01 | Policy page | H1 "Policies" and an intro, then three sections: Comments policy, Data & privacy, Cookies. | ✅ 📝 all text | Auto |
+| POL-01 | Policy page | H1 "Policies", an intro with the last-updated date, then: The short version, Not medical advice, Comments policy, Privacy and your data, Cookies and local storage, Affiliate links and partners, Copyright, Contact and changes. | ✅ | Auto |
 | POL-02 | Deep link | The comment form's Policy link opens the Comments policy section (`/policy/#comments-policy`). | ✅ | Auto |
 | POL-03a | Policy layout | Desktop: title and intro across the page, then an "On this page" list on the left (stays in view while scrolling) beside the policy text (up to 820px wide). Phones: text only. | ✅ | Auto |
-| POL-03 | Real policy text | Covers what's collected (comments, emails), Google Fonts, Cloudflare, the newsletter service, and how to ask for data deletion. | 🔨 | None |
+| POL-03 | Real policy text | Plain-English policy written to UK GDPR / Data Protection Act 2018, PECR (cookies), CAP Code (affiliate labelling) and health-disclaimer best practice: what's collected and why, legal reasons, who else handles data (Cloudflare, Google Fonts, GitHub), how long it's kept, your rights and the ICO, cookies, comment rules and moderation, affiliate links, copyright, and crisis contacts. The About page's note on qualifications links to it. | ✅ drafted; 🔨 Ben to add a contact email; worth a legal review before launch | None |
+| POL-04 | Nothing stored for readers | Ordinary readers get no cookies or browser storage; a like id is only created when someone taps Like. So no cookie banner is needed. | ✅ | Auto |
 
 ## 6. Shared components
 
 | ID | Requirement | Acceptance criteria | Status | Test |
 | --- | --- | --- | --- | --- |
-| CMP-01 | Pillar tag | White uppercase Rubik 600 **14px** label with **very slightly rounded corners** (2px; changed 2026-10-28) (padding 6px 12px). Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. Used on the home page and articles. | ✅ | Auto |
+| CMP-01 | Pillar tag | White uppercase Rubik 600 **17px** label (20% bigger so the text fills more of the tag, 2026-10-28) with **very slightly rounded corners** (2px; changed 2026-10-28) (padding 4px 10px). Think `#3d5a76`, Move `#40763d`, Live `#a15c3e`. Used on the home page and articles. | ✅ | Auto |
 | CMP-02 | Primary button | Ink background, white bold text, 6px rounded. Inline size 12px 22px / 15px; full-width size 14px / 16px. | ✅ | Manual |
 | CMP-03 | Text fields | 16px text (stops iPhones zooming in), 1px `#d8dcdf` border, 6px rounded. | ✅ | None |
 | CMP-04 | Signup block | Grey band (on desktop: title and text on the left, email field and Subscribe on one row on the right with the tick box below; on phones, centred and stacked): "Get new pieces by email", short body text, email field, consent checkbox ("I'd like to receive occasional emails…") and Subscribe. | ✅ | Auto |

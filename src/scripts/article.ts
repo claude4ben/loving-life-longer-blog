@@ -7,13 +7,15 @@ const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelect
 const $$ = <T extends Element = HTMLElement>(sel: string) => [...document.querySelectorAll<T>(sel)];
 
 // A random id for this browser, so each visitor's like counts once. Not linked to who they are.
-function visitorId(): string {
+// It's only created when the visitor taps Like (nothing is stored for people who just read).
+let pageVisitor = '';
+function visitorId(create: boolean): string {
   try {
-    let id = localStorage.getItem('lll-visitor');
-    if (!id) localStorage.setItem('lll-visitor', (id = crypto.randomUUID()));
+    let id = localStorage.getItem('lll-visitor') ?? '';
+    if (!id && create) localStorage.setItem('lll-visitor', (id = crypto.randomUUID()));
     return id;
   } catch {
-    return crypto.randomUUID(); // storage blocked: likes still work for this page view
+    return create ? (pageVisitor ||= crypto.randomUUID()) : pageVisitor; // storage blocked: likes still work for this page view
   }
 }
 
@@ -68,8 +70,9 @@ export function initArticle() {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Scroll-reveal zoom (fires once per image). Nothing zooms until the reader first scrolls, so photos
-  // already on screen when the page opens (like the top photo) zoom on that first scroll, not on load.
+  // Scroll-reveal zoom (fires once per image). A photo zooms only once (nearly) all of it is on screen,
+  // so the reader sees the whole effect. Nothing zooms until the reader first scrolls, so photos already
+  // on screen when the page opens (like the top photo) zoom on that first scroll, not on load.
   const inView = new Set<Element>();
   let scrolled = false;
   const reveal = (el: Element) => {
@@ -80,12 +83,15 @@ export function initArticle() {
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        if (!e.isIntersecting) inView.delete(e.target);
+        // "Fully in view": 90% of the photo, or 90% of the screen for photos taller than the screen.
+        const shown = e.intersectionRect.height;
+        const full = shown >= 0.9 * Math.min(e.boundingClientRect.height, window.innerHeight);
+        if (!e.isIntersecting || !full) inView.delete(e.target);
         else if (scrolled) reveal(e.target);
         else inView.add(e.target);
       }
     },
-    { threshold: 0.12 },
+    { threshold: [0, 0.25, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 1] },
   );
   $$('.reveal').forEach((el) => io.observe(el));
   const onFirstScroll = () => {
@@ -117,7 +123,6 @@ export function initArticle() {
   );
 
   // Likes
-  const visitor = visitorId();
   const post = encodeURIComponent(meta.id);
   let like = { count: 0, liked: false };
   const renderLike = () => {
@@ -131,7 +136,7 @@ export function initArticle() {
       like = { liked: !like.liked, count: Math.max(0, like.count + (like.liked ? -1 : 1)) }; // show it straight away
       renderLike();
       try {
-        like = await api('/api/likes', { post: meta.id, visitor, liked: like.liked });
+        like = await api('/api/likes', { post: meta.id, visitor: visitorId(true), liked: like.liked });
       } catch {
         like = before;
       }
@@ -139,7 +144,7 @@ export function initArticle() {
     }),
   );
   renderLike();
-  api<typeof like>(`/api/likes?post=${post}&visitor=${visitor}`).then((l) => ((like = l), renderLike())).catch(() => {});
+  api<typeof like>(`/api/likes?post=${post}&visitor=${visitorId(false)}`).then((l) => ((like = l), renderLike())).catch(() => {});
 
   $$('[data-to-comments]').forEach((b) => b.addEventListener('click', () => scrollToId('comments-section')));
 

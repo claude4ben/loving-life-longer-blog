@@ -30,7 +30,7 @@ people:
 
 note:
   title: "A note on qualifications"
-  body: "I'm not a therapist, doctor, or clinician. Nothing here is medical or therapeutic advice. What I share comes from lived experience and my own reading and research — take it as one person's account, not a prescription."
+  body: "I'm not a doctor, therapist, dietitian or other licensed professional. What I share comes from my own experience, reading and research. It's one person's account, offered to inform and inspire, not to diagnose, treat or advise on any condition. Before changing your diet, exercise, medication or mental-health care, talk to a qualified professional who knows your situation. [Read the full disclaimer](/policy/#not-medical-advice)."
 
 # Three square photos near the bottom of the page.
 strip:

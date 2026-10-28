@@ -10,13 +10,15 @@ test.describe('Article content', () => {
     await expect(page.locator('.article-head h1')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
     await expect(page.locator('.byline')).toContainText('Ben Parker');
     await expect(page.locator('.byline')).toContainText('15 min read');
-    await expect(page.locator('.byline')).toContainText('Jul 2026');
+    await expect(page.locator('.byline')).toContainText('1 Jul 2026');
     // Date and read time sit under the name, lined up with it (not floating on the right).
     const name = (await page.locator('.by-name').boundingBox())!;
     const meta = (await page.locator('.by-meta').boundingBox())!;
     expect(meta.x).toBe(name.x);
     expect(meta.y).toBeGreaterThan(name.y);
-    await expect(page.locator('.by-meta')).toHaveText('Jul 2026·15 min read');
+    // Industry-standard order: read time, then the full date (as on Medium, Substack, The Guardian).
+    await expect(page.locator('.by-meta')).toHaveText('15 min read·1 Jul 2026');
+    await expect(page.locator('.by-meta time')).toHaveAttribute('datetime', '2026-07-01');
     await expect(page.locator('#article-body section h2')).toHaveCount(SECTION_HEADINGS);
   });
 
@@ -122,6 +124,41 @@ test.describe('Article interactions', () => {
     await expect(img).not.toHaveClass(/is-visible/);
     await img.scrollIntoViewIfNeeded();
     await expect(img).toHaveClass(/is-visible/);
+  });
+
+  test('the zoom waits until (nearly) the whole photo is on screen', async ({ page }) => {
+    const img = page.locator('#final-sharing-circle-finale .sec-img');
+    // Scroll so only the top 40% of the photo shows at the bottom of the screen.
+    await page.mouse.wheel(0, 10);
+    await page.evaluate(() => {
+      const el = document.querySelector('#final-sharing-circle-finale .sec-img')!;
+      const r = el.getBoundingClientRect();
+      window.scrollTo(0, scrollY + r.top - innerHeight + r.height * 0.4);
+    });
+    await page.waitForTimeout(400);
+    await expect(img).not.toHaveClass(/is-visible/);
+    await page.evaluate(() => {
+      const el = document.querySelector('#final-sharing-circle-finale .sec-img')!;
+      window.scrollTo(0, scrollY + el.getBoundingClientRect().top - 80);
+    });
+    await expect(img).toHaveClass(/is-visible/);
+  });
+
+  test('reading progress bar is 6px deep', async ({ page }) => {
+    await expect(page.locator('.progress')).toHaveCSS('height', '6px');
+  });
+
+  test('readers who only read get nothing saved in their browser', async ({ page, isMobile }) => {
+    await page.waitForLoadState('networkidle');
+    expect(await page.evaluate(() => localStorage.getItem('lll-visitor'))).toBeNull();
+    await page.locator(isMobile ? '.engage-bar [data-like]' : '.engage-rail [data-like]').click();
+    await expect.poll(() => page.evaluate(() => localStorage.getItem('lll-visitor'))).not.toBeNull();
+  });
+
+  test('comments button uses the standard speech-bubble icon with the count', async ({ page, isMobile }) => {
+    const btn = page.locator(isMobile ? '.engage-bar [data-to-comments]' : '.engage-rail [data-to-comments]');
+    await expect(btn.locator('svg.icon')).toBeVisible();
+    await expect(btn).toHaveAccessibleName(/^Comments \d+$/);
   });
 
   test('photo captions sit over the bottom left, on the top photo too', async ({ page }) => {
@@ -271,6 +308,16 @@ test.describe('Share sheet', () => {
 
 test.describe('Comments', () => {
   const form = (page) => page.locator('[data-comment-form]');
+
+  test('form fields are labelled and let browsers fill in name and email', async ({ page }) => {
+    await expect(form(page).getByLabel('Name')).toHaveAttribute('autocomplete', 'name');
+    const email = form(page).getByLabel(/^Email/);
+    await expect(email).toHaveAttribute('autocomplete', 'email');
+    await expect(email).toHaveAttribute('type', 'email');
+    await expect(email).toHaveAttribute('placeholder', 'Email (optional, not published)');
+    await expect(email).toHaveAccessibleDescription('Only used to let you know we have replied.');
+    await expect(form(page).locator('.field-hint')).toBeVisible();
+  });
   const items = (page) => page.locator('[data-comments] > div');
   const unique = () => `Test comment ${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   const post = async (page, name: string, text: string) => {
