@@ -4,6 +4,9 @@
   check it against those goals. If a request could work against a goal (readability, discoverability by
   search engines and AI, engagement, trust), say so in plain language and suggest an alternative, then
   follow Ben's decision.
+- Ben's design feedback on an article (layout, photos, spacing, order of sections, effects) applies to
+  all articles, now and future, unless he says otherwise. Build it into the shared article page, never
+  into one article.
 - Whenever an architecture decision changes, update docs/ARCHITECTURE.md in the same commit.
 - `docs/ARCHITECTURE.md` records every architecture decision with simple pros and cons. Whenever a change
   affects the architecture (framework, content storage, styling approach, scripts, backends or services,
