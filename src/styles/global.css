@@ -63,8 +63,8 @@ main { flex: 1; }
 .header-in { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); }
 .brand:hover { color: var(--ink); text-decoration: none; }
-.brand-logo { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
-.brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+.brand-logo { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: #f3f5f7; display: flex; align-items: center; justify-content: center; }
+.brand-logo img { width: 74%; height: 74%; }
 .brand-name { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; }
 .nav { align-items: center; gap: 28px; }
 .nav a {

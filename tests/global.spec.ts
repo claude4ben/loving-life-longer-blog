@@ -28,6 +28,15 @@ test.describe('Every page', () => {
     await expect(page).toHaveURL('/policy/');
   });
 
+  test('header shows the three-stone logo, also used as the tab icon', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.brand-logo img')).toHaveAttribute('src', '/logo.svg');
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/logo.svg');
+    const res = await page.request.get('/logo.svg');
+    expect(res.headers()['content-type']).toContain('image/svg+xml');
+    expect(await res.text()).toContain('#a15c3e');
+  });
+
   test('Policy is not in the main nav', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('.site-header nav a', { hasText: 'Policy' })).toHaveCount(0);

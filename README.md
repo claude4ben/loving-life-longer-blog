@@ -66,7 +66,7 @@ caption. Ask permission from anyone recognisable.
 | Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
 | Header, menu, footer | `src/layouts/Base.astro` |
 | Colours and fonts | top of `src/styles/global.css` |
-| Logo | `public/logo.png` |
+| Logo (header and browser tab icon) | `public/logo.svg` (three stones in the pillar colours; edit the three colours and shapes in the file) |
 | Comment approval on/off | `wrangler.toml` |
 | Hide from search engines (until launch) | `HIDE_FROM_SEARCH` in `src/data/site.ts` |
 

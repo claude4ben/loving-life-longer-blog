@@ -127,7 +127,7 @@ change better serves the goals in Part 1.
 | --- | --- | --- | --- | --- |
 | GEN-01 | Page layout | White `#ffffff` background, ink `#1d1d1d` text, Inter body font. Footer sits at the bottom even on short pages. | ✅ | Manual |
 | GEN-02 | Sticky header | Stays at the top while scrolling. White bar with a 1px `#f3f5f7` bottom border across the whole screen; the logo and menu sit inside the shared page width, so on desktop they line up with the page content's left and right edges (best practice: one edge for the eye to follow; changed 2026-10-27). | ✅ | Auto |
-| GEN-03 | Logo | 52×52 circle cropped from `logo.png`, 10px gap to the wordmark. | ✅ | Manual |
+| GEN-03 | Logo | Three stacked stones (Think blue, Move green, Live terracotta) in a 52px light-grey circle, 10px gap to the wordmark. Also the browser tab icon. Source: `public/logo.svg`. | ✅ | Auto |
 | GEN-04 | Wordmark | "Loving Life Longer", Inter 600 22px. Clicking the logo or wordmark goes to Home. | ✅ | Auto |
 | GEN-05 | Desktop nav | Home, Blog, About; 15px, 28px apart. Current page is bold `#40763d` with a 2px green underline; others weight 500 ink. | ✅ | Auto |
 | GEN-06 | Mobile menu button | Below 960px the nav is replaced by a 44×44 three-bar menu button. | ✅ | Auto |
