@@ -394,7 +394,7 @@ one place where every setting lives.
 instantly, but the photo would jump after the page loads, and crop settings would live in two places);
 building article pages on request (slower pages, more server cost).
 
-### 21. Writing and editing with Keystatic 🔨 (trial on the `keystatic-trial` branch)
+### 21. Writing and editing with Keystatic ✅ (live; Ben to set up the GitHub sign-in)
 
 **Why:** editing Markdown files on github.com was slow and error-prone (settings formatting, separate
 photo uploads, no preview), which works against publishing regularly (goals G1, G2). Keystatic is a free,
@@ -445,3 +445,4 @@ Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude 
 | 2026-10-27 | Photo zoom setting (11) and a drag-and-zoom crop editor that saves to GitHub (20). |
 | 2026-10-27 | Keystatic editor (21) on a trial branch: articles and pages editable at /keystatic; section photos as `{% photo %}` blocks (3); pages in Keystatic (4); tests use a frozen sample of the content (18); crop editor edits photo blocks (20). |
 | 2026-10-28 | Logo (11, images): the header logo and browser tab icon are now the three-stone mark in `public/logo.svg` (vector, so sharp at every size) instead of `logo.png`. |
+| 2026-10-28 | Keystatic (21) merged into `main` and live; the GitHub sign-in still needs setting up. |

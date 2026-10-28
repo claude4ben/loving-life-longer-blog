@@ -48,9 +48,9 @@ Every feature and design change should move at least one of these forward, and s
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
-| **Easy publishing** (G6): write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ 🔨 trial on the `keystatic-trial` branch |
+| **Easy publishing** (G6): write articles and page text in the **Keystatic editor** at `/keystatic` (text, bold, lists, photos, no files to edit); everything is still saved as Markdown files on GitHub | G2 | ✅ live; 🔨 Ben to set up the GitHub sign-in |
 | **Links from each article**: cards with round icons for people, brands, social accounts and shops, with clearly labelled affiliate links | G3, G4 (partners and the ecosystem), G5 (honest affiliate disclosure) | ✅ (demo links are placeholders) |
-| **Article form** in Keystatic, explaining every setting next to its field | G2, G6 | ✅ 🔨 trial |
+| **Article form** in Keystatic, explaining every setting next to its field | G2, G6 | ✅ |
 | **Links to the wider ecosystem** (podcast, social, festival) | G4 | 🔨 later; footer icons are placeholders |
 | **Hidden from search engines until launch** (one switch to flip at launch) | G1 (no half-finished pages in search or AI answers) | ✅ |
 
@@ -257,10 +257,10 @@ change better serves the goals in Part 1.
 | CON-09 | Photo focus | Every photo has a `focus` (`center` by default): `center`, `top`, `bottom`, `left`, `right`, two together, or `"X% Y%"`. It sets which part stays in view when cropped. A `zoom` (1–3, default 1) zooms in around the focus point; it combines with the article's zoom-in-on-scroll effect. Anything else stops the build with a helpful message. | ✅ | Auto |
 | CON-10 | Photo crop editor | `/admin/photos/` (admin only; signed-out visitors go to the sign-in and back) shows every adjustable photo (article top, section and byline photos; About main, people and strip photos) uncropped, beside every frame it appears in. Drag inside a frame or move the dot on the whole photo (click, drag, or arrow keys) to set the focus; the Zoom slider (1–3×) zooms around it; all frames update live. Changed photos are highlighted, with Undo per photo and a Save bar showing how many changed. Hidden from search engines. | ✅ | Auto |
 | CON-12 | Saving crops | Save writes each photo's `focus` ("X% Y%") and `zoom` into its Markdown file on GitHub, one commit per file, changing only those lines (adding them if missing) and leaving everything else exactly as it was. The site then rebuilds (about 2 minutes). Only known photo settings in article and About files can be changed. Clear messages if the GitHub key is missing, expired or refused, or the file changed at the same moment. | ✅ built; 🔨 Ben to add the `GITHUB_TOKEN` secret | Auto (with a pretend GitHub) |
-| CON-11 | Keystatic editor | `/keystatic` edits articles and pages with forms and a text editor (bold, italic, links, headings, lists, photo blocks). Locally it saves to the files; on the live site it signs in with GitHub and saves commits, then the site rebuilds. Its settings (`keystatic.config.ts`) match the build rules (`src/content.config.ts`). Hidden from search engines. Crop settings stay in the photo crop editor. | ✅ 🔨 trial; Ben to set up the GitHub App | Build + Manual |
+| CON-11 | Keystatic editor | `/keystatic` edits articles and pages with forms and a text editor (bold, italic, links, headings, lists, photo blocks). Locally it saves to the files; on the live site it signs in with GitHub and saves commits, then the site rebuilds. Its settings (`keystatic.config.ts`) match the build rules (`src/content.config.ts`). Hidden from search engines. Crop settings stay in the photo crop editor. | ✅ live; 🔨 Ben to set up the GitHub App | Build + Manual |
 | CON-13 | Tests use sample content | Automated tests build from a frozen copy of the content (`tests/fixtures/content/`), so editing real articles never breaks the tests. The real content is still checked by a build on every push. | ✅ | Build |
 | CON-05 | Real photos | Placeholder photos (downloaded into the article and About folders with descriptive names) replaced with Ben's real photos by uploading files with the same names. | 🔨 | None |
-| CON-06 | No-code editing | The author can publish articles without editing files. | ✅ via Keystatic (CON-11), 🔨 trial | Manual |
+| CON-06 | No-code editing | The author can publish articles without editing files. | ✅ via Keystatic (CON-11) | Manual |
 
 ## 8. Quality (non-functional)
 
