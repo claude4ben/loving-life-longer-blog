@@ -238,12 +238,17 @@ few KB).
 
 ### 13. Sharing: plain share links ✅
 
-**Why:** Email, WhatsApp, X, Facebook and Snapchat use their standard "share this link" addresses.
-Instagram has no web share link, so it copies the article link.
+**Why:** Each service (WhatsApp, Facebook, X, LinkedIn, Email, Threads, Bluesky, Reddit, Pinterest,
+Telegram, Snapchat, and on phones Messenger and Messages) is opened with its standard "share this link"
+address. Instagram has no web share link, so it copies the article link. Phones also get "More", the
+phone's own share menu (Web Share API). Icons are genuine brand logos from the free Simple Icons package
+(LinkedIn from Bootstrap Icons, MIT), drawn at build time; the list is in `src/lib/share.ts`.
 
 | Pros | Cons |
 | --- | --- |
-| No tracking scripts from social networks | Instagram can't be shared to directly from a website |
+| No tracking scripts or widgets from social networks | Instagram can't be shared to directly from a website |
+| Genuine, recognisable logos and colours | Services occasionally change their share addresses (tests check each one) |
+| Adding or removing a service is one line in `src/lib/share.ts` | Messenger and Messages only work on phones with the app |
 
 ### 14. Hosting: Cloudflare Pages ✅
 
@@ -480,3 +485,4 @@ inboxes trust (see 9).
 | 2026-10-28 | Fonts (12): Fraunces added for the wordmark only (tiny, letters-only download). Logo (11) fills its space with no background. |
 | 2026-10-28 | Footer social links (4) stored in `src/content/pages/social.yaml`, edited in Keystatic; brand icons from the free Simple Icons package, drawn at build time (no extra code for visitors). Separate browser-tab icon on a white tile (11). Like id only created on tapping Like (7), so readers get nothing stored. |
 | 2026-10-29 | Discoverability (22): structured data, share previews, canonical links, sitemap and llms.txt, generated from the content. Own domain plan (23) recorded for later. |
+| 2026-10-29 | Sharing (13): 14 services with genuine brand icons in a grid, plus the phone's own share menu. Footer LinkedIn icon now the genuine logo. |

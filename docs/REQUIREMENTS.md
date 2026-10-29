@@ -45,7 +45,7 @@ Every feature and design change should move at least one of these forward, and s
 | **Discoverability extras**: structured data (article, FAQ, author, organisation), sitemap, share previews (Open Graph), canonical links and `llms.txt` for AI tools, all built automatically for every new article | G1, G3 | ✅ |
 | **Own web address** (www.lovinglifelonger.com, .co.uk redirecting to it) | G1, G4, G5 | 🔨 later (domains registered at IONOS) |
 | **Comments** saved in a database, with Ben's replies, an **admin panel** (reply, delete, restore, approve), and later **"email me when someone replies"** notifications | G3, G5 | ✅ built and tested (goes live once the database exists); 🔨 reply emails |
-| **Likes and sharing** (copy link, email, WhatsApp, X, Facebook, Instagram, Snapchat) | G1, G3 | ✅ (likes saved in the database, one per visitor) |
+| **Likes and sharing** (copy link and 14 services with genuine brand icons, plus the phone's own share menu) | G1, G3 | ✅ (likes saved in the database, one per visitor) |
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
 | **About page**: who Ben is, why LLL exists, a note on qualifications | G1 (credibility), G5 | ✅ 📝 bio is placeholder |
 | **Policies**: comments, privacy, cookies | G5 | 📝 placeholder text |
@@ -192,9 +192,9 @@ change better serves the goals in Part 1.
 | ART-27 | Like | The standard outline heart (as on Instagram, Substack and X); tapping Like fills it red (`#e0245e`), with a small press effect, and adds 1 to the count straight away; tapping again undoes it. The count is the real number of visitors who liked it (starts at 0). | ✅ | Auto |
 | ART-28 | Likes are shared | Likes are saved in the database for everyone, one per visitor (each browser has a random visitor id, not linked to who they are). A visitor's like is remembered when they come back. | ✅ | Auto |
 | ART-29 | Comments button | Scrolls to the comments section. | ✅ | Auto |
-| ART-30 | Share sheet | Share opens a dimmed background with a white sheet rising from the bottom, "Share this article". Clicking the dimmed area closes it. | ✅ | Auto |
+| ART-30 | Share sheet | Share opens a dimmed background with a white sheet rising from the bottom: "Share this article", a full-width "Copy link" button, then a grid of round brand icons, four across, each labelled (tap target 44px+). Clicking the dimmed area closes it. | ✅ | Auto |
 | ART-31 | Copy link | Copies the article address; the label reads "Copied!" briefly. | ✅ | Auto |
-| ART-32 | Share targets | Email, WhatsApp and X on all screens; Facebook, Instagram and Snapchat on desktop only. Each opens that service's share screen with the article link. Instagram has no web share, so it copies the link. | ✅ | Auto |
+| ART-32 | Share targets | WhatsApp, Facebook, X, LinkedIn, Email, Instagram, Threads, Bluesky, Reddit, Pinterest (with the article photo), Telegram and Snapchat on all screens; Messenger and Messages (text) on phones only. Each opens that service's own share screen with the article address. Genuine logos in brand colours (Simple Icons; LinkedIn from Bootstrap Icons). Instagram has no web share, so it copies the link and says "Link copied: paste it into Instagram". Where the browser supports it (most phones), a "More" button opens the phone's own share menu. | ✅ | Auto |
 
 ### Comments
 

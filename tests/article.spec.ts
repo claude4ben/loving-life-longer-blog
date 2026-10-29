@@ -270,39 +270,68 @@ test.describe('Article interactions', () => {
 test.describe('Share sheet', () => {
   const open = (page, isMobile) =>
     page.locator(isMobile ? '.engage-bar [data-share-open]' : '.engage-rail [data-share-open]').click();
+  const EVERYWHERE = ['WhatsApp', 'Facebook', 'X', 'LinkedIn', 'Email', 'Instagram', 'Threads', 'Bluesky', 'Reddit', 'Pinterest', 'Telegram', 'Snapchat'];
+  const PHONES_ONLY = ['Messenger', 'Messages'];
 
-  test('opens, lists the right options and closes on the dimmed area', async ({ page, isMobile }) => {
+  test('opens, shows every option as a round brand icon, and closes on the dimmed area', async ({ page, isMobile }) => {
     const sheet = page.locator('[data-share]');
     await expect(sheet).toBeHidden();
     await open(page, isMobile);
     await expect(sheet.getByText('Share this article')).toBeVisible();
-
-    for (const name of ['Copy link', 'Email', 'WhatsApp', 'X']) await expect(sheet.getByText(name, { exact: true })).toBeVisible();
-    for (const name of ['Facebook', 'Instagram', 'Snapchat'])
-      await expect(sheet.getByText(name, { exact: true })).toBeVisible({ visible: !isMobile });
+    await expect(sheet.getByText('Copy link', { exact: true })).toBeVisible();
+    for (const name of EVERYWHERE) await expect(sheet.locator('.share-label', { hasText: new RegExp(`^${name}$`) })).toBeVisible();
+    for (const name of PHONES_ONLY)
+      await expect(sheet.locator('.share-label', { hasText: new RegExp(`^${name}$`) })).toBeVisible({ visible: isMobile });
+    // Genuine brand colours on round tiles, e.g. WhatsApp green and Snapchat yellow with a black ghost.
+    const tile = (name: string) =>
+      sheet.locator('.share-opt', { has: page.locator('.share-label', { hasText: new RegExp(`^${name}$`) }) }).locator('.tile');
+    await expect(tile('WhatsApp')).toHaveCSS('background-color', 'rgb(37, 211, 102)');
+    await expect(tile('LinkedIn')).toHaveCSS('background-color', 'rgb(10, 102, 194)');
+    await expect(tile('Snapchat')).toHaveCSS('color', 'rgb(0, 0, 0)');
+    await expect(tile('WhatsApp')).toHaveCSS('border-radius', '50%');
+    // Comfortable to tap.
+    const box = (await sheet.locator('.share-opt').first().boundingBox())!;
+    expect(box.height).toBeGreaterThanOrEqual(44);
 
     await sheet.click({ position: { x: 5, y: 5 } });
     await expect(sheet).toBeHidden();
   });
 
-  test('share links point at the article', async ({ page }) => {
+  test('every share option opens that service with the article address', async ({ page }) => {
     const url = encodeURIComponent(new URL(ARTICLE, 'http://localhost:4321').href);
     const href = (k: string) => page.locator(`[data-share-link="${k}"]`).getAttribute('href');
     expect(await href('email')).toMatch(/^mailto:\?subject=.+&body=/);
     expect(await href('email')).toContain(url);
     expect(await href('whatsapp')).toMatch(/^https:\/\/wa\.me\/\?text=/);
-    expect(await href('x')).toContain(`https://x.com/intent/post?`);
-    expect(await href('x')).toContain(url);
+    expect(await href('x')).toContain('https://x.com/intent/post?');
     expect(await href('facebook')).toBe(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+    expect(await href('linkedin')).toBe(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`);
+    expect(await href('reddit')).toMatch(/^https:\/\/www\.reddit\.com\/submit\?url=.+&title=/);
+    expect(await href('pinterest')).toMatch(/&media=https%3A%2F%2F.+\.jpg&description=/); // the article's photo
+    expect(await href('threads')).toMatch(/^https:\/\/www\.threads\.com\/intent\/post\?text=/);
+    expect(await href('bluesky')).toMatch(/^https:\/\/bsky\.app\/intent\/compose\?text=/);
+    expect(await href('telegram')).toMatch(/^https:\/\/t\.me\/share\/url\?url=/);
+    expect(await href('messenger')).toMatch(/^fb-messenger:\/\/share\/\?link=/);
+    expect(await href('sms')).toMatch(/^sms:/);
+    for (const k of ['whatsapp', 'x', 'linkedin', 'reddit', 'pinterest', 'threads', 'bluesky', 'telegram', 'snapchat'])
+      expect(await href(k)).toContain(url.replace(/%3A/g, '%3A'));
   });
 
   test('copy link confirms with "Copied!"', async ({ page, isMobile, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await open(page, isMobile);
-    await page.locator('[data-share] .row', { hasText: 'Copy link' }).click();
+    await page.locator('[data-share] .copy-row').click();
     await expect(page.locator('[data-copy-label]')).toHaveText('Copied!');
     expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(ARTICLE);
     await expect(page.locator('[data-share]')).toBeHidden();
+  });
+
+  test('Instagram copies the link and says to paste it into Instagram', async ({ page, isMobile, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await open(page, isMobile);
+    await page.locator('[data-share] .share-opt', { hasText: 'Instagram' }).click();
+    await expect(page.locator('[data-copy-label]')).toHaveText('Link copied: paste it into Instagram');
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(ARTICLE);
   });
 });
 

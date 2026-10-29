@@ -50,7 +50,7 @@ function escapeHtml(s: string) {
 }
 
 export function initArticle() {
-  const meta = JSON.parse($('#post-meta')!.textContent!) as { id: string; title: string };
+  const meta = JSON.parse($('#post-meta')!.textContent!) as { id: string; title: string; summary?: string; image?: string };
 
   // Scroll progress through #article-body
   const bar = $('[data-progress]')!;
@@ -148,15 +148,24 @@ export function initArticle() {
 
   $$('[data-to-comments]').forEach((b) => b.addEventListener('click', () => scrollToId('comments-section')));
 
-  // Share sheet
+  // Share sheet. Each option opens that service's own "share" page with the article's address filled in.
   const share = $('[data-share]')!;
   const url = location.href.split('#')[0];
   const enc = encodeURIComponent;
+  const titled = `${meta.title} ${url}`;
   const links: Record<string, string> = {
-    email: `mailto:?subject=${enc(meta.title)}&body=${enc(url)}`,
-    whatsapp: `https://wa.me/?text=${enc(meta.title + ' ' + url)}`,
-    x: `https://x.com/intent/post?text=${enc(meta.title)}&url=${enc(url)}`,
+    whatsapp: `https://wa.me/?text=${enc(titled)}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`,
+    x: `https://x.com/intent/post?text=${enc(meta.title)}&url=${enc(url)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`,
+    messenger: `fb-messenger://share/?link=${enc(url)}`,
+    sms: `sms:?&body=${enc(titled)}`,
+    email: `mailto:?subject=${enc(meta.title)}&body=${enc(`${meta.summary ?? ''}\n\n${url}`.trim())}`,
+    threads: `https://www.threads.com/intent/post?text=${enc(titled)}`,
+    bluesky: `https://bsky.app/intent/compose?text=${enc(titled)}`,
+    reddit: `https://www.reddit.com/submit?url=${enc(url)}&title=${enc(meta.title)}`,
+    pinterest: `https://www.pinterest.com/pin/create/button/?url=${enc(url)}&media=${enc(meta.image ?? '')}&description=${enc(meta.title)}`,
+    telegram: `https://t.me/share/url?url=${enc(url)}&text=${enc(meta.title)}`,
     snapchat: `https://www.snapchat.com/scan?attachmentUrl=${enc(url)}`,
   };
   $$<HTMLAnchorElement>('[data-share-link]').forEach((a) => (a.href = links[a.dataset.shareLink!]));
@@ -164,16 +173,25 @@ export function initArticle() {
   share.addEventListener('click', (e) => {
     if (e.target === share || (e.target as Element).closest('a')) share.hidden = true;
   });
-  // Instagram has no web share URL, so it copies the link too.
+  // Copy link. Instagram has no web share page, so its button copies the link to paste into Instagram.
+  const copyLabel = $('[data-copy-label]')!;
   $$('[data-copy]').forEach((b) =>
     b.addEventListener('click', () => {
       navigator.clipboard?.writeText(url).catch(() => {});
-      const label = $('[data-copy-label]')!;
-      label.textContent = 'Copied!';
-      setTimeout(() => (share.hidden = true), 600);
-      setTimeout(() => (label.textContent = 'Copy link'), 2000);
+      const app = (b as HTMLElement).dataset.copyFor;
+      copyLabel.textContent = app ? `Link copied: paste it into ${app}` : 'Copied!';
+      setTimeout(() => (share.hidden = true), app ? 1500 : 600);
+      setTimeout(() => (copyLabel.textContent = 'Copy link'), 2500);
     }),
   );
+  // "More": the phone's own share menu (also reaches apps not listed here), where the browser supports it.
+  const native = $<HTMLButtonElement>('[data-native-share]');
+  if (native && typeof navigator.share === 'function') {
+    native.hidden = false;
+    native.addEventListener('click', () => {
+      navigator.share({ title: meta.title, text: meta.summary, url }).then(() => (share.hidden = true)).catch(() => {});
+    });
+  }
 
   // Comments
   let comments: Comment[] = [];

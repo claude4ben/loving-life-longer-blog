@@ -4,8 +4,9 @@ import {
   siApplepodcasts, siBluesky, siFacebook, siInstagram, siPinterest, siSpotify, siStrava, siSubstack,
   siThreads, siTiktok, siWhatsapp, siX, siYoutube,
 } from 'simple-icons';
+import { LINKEDIN_PATH } from './share';
 
-export type SocialIcon = { label: string; path?: string; outline?: boolean; letters?: string };
+export type SocialIcon = { label: string; path?: string; viewBox?: string; outline?: boolean; letters?: string };
 
 const brand = (label: string, icon: { path: string }): SocialIcon => ({ label, path: icon.path });
 
@@ -18,8 +19,8 @@ export const SOCIAL_PLATFORMS = {
   threads: brand('Threads', siThreads),
   bluesky: brand('Bluesky', siBluesky),
   pinterest: brand('Pinterest', siPinterest),
-  // LinkedIn doesn't allow its logo in free icon sets, so it shows as "in".
-  linkedin: { label: 'LinkedIn', letters: 'in' },
+  // LinkedIn isn't in Simple Icons, so its genuine logo comes from Bootstrap Icons (MIT).
+  linkedin: { label: 'LinkedIn', path: LINKEDIN_PATH, viewBox: '0 0 16 16' },
   spotify: brand('Spotify', siSpotify),
   applepodcasts: brand('Apple Podcasts', siApplepodcasts),
   substack: brand('Substack', siSubstack),
