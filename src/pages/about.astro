@@ -92,7 +92,8 @@ const structuredData = jsonLd([
   .note-card { background: var(--ink); color: var(--white); border-radius: 8px; padding: 32px 24px; margin-bottom: 36px; }
   .note-card h2 { font-size: 20px; margin: 0 0 14px; }
   .note-card p { font-size: 16px; line-height: 1.65; margin: 0; }
-  .note-card :global(a) { color: var(--sage); }
+  /* Links in the dark card: white and underlined, so they stand out from the text without relying on colour. */
+  .note-card :global(a) { color: var(--white); text-decoration: underline; text-decoration-color: var(--sage); text-underline-offset: 3px; }
   .strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
   .strip-item { aspect-ratio: 1; overflow: hidden; }
 

@@ -5,6 +5,9 @@ import '@fontsource-variable/inter/wght.css';
 import '@fontsource/rubik/500.css';
 import '@fontsource/rubik/600.css';
 import '../styles/global.css';
+// The two main fonts are fetched straight away (with the page), so text appears in its final font.
+import serifFont from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2?url';
+import bodyFont from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import { getCollection } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 import { HIDE_FROM_SEARCH, SITE_NAME } from '../data/site';
@@ -71,6 +74,8 @@ import SocialLinks from '../components/SocialLinks.astro';
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- The wordmark font is tiny (only its letters), so it's fetched straight away to avoid a flash. -->
     <link rel="preload" href="/fonts/fraunces-wordmark.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={serifFont} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div class="page">

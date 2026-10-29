@@ -18,6 +18,11 @@ export default defineConfig({
   // Change it when the site moves to www.lovinglifelonger.com.
   site: 'https://loving-life-longer-blog.pages.dev',
   output: 'static',
+  // Put each page's styles inside the page, so it can be drawn without waiting for separate style files
+  // (faster first paint on phones). Scripts stay as separate files (see vite.build below).
+  build: { inlineStylesheets: 'always' },
+  // Start loading the next page when a reader hovers over (or touches) a link, so it opens almost instantly.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [react(), keystatic(), securityHeaders],
   // Tests build from a frozen sample of the content (see src/lib/content-root.ts).
   // They also get their own cache, so a test build can never leak into a normal build.

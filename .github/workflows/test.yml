@@ -1,6 +1,8 @@
-name: Tests
+name: Tests and deploy
 
-# Runs on every push to main and every pull request, except when only docs change.
+# Every push to main and every pull request is tested. The live site is only updated after every check
+# passes: the deploy step then asks Cloudflare Pages to build and publish main (Cloudflare's own automatic
+# publishing is switched off, so nothing goes live untested).
 on:
   push:
     branches: [main]
@@ -12,7 +14,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,6 +24,8 @@ jobs:
       - run: npm ci
       - name: Check the real content builds
         run: npm run build
+      - name: Speed and quality check (Lighthouse, phone settings, real content)
+        run: npx lhci autorun --config=lighthouserc.cjs
       - run: npx playwright install --with-deps chromium
       - name: Automated tests (on a frozen sample of the content)
         run: npm test
@@ -34,3 +38,27 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse-report/
+          retention-days: 14
+
+  deploy:
+    # Only for main, only after every test above has passed.
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: { group: deploy-production, cancel-in-progress: false }
+    steps:
+      - name: Ask Cloudflare Pages to publish main
+        env:
+          HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::warning::CLOUDFLARE_DEPLOY_HOOK isn't set up yet, so Cloudflare's own automatic publishing is still doing this job."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK" > /dev/null && echo "Cloudflare is building and publishing main."

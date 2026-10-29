@@ -62,3 +62,42 @@ test.describe('Fonts', () => {
     await expect(page.locator('body')).toHaveCSS('font-family', /Inter Variable/);
   });
 });
+
+test.describe('Keystatic editor', () => {
+  test.skip(({ isMobile }) => isMobile, 'checked at desktop size');
+
+  // Guards against upgrades that leave the editor blank (as Keystatic 6.0 did with this setup).
+  test('the editor screen loads and offers GitHub sign-in', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto('/keystatic');
+    await expect(page.getByText(/GitHub/i).first()).toBeVisible({ timeout: 20000 });
+    expect(errors).toEqual([]);
+  });
+});
+
+test.describe('Fast page changes', () => {
+  test.skip(({ isMobile }) => isMobile, 'same on every screen size');
+
+  test('fingerprinted files are kept by browsers for a year, so page changes don\'t re-download them', async ({ page, request }) => {
+    await page.goto('/');
+    const font = await page.locator('link[rel="preload"][as="font"][href^="/_astro/"]').first().getAttribute('href');
+    expect((await request.get(font!)).headers()['cache-control']).toBe('public, max-age=31536000, immutable');
+  });
+
+  test('the main fonts are fetched with the page and styles are inside it', async ({ page }) => {
+    await page.goto('/');
+    const preloads = await page.locator('link[rel="preload"][as="font"]').evaluateAll((ls) => ls.map((l) => l.getAttribute('href')));
+    expect(preloads.join(' ')).toMatch(/inter-latin-wght/);
+    expect(preloads.join(' ')).toMatch(/source-serif-4-latin-opsz/);
+    expect(preloads).toContain('/fonts/fraunces-wordmark.woff2');
+    await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(0); // no separate style files to wait for
+  });
+
+  test('the next page starts loading when a reader hovers over a link', async ({ page }) => {
+    await page.goto('/');
+    const prefetched = page.waitForRequest((r) => r.url().endsWith('/about/'));
+    await page.locator('.site-header a[href="/about/"]').hover();
+    await prefetched;
+  });
+});

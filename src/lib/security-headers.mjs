@@ -60,8 +60,21 @@ export function headersFor(path) {
   return { ...COMMON, 'Content-Security-Policy': isEditorPath(path) ? EDITOR_CSP : SITE_CSP };
 }
 
-// The _headers file Cloudflare Pages reads for the pre-built pages.
+// The _headers file Cloudflare Pages reads for the pre-built pages. It also sets how long browsers keep
+// files: everything in /_astro/ has a fingerprint in its name (it changes whenever the file does), so
+// browsers keep it for a year and don't re-check it on every page change.
 export function headersFile() {
   const lines = Object.entries(headersFor('/')).map(([k, v]) => `  ${k}: ${v}`);
-  return `# Written by astro.config.mjs from src/lib/security-headers.mjs. Don't edit by hand.\n/*\n${lines.join('\n')}\n`;
+  return [
+    "# Written by astro.config.mjs from src/lib/security-headers.mjs. Don't edit by hand.",
+    '/*',
+    ...lines,
+    '',
+    '/_astro/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
+    '',
+    '/fonts/*',
+    '  Cache-Control: public, max-age=2592000',
+    '',
+  ].join('\n');
 }

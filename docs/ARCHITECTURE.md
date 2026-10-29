@@ -501,6 +501,31 @@ fixes are raised straight away.
 | Security fixes arrive without anyone watching | A few pull requests a month to review and merge |
 | Tests check every update before it goes live | |
 
+### 27. Speed: inline styles, early fonts, long caching, link prefetch ✅
+
+**Why:** G1 and G2 (Google ranks faster pages higher; readers don't wait). Each page carries its own styles
+(`build.inlineStylesheets: 'always'`), the main fonts are preloaded with the page, fingerprinted files in
+`/_astro/` are cached by browsers for a year (`_headers`), and Astro prefetches a page when a reader hovers over
+or touches its link. Lighthouse checks speed on every change (see 28).
+
+| Pros | Cons |
+| --- | --- |
+| Text appears in about 1s on a slow phone (lab), no layout jumps; page changes feel instant | Each page's HTML is a little bigger (styles inside it) |
+| No extra services | Prefetching fetches some pages a reader then doesn't open (small, same site) |
+
+### 28. Tested before it goes live: GitHub Actions publishes ✅ (needs Ben's two settings)
+
+**Why:** Cloudflare used to publish every push straight away, even if tests failed. Now the GitHub workflow
+(`.github/workflows/test.yml`) builds the real content, runs Lighthouse (`lighthouserc.cjs`) and every test, and
+only then calls a Cloudflare **deploy hook** (secret `CLOUDFLARE_DEPLOY_HOOK`), which makes Cloudflare build and
+publish `main`. Cloudflare's automatic production publishing is switched off; branch previews stay on.
+
+| Pros | Cons |
+| --- | --- |
+| Nothing goes live untested, whether it comes from Claude, Keystatic or Dependabot | Changes take about 5–6 minutes to go live instead of 2 |
+| Deploy hook needs no Cloudflare API key, only a secret web address | If GitHub Actions is down, publishing waits (can still publish from the Cloudflare dashboard) |
+| Lighthouse reports are kept for 14 days on each run | |
+
 ## Change log
 
 | Date | Change |
@@ -530,3 +555,4 @@ fixes are raised straight away.
 | 2026-10-29 | Discoverability (22): structured data, share previews, canonical links, sitemap and llms.txt, generated from the content. Own domain plan (23) recorded for later. |
 | 2026-10-29 | Sharing (13): 14 services with genuine brand icons in a grid, plus the phone's own share menu. Footer LinkedIn icon now the genuine logo. |
 | 2026-10-29 | Fonts (12) self-hosted; security headers (24); database backup plan (25, later); Dependabot (26). |
+| 2026-10-29 | Speed (27): inline styles, preloaded fonts, year-long caching of fingerprinted files, link prefetch. Lighthouse budget in CI and publishing only after tests pass (28). Dependabot skips major core upgrades (26). |

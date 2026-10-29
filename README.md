@@ -116,6 +116,20 @@ device, change the password.
 The key can only change files in this one repository. If it expires or is removed, Save says so and
 nothing else on the site is affected.
 
+**One-time setup: only publish changes that pass the tests**
+
+GitHub tests every change (including Keystatic saves) and then tells Cloudflare to publish. Do these in this
+order, so the site never stops updating:
+1. In Cloudflare: **Workers & Pages → loving-life-longer-blog → Settings → Builds → Deploy hooks → Add deploy
+   hook**. Name: `GitHub after tests`. Branch: `main`. Save, and copy the web address it shows.
+2. On GitHub: repository **Settings → Secrets and variables → Actions → New repository secret**. Name:
+   `CLOUDFLARE_DEPLOY_HOOK`. Paste the web address. Save.
+3. Back in Cloudflare: **Settings → Builds → Branch control** → untick **Enable automatic production branch
+   deployments** (leave preview deployments on). Save.
+
+From then on a change appears about 5–6 minutes after it's saved, and only if every check passed. To see
+why something didn't go live, open the repository's **Actions** tab.
+
 **One-time setup: let Keystatic sign you in with GitHub**
 
 Keystatic uses a small GitHub App so that only people with access to this repository can edit.
