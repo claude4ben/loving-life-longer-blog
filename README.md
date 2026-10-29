@@ -66,6 +66,7 @@ caption. Ask permission from anyone recognisable.
 | Articles | `src/content/blog/<article>.md` and its photo folder |
 | Home, About, Policy pages | `src/content/pages/home.md`, `about.md`, `policy.md` (About photos in `about/`) |
 | Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
+| Ben's writing style (used when drafting text) | `docs/WRITING-STYLE.md` |
 | Footer social media links | Keystatic → Pages → Social media links (`src/content/pages/social.yaml`) |
 | Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
 | Header, menu, footer | `src/layouts/Base.astro` |

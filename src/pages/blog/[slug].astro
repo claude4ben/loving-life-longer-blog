@@ -185,7 +185,7 @@ const sections = await Promise.all(
   /* Scroll-reveal zoom */
   .reveal { --reveal: 1.08; }
   .reveal.is-visible { --reveal: 1; }
-  .reveal > :global(img) { transition: transform 1.1s var(--ease-reveal); }
+  .reveal > :global(img) { transition: transform 2.2s var(--ease-reveal); } /* slow, gentle zoom (Ben, 2026-10-29) */
   @media (prefers-reduced-motion: reduce) {
     .reveal { --reveal: 1 !important; }
     .reveal > :global(img) { transition: none; }

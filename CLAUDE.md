@@ -7,6 +7,10 @@
 - Ben's design feedback on an article (layout, photos, spacing, order of sections, effects) applies to
   all articles, now and future, unless he says otherwise. Build it into the shared article page, never
   into one article.
+- When Ben asks for any text content (articles, standfirsts, Q&A, captions, link descriptions, page text,
+  emails, social posts), read `docs/WRITING-STYLE.md` first and write in his voice. Never invent
+  experiences, people or quotes; leave gaps like **[Ben: …]**. After a new article is published, update
+  the style guide with anything new it shows.
 - Whenever an architecture decision changes, update docs/ARCHITECTURE.md in the same commit.
 - `docs/ARCHITECTURE.md` records every architecture decision with simple pros and cons. Whenever a change
   affects the architecture (framework, content storage, styling approach, scripts, backends or services,

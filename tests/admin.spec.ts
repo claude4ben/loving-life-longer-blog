@@ -44,6 +44,12 @@ test.describe('Comment admin', () => {
     await expect(page.locator('.c-text', { hasText: text })).toBeVisible();
   });
 
+  test('links to the article editor and the photo crop editor', async ({ page }) => {
+    await page.goto('/admin/');
+    await expect(page.getByRole('link', { name: /Keystatic/ })).toHaveAttribute('href', '/keystatic');
+    await expect(page.getByRole('link', { name: 'Check photo crops →' })).toHaveAttribute('href', '/admin/photos/');
+  });
+
   test('asks for the password, explains a wrong one, and signs out', async ({ page }) => {
     await page.goto('/admin/');
     await expect(page.getByLabel('Admin password')).toBeVisible();
