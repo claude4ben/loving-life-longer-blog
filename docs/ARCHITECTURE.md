@@ -225,16 +225,19 @@ The placeholder photos were downloaded into these folders with descriptive names
 `cacao-circle.jpg`…), so replacing them is just uploading a file with the same name. The top photo
 was made taller on desktop (up to 480px, from 300px) so it has more impact.
 
-### 12. Fonts: Google Fonts ✅
+### 12. Fonts: self-hosted ✅ (Google Fonts until 2026-10-29)
 
-**Why:** Source Serif 4, Inter and Rubik, as specified in the handoff. The wordmark next to the logo uses
-**Fraunces** (soft, warm serif), loaded with `text=` so only the letters of "Loving Life Longer" are downloaded (a
-few KB).
+**Why:** Source Serif 4, Inter and Rubik, as specified in the handoff, served from the site itself using the
+Fontsource packages (`@fontsource-variable/source-serif-4`, `@fontsource-variable/inter`, `@fontsource/rubik`),
+imported at the top of `src/layouts/Base.astro`. The wordmark next to the logo uses **Fraunces** (soft, warm
+serif), cut down to just the letters of "Loving Life Longer" (`public/fonts/fraunces-wordmark.woff2`, 5 KB). To
+change the name, regenerate it: `pyftsubset node_modules/@fontsource-variable/fraunces/files/fraunces-latin-soft-normal.woff2 --text="New Name" --layout-features='*' --flavor=woff2 --output-file=public/fonts/fraunces-wordmark.woff2`.
 
 | Pros | Cons |
 | --- | --- |
-| One line to load them | Visitors' browsers contact Google (worth mentioning in the privacy policy) |
-| | Could be self-hosted later for speed and privacy |
+| No visitor data goes to Google; nothing to mention in the privacy policy | Font updates come through package updates (Dependabot handles these) |
+| Faster: no extra connection to another site, which helps Google's page-speed scores | |
+| Lets the security policy allow fonts from this site only | |
 
 ### 13. Sharing: plain share links ✅
 
@@ -458,6 +461,46 @@ to point the domain at Cloudflare:
 The own domain is also what lets newsletter and reply emails come from an `@lovinglifelonger.com` address that
 inboxes trust (see 9).
 
+### 24. Security headers ✅
+
+**Why:** G5 (trustworthy and safe). Every response tells browsers what the site may do: a Content Security
+Policy (only this site's own scripts, fonts and connections; no framing by other sites), HSTS (https only),
+`nosniff`, `X-Frame-Options`, a private referrer policy, and camera/microphone/location switched off. One
+list in `src/lib/security-headers.mjs` is written into `dist/_headers` at build (pre-built pages) and added by
+`src/middleware.ts` to pages made on request (photo editor, Keystatic, `/api`). Keystatic gets a slightly wider
+policy (GitHub, its own Google font, uploaded-photo previews). Scripts are never pasted into pages
+(`assetsInlineLimit: 0`), so the public policy needs no "unsafe-inline" for scripts.
+
+| Pros | Cons |
+| --- | --- |
+| Blocks most injected-script attacks, even if a bug slipped through | Adding a third-party script or service (e.g. Turnstile, analytics) means adding it to the policy first |
+| Free; no extra service | Inline styles stay allowed (used for pillar and brand colours) |
+| Tested: headers on every kind of page, and no blocked content on public pages | |
+
+### 25. Database backups 🔨 (later)
+
+**Plan:** Cloudflare D1 "Time Travel" already lets the database be rewound to any minute in a recent window
+(30 days per Cloudflare's docs; some sources say 7 days on the free plan). Before launch, add an off-site
+copy: a monthly GitHub Action that runs `wrangler d1 export lll-blog` and keeps the file as a private
+artifact (needs a Cloudflare API token with D1 read access as a GitHub secret), plus a one-line restore guide.
+
+| Pros | Cons |
+| --- | --- |
+| Covers mistakes (Time Travel) and bigger disasters (off-site copy) | One more secret to manage (the API token) |
+| Free | Exports contain commenters' emails, so they must stay private and be deleted after a few months |
+
+### 26. Dependency updates: Dependabot ✅
+
+**Why:** `.github/dependabot.yml` asks GitHub to check the site's packages weekly (small updates grouped in
+one pull request) and the test workflow's actions monthly. Each pull request runs the tests; merge when they
+pass. Ben switches on **Dependabot alerts** and **security updates** in the repository settings, so security
+fixes are raised straight away.
+
+| Pros | Cons |
+| --- | --- |
+| Security fixes arrive without anyone watching | A few pull requests a month to review and merge |
+| Tests check every update before it goes live | |
+
 ## Change log
 
 | Date | Change |
@@ -486,3 +529,4 @@ inboxes trust (see 9).
 | 2026-10-28 | Footer social links (4) stored in `src/content/pages/social.yaml`, edited in Keystatic; brand icons from the free Simple Icons package, drawn at build time (no extra code for visitors). Separate browser-tab icon on a white tile (11). Like id only created on tapping Like (7), so readers get nothing stored. |
 | 2026-10-29 | Discoverability (22): structured data, share previews, canonical links, sitemap and llms.txt, generated from the content. Own domain plan (23) recorded for later. |
 | 2026-10-29 | Sharing (13): 14 services with genuine brand icons in a grid, plus the phone's own share menu. Footer LinkedIn icon now the genuine logo. |
+| 2026-10-29 | Fonts (12) self-hosted; security headers (24); database backup plan (25, later); Dependabot (26). |

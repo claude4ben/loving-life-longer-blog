@@ -7,6 +7,7 @@ const signIn = async (page) => {
   await page.getByLabel('Admin password').fill('test-admin-password');
   await page.getByRole('button', { name: 'Sign in' }).click();
   await expect(page.locator('h1')).toHaveText('Photo crops');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', 'true'); // editor script has started
 };
 const position = (page, sel: string) => page.locator(sel).first().evaluate((el) => (el as HTMLImageElement).style.objectPosition || getComputedStyle(el).objectPosition);
 

@@ -81,11 +81,9 @@ We **don't** use advertising, tracking or analytics cookies. We don't sell your 
 **Who else handles data for us**
 
 - **Cloudflare** hosts the site and its database, and protects it from attacks. Like any web host, it processes technical information such as your IP address so the site can work.
-- **Google Fonts** supplies the site's fonts. Your browser contacts Google to download them, which shares your IP address and browser details with Google. Google says it doesn't use this to build profiles.
-- **GitHub** stores the site's articles and code. It doesn't receive visitor or commenter data.
 - When the newsletter and reply emails start, we'll name the email service here.
 
-Some of these companies may process data outside the UK. When they do, they use the legal safeguards UK law requires, such as UK adequacy regulations or the UK's approved data-transfer contracts.
+Cloudflare (and, later, the email service) may process data outside the UK. When they do, they use the legal safeguards UK law requires, such as UK adequacy regulations or the UK's approved data-transfer contracts.
 
 **How long we keep it**
 

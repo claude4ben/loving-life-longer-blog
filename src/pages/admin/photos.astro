@@ -135,6 +135,7 @@ const percents = (focus: string) => focusPosition(focus).split(' ').map((v) => p
 <script>
   import { initCropEditor } from '../../scripts/crop-editor';
   initCropEditor();
+  document.documentElement.dataset.ready = 'true'; // the tests wait for this before dragging photos
 </script>
 
 <style>

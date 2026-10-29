@@ -1,3 +1,13 @@
+/* Wordmark font: Fraunces (soft, warm serif), cut down to just the letters of "Loving Life Longer" (5 KB).
+   To change the name, regenerate it from @fontsource-variable/fraunces (see docs/ARCHITECTURE.md, decision 12). */
+@font-face {
+  font-family: 'Fraunces Wordmark';
+  src: url('/fonts/fraunces-wordmark.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Design tokens — from the handoff's design-system/tokens */
 :root {
   --ink: #1d1d1d;
@@ -13,8 +23,8 @@
   --scrim: rgba(0, 0, 0, 0.3);
   --like: #e0245e; /* filled heart when liked: the familiar "like" red */
 
-  --font-display: 'Source Serif 4', Georgia, serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-display: 'Source Serif 4 Variable', Georgia, serif;
+  --font-body: 'Inter Variable', -apple-system, sans-serif;
   --font-label: 'Rubik', sans-serif;
 
   --reading: 680px;
@@ -67,7 +77,7 @@ main { flex: 1; }
 .brand-logo { width: 52px; height: 52px; flex-shrink: 0; }
 .brand-logo img { width: 100%; height: 100%; display: block; }
 /* Wordmark: Fraunces, a soft, warm serif (less corporate than the interface font; Ben, 2026-10-28). */
-.brand-name { font-family: 'Fraunces', var(--font-display); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; }
+.brand-name { font-family: 'Fraunces Wordmark', var(--font-display); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; }
 @media (min-width: 960px) { .brand-name { font-size: 31px; } }
 .nav { align-items: center; gap: 28px; }
 .nav a {

@@ -1,0 +1,20 @@
+# Dependabot: GitHub checks the site's software packages and the test workflow's actions every week and
+# opens a pull request when an update is available. Security fixes are raised straight away.
+# Each pull request runs the automated tests; merge it if they pass.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/London
+    # One pull request for all small updates, instead of one per package.
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

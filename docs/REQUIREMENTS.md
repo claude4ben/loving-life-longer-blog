@@ -141,7 +141,7 @@ change better serves the goals in Part 1.
 | GEN-11 | Page addresses | `/`, `/blog/<slug>/`, `/about/`, `/policy/`. Each page loads at the top. | ✅ | Auto |
 | GEN-12 | "Blog" nav link | Opens the newest article (there is no article list page yet). | ✅ | Auto |
 | GEN-13 | Link style | Links are `#40763d` with no underline; on hover, ink with underline. | ✅ | None |
-| GEN-14 | Fonts | Source Serif 4 for headings, Inter for body, Rubik for labels (loaded from Google Fonts). | ✅ | None |
+| GEN-14 | Fonts | Source Serif 4 for headings, Inter for body, Rubik for labels and Fraunces for the wordmark, all served from the site itself (no Google Fonts, 2026-10-29). | ✅ | Auto |
 | GEN-15 | Page titles | Browser tab shows "<Page> · Loving Life Longer" (Home shows the site name only). | ✅ | Auto |
 | GEN-16 | Shared page width | On desktop every page's content uses one width (`.wide`: max 1320px with 96px side padding, so up to 1128px of content and room for the article's Like/Share panel), and left edges line up across Home, About, Policy and every part of an article. Long reading text keeps a comfortable maximum width inside it. Phones: 20px gutters, max 760px. | ✅ | Auto |
 
@@ -233,7 +233,7 @@ change better serves the goals in Part 1.
 | POL-01 | Policy page | H1 "Policies", an intro with the last-updated date, then: The short version, Not medical advice, Comments policy, Privacy and your data, Cookies and local storage, Affiliate links and partners, Copyright, Contact and changes. | ✅ | Auto |
 | POL-02 | Deep link | The comment form's Policy link opens the Comments policy section (`/policy/#comments-policy`). | ✅ | Auto |
 | POL-03a | Policy layout | Desktop: title and intro across the page, then an "On this page" list on the left (stays in view while scrolling) beside the policy text (up to 820px wide). Phones: text only. | ✅ | Auto |
-| POL-03 | Real policy text | Plain-English policy written to UK GDPR / Data Protection Act 2018, PECR (cookies), CAP Code (affiliate labelling) and health-disclaimer best practice: what's collected and why, legal reasons, who else handles data (Cloudflare, Google Fonts, GitHub), how long it's kept, your rights and the ICO, cookies, comment rules and moderation, affiliate links, copyright, and crisis contacts. The About page's note on qualifications links to it. | ✅ drafted; 🔨 Ben to add a contact email; worth a legal review before launch | None |
+| POL-03 | Real policy text | Plain-English policy written to UK GDPR / Data Protection Act 2018, PECR (cookies), CAP Code (affiliate labelling) and health-disclaimer best practice: what's collected and why, legal reasons, who else handles data (Cloudflare; GitHub and Google Fonts removed 2026-10-29 as they don't receive readers' data), how long it's kept, your rights and the ICO, cookies, comment rules and moderation, affiliate links, copyright, and crisis contacts. The About page's note on qualifications links to it. | ✅ drafted; 🔨 Ben to add a contact email; worth a legal review before launch | None |
 | POL-04 | Nothing stored for readers | Ordinary readers get no cookies or browser storage; a like id is only created when someone taps Like. So no cookie banner is needed. | ✅ | Auto |
 
 ## 6. Shared components
@@ -308,6 +308,19 @@ Everything here is generated from the content at build time, so a new article ge
 | OPS-06 | Admin sign-in | Password sign-in (Cloudflare secret `ADMIN_PASSWORD`, 12+ characters; admin is off without it). Stays signed in for 30 days; Sign out button; changing the password signs out every device. 5 wrong passwords from one address → 15-minute wait. Admin changes only accepted from the site itself. | ✅ | Auto |
 
 ---
+
+## 10. Security
+
+| ID | Requirement | Acceptance criteria | Status | Test |
+| --- | --- | --- | --- | --- |
+| SEC-01 | Security headers everywhere | Every page and API response sends: a Content Security Policy, HSTS (1 year), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, and a Permissions-Policy turning off camera, microphone, location and payments. | ✅ | Auto |
+| SEC-02 | Strict script policy | Public pages only run scripts from the site itself (no inline scripts, no other sites, no `eval`), can't be shown in another site's frame, and only connect to the site itself. Nothing on the public pages is blocked by it. | ✅ | Auto |
+| SEC-03 | Editor policy | Keystatic gets its own policy allowing GitHub, its font and photo previews, still blocking framing. | ✅ | Auto + Manual (editor checked locally with no blocks) |
+| SEC-04 | No third-party requests for readers | Fonts are self-hosted; reading a page contacts no other site. | ✅ | Auto |
+| SEC-05 | Dependency updates | Dependabot checks packages weekly and actions monthly; security alerts and fixes on. | ✅ config; 🔨 Ben to switch on alerts and security updates in GitHub settings | None |
+| SEC-06 | Database backups | Time Travel (built in) plus a monthly private off-site export, with a restore guide. | 🔨 later (before launch) | None |
+| SEC-07 | Account protection | Two-factor sign-in on GitHub, Cloudflare, IONOS and Gmail. | 🔨 Ben | None |
+| SEC-08 | Spam and abuse limits | Turnstile on the comment form; limits on how often one visitor can comment or like. | 🔨 before launch | None |
 
 ## Where the build differs from the prototype
 

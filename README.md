@@ -68,6 +68,7 @@ caption. Ask permission from anyone recognisable.
 | Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
 | Ben's writing style (used when drafting text) | `docs/WRITING-STYLE.md` |
 | Site web address (for search, share previews, sitemap) | `site` in `astro.config.mjs` |
+| Security headers (what browsers may load) | `src/lib/security-headers.mjs` |
 | Search, share and AI labels | `src/lib/seo.ts`, `src/pages/sitemap.xml.ts`, `src/pages/llms.txt.ts` |
 | Footer social media links | Keystatic → Pages → Social media links (`src/content/pages/social.yaml`) |
 | Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
