@@ -10,6 +10,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4321',
     trace: 'retain-on-failure',
+    // Set PW_CHROMIUM to use a browser that's already installed (e.g. in a sandbox where Playwright's own
+    // download isn't available). GitHub Actions installs Playwright's browser and doesn't set this.
+    ...(process.env.PW_CHROMIUM ? { launchOptions: { executablePath: process.env.PW_CHROMIUM } } : {}),
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 900 } } },

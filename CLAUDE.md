@@ -27,5 +27,7 @@
 - When the content format changes, update the sample copy in `tests/fixtures/content/` too.
 - Keep the README's "Where to edit things" table accurate when files move.
 - Before pushing any change to code, styles or content, run `npm test` and only push if it passes.
+  In a sandbox where Playwright's own browser download isn't available, run
+  `PW_CHROMIUM=/opt/pw-browsers/chromium npm test`.
   Add or update tests in `tests/` for new or changed behaviour, and set the Test column in
   docs/REQUIREMENTS.md to match.
