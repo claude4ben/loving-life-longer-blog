@@ -38,7 +38,7 @@ Every feature and design change should move at least one of these forward, and s
 
 | Feature | Serves | Status |
 | --- | --- | --- |
-| **Articles by pillar** (Think, Move, Live), first-person and practical | G2, G4 | ✅ |
+| **Articles by pillar** (Think, Move, Live), first-person and practical, each pillar with its own page (`/think/`, `/move/`, `/live/`) explaining it and listing its articles | G1, G2, G3, G4 | ✅ |
 | **Purpose-led home page**: LLL's purpose as the headline, then the latest article | G1, G4 | ✅ |
 | **Q&A (FAQ)** on articles and the home page, answering the questions people search for and ask AI | G1, G2 | ✅ layout; 📝 answers are placeholders |
 | **Discoverability basics**: page titles and descriptions | G1 | ✅ |
@@ -138,7 +138,7 @@ change better serves the goals in Part 1.
 | GEN-09 | Footer | Dark `#1d1d1d` background; social icons (GEN-10); "© 2026 Loving Life Longer" (13px white); "Policy" link (13px `#90a781`) to `/policy/`. | ✅ | Auto |
 | GEN-10 | Footer social links | One 44px round icon per link in Keystatic → Pages → "Social media links" (Instagram, YouTube, TikTok, Facebook, X, Threads, Bluesky, Pinterest, LinkedIn, Spotify, Apple Podcasts, Substack, WhatsApp, Strava, Email, Website), in the order listed; each opens the account. No links means no icons. | ✅ (no links yet) | Auto |
 | GEN-17 | Browser tab icon | The stones on a white rounded tile (`public/favicon.svg`), so they stay visible on dark or coloured tab bars; a 180px version for phone home screens. | ✅ | Auto |
-| GEN-11 | Page addresses | `/`, `/blog/<slug>/`, `/about/`, `/policy/`. Each page loads at the top. | ✅ | Auto |
+| GEN-11 | Page addresses | `/`, `/blog/<slug>/`, `/think/`, `/move/`, `/live/`, `/about/`, `/policy/`. Each page loads at the top. | ✅ | Auto |
 | GEN-12 | "Blog" nav link | Opens the newest article (there is no article list page yet). | ✅ | Auto |
 | GEN-13 | Link style | Links are `#40763d` with no underline; on hover, ink with underline. | ✅ | None |
 | GEN-14 | Fonts | Source Serif 4 for headings, Inter for body, Rubik for labels and Fraunces for the wordmark, all served from the site itself (no Google Fonts, 2026-10-29). | ✅ | Auto |
@@ -213,6 +213,15 @@ change better serves the goals in Part 1.
 | ART-47 | No invented comments or likes | The sample comments (Priya, Tom) and the starting like count of 24 were removed; everything shown is real (G5). | ✅ | Auto |
 | ART-48 | Signup block | Full signup block at the end of the page (see CMP-04). | ✅ | Auto |
 | ART-52 | Order after the article | Comments come straight after the article text, then "Links from this article", then Common questions, then the signup block (Ben's choice, 2026-10-27). | ✅ | Auto |
+
+## 3a. Pillar pages (`/think/`, `/move/`, `/live/`)
+
+| ID | Requirement | Acceptance criteria | Status | Test |
+| --- | --- | --- | --- | --- |
+| PIL-01 | Tag opens the pillar page | The pillar tag at the top of an article is a link to its pillar page, with a "›" to show it can be tapped (accessible name e.g. "Move: all Move articles"). Tags inside home-page cards stay plain labels, as the whole card is already a link. (Ben, 2026-10-29) | ✅ | Auto |
+| PIL-02 | Pillar page content | Breadcrumb (Home › Move); the pillar name as the heading in its colour with a coloured bar; what the pillar means (the same text as its card on the About page, edited once in Keystatic); every article in the pillar, newest first, each with photo, title, standfirst and "read time · date" (photo on the left on desktop, above on phones); links to the other two pillars; the signup block. | ✅ 📝 pillar descriptions are placeholders | Auto |
+| PIL-03 | Empty pillars | A pillar with no articles yet says "No Think articles yet. The first one is on its way." and is hidden from search (noindex, not in the sitemap) until it has one. | ✅ | Auto |
+| PIL-04 | Pillar pages for search and AI | Pillar pages with articles are in the sitemap and `llms.txt`, have a canonical link and share preview, and are labelled as a collection of articles (`CollectionPage` with the article list, plus a breadcrumb). Article breadcrumbs are Home › Pillar › Article. | ✅ | Auto |
 
 ## 4. About (`/about/`)
 

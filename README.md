@@ -64,6 +64,7 @@ caption. Ask permission from anyone recognisable.
 | What | File |
 | --- | --- |
 | Articles | `src/content/blog/<article>.md` and its photo folder |
+| Pillar pages (`/think/`, `/move/`, `/live/`) | Built automatically; the description at the top is the matching card in About → **Pillar cards** |
 | Home, About, Policy pages | `src/content/pages/home.md`, `about.md`, `policy.md` (About photos in `about/`) |
 | Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
 | Ben's writing style (used when drafting text) | `docs/WRITING-STYLE.md` |

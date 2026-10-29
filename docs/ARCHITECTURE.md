@@ -526,6 +526,21 @@ publish `main`. Cloudflare's automatic production publishing is switched off; br
 | Deploy hook needs no Cloudflare API key, only a secret web address | If GitHub Actions is down, publishing waits (can still publish from the Cloudflare dashboard) |
 | Lighthouse reports are kept for 14 days on each run | |
 
+### 29. Pillar pages ✅
+
+**Why:** On blogs and news sites, tapping a category tag shows more articles in that category. So each
+pillar has a page (`src/pages/[pillar].astro`, built for Think, Move and Live) that explains the pillar and
+lists its articles, and the tag at the top of each article links to it. The explanation reuses the About
+page's pillar cards (`about.md` → `pillars`), so the words are edited in one place. Empty pillars are hidden
+from search until they have an article. Later, sub-topics (e.g. Live › Nutrition) can become pages under
+these.
+
+| Pros | Cons |
+| --- | --- |
+| Readers find more on the same theme (G2, G3) | A pillar with one article looks thin until more are published |
+| Topic hub pages help search and AI (G1) | |
+| No new content to write: the description comes from the About page | |
+
 ## Change log
 
 | Date | Change |
@@ -556,3 +571,4 @@ publish `main`. Cloudflare's automatic production publishing is switched off; br
 | 2026-10-29 | Sharing (13): 14 services with genuine brand icons in a grid, plus the phone's own share menu. Footer LinkedIn icon now the genuine logo. |
 | 2026-10-29 | Fonts (12) self-hosted; security headers (24); database backup plan (25, later); Dependabot (26). |
 | 2026-10-29 | Speed (27): inline styles, preloaded fonts, year-long caching of fingerprinted files, link prefetch. Lighthouse budget in CI and publishing only after tests pass (28). Dependabot skips major core upgrades (26). |
+| 2026-10-29 | Pillar pages (29): /think/, /move/, /live/, linked from each article's pillar tag; in the sitemap, llms.txt and breadcrumbs. |
