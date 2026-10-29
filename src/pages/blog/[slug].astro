@@ -211,8 +211,9 @@ const structuredData = jsonLd([
 
   .article-head { padding-top: 32px; }
   .article-head :global(.pillar-tag) { margin-bottom: 16px; }
-  .article-head h1 { font-size: 28px; line-height: 1.15; margin: 0 0 12px; }
-  .standfirst { font-size: 19px; line-height: 1.6; color: var(--muted); margin: 0 0 6px; }
+  /* Phones: title about twice the text size, summary close to text size, so the title leads (Ben, 2026-10-29). */
+  .article-head h1 { font-size: 32px; line-height: 1.15; margin: 0 0 12px; }
+  .standfirst { font-size: 17px; line-height: 1.5; color: var(--muted); margin: 0 0 6px; }
   .byline { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
   .by-name { font-size: 14px; font-weight: 600; }
@@ -265,7 +266,7 @@ const structuredData = jsonLd([
     /* The title uses the full width (one line when it fits); the summary below matches the title's width. */
     .article-head h1 { font-size: 44px; }
     .headline { width: fit-content; max-width: 100%; }
-    .standfirst { font-size: 21px; width: 0; min-width: 100%; }
+    .standfirst { font-size: 21px; line-height: 1.6; width: 0; min-width: 100%; }
     /* Table of contents: headings in three columns when open. */
     .toc { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 32px; }
     /* Q&A in two columns. */

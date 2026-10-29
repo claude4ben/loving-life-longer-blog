@@ -5,6 +5,11 @@ const SECTION_HEADINGS = 9;
 test.beforeEach(async ({ page }) => page.goto(ARTICLE));
 
 test.describe('Article content', () => {
+  test('title clearly leads the summary: about twice the text size on phones', async ({ page, isMobile }) => {
+    await expect(page.locator('.article-head h1')).toHaveCSS('font-size', isMobile ? '32px' : '44px');
+    await expect(page.locator('.standfirst')).toHaveCSS('font-size', isMobile ? '17px' : '21px');
+  });
+
   test('header, byline and sections', async ({ page }) => {
     await expect(page.locator('.article-head .pillar-tag')).toHaveText('Move');
     await expect(page.locator('.article-head h1')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
