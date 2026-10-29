@@ -425,6 +425,34 @@ Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude 
 
 ---
 
+### 22. Discoverability: hand-built search and AI labels ✅
+
+**Why:** G1 (be found on Google and in AI answers). Structured data (JSON-LD), share previews (Open Graph and
+X cards), canonical links, `/sitemap.xml` and `/llms.txt` are generated from the content at build time by
+`src/lib/seo.ts` and two small endpoints (`src/pages/sitemap.xml.ts`, `src/pages/llms.txt.ts`), so every new
+article gets them automatically. The site address lives once, in `astro.config.mjs` (`site`).
+
+| Pros | Cons |
+| --- | --- |
+| No extra packages; easy to read and test | We maintain it ourselves (a sitemap plugin would do part of it) |
+| Article, FAQ, author and organisation labels that search engines and AI tools understand | Google shows FAQ rich results for few sites now; the labels still help AI answers |
+| Share pictures are resized automatically to 1200px | Moving domains means changing one setting and redeploying |
+
+### 23. Own web address: www.lovinglifelonger.com 🔨 (later)
+
+**Plan:** Ben owns `lovinglifelonger.com` and `lovinglifelonger.co.uk` at IONOS. Add `www.lovinglifelonger.com`
+as a custom domain on the Cloudflare Pages project, redirect the bare domain and the `.co.uk` to it, change
+`site` in `astro.config.mjs`, add the new callback address to the Keystatic GitHub App, then launch. Two ways
+to point the domain at Cloudflare:
+
+| Option | Pros | Cons |
+| --- | --- | --- |
+| **Move the domain's DNS to Cloudflare** (change nameservers at IONOS; recommended) | Free; the bare domain works; easy redirects; email-sending records (SPF, DKIM, DMARC) all in one place | Any existing IONOS email or other records must be copied across first |
+| Keep DNS at IONOS and add a CNAME for `www` | No nameserver change | The bare domain can't point at Pages easily; redirects and email records split across two places |
+
+The own domain is also what lets newsletter and reply emails come from an `@lovinglifelonger.com` address that
+inboxes trust (see 9).
+
 ## Change log
 
 | Date | Change |
@@ -451,3 +479,4 @@ Pages CMS (hosted service, simpler but less flexible); sending drafts to Claude 
 | 2026-10-28 | Keystatic (21) GitHub sign-in set up and working on the live site (GitHub App "Loving Life Longer editor"; secrets in Cloudflare). `KEYSTATIC_SECRET` must be 32+ characters. |
 | 2026-10-28 | Fonts (12): Fraunces added for the wordmark only (tiny, letters-only download). Logo (11) fills its space with no background. |
 | 2026-10-28 | Footer social links (4) stored in `src/content/pages/social.yaml`, edited in Keystatic; brand icons from the free Simple Icons package, drawn at build time (no extra code for visitors). Separate browser-tab icon on a white tile (11). Like id only created on tapping Like (7), so readers get nothing stored. |
+| 2026-10-29 | Discoverability (22): structured data, share previews, canonical links, sitemap and llms.txt, generated from the content. Own domain plan (23) recorded for later. |

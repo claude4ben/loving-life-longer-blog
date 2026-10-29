@@ -8,6 +8,7 @@ import SignupBlock from '../components/SignupBlock.astro';
 import { PILLAR_COLORS, type Pillar } from '../data/site';
 import { readTime } from '../lib/article-meta';
 import { block, inline } from '../lib/markdown';
+import { faqPage, jsonLd, organization, website } from '../lib/seo';
 
 const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = posts.find((p) => p.data.featured) ?? posts[0];
@@ -15,12 +16,20 @@ const featured = posts.find((p) => p.data.featured) ?? posts[0];
 const home = (await getEntry('home', 'home'))!;
 const intro = home.data;
 
+// Search and AI labels: who LLL is (with its social accounts), the site, and the home page Q&A.
+const social = (await getEntry('social', 'social'))?.data.links ?? [];
+const structuredData = jsonLd([
+  organization(Astro.site!, social.filter((l) => l.platform !== 'email').map((l) => l.url)),
+  website(Astro.site!),
+  faqPage(intro.faqs),
+]);
+
 // {think}, {move} and {live} in the headline show in their pillar colours.
 const headline = inline(intro.headline).replace(/\{(think|move|live)\}/g, (_, w: string) =>
   `<span style="color:${PILLAR_COLORS[(w[0].toUpperCase() + w.slice(1)) as Pillar]}">${w}</span>`,
 );
 ---
-<Base>
+<Base image={featured?.data.heroImage} imageAlt={featured?.data.heroAlt} structuredData={structuredData}>
   <div class="wide home">
     <section class="intro">
       <div class="label" set:html={inline(intro.label)} />

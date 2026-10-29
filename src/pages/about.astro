@@ -5,12 +5,24 @@ import SignupBlock from '../components/SignupBlock.astro';
 import { PILLAR_COLORS, type Pillar } from '../data/site';
 import { block, inline } from '../lib/markdown';
 import Photo from '../components/Photo.astro';
+import { jsonLd } from '../lib/seo';
+import { OWNER_NAME } from '../data/site';
 
 // Text comes from src/content/pages/about.md
 const page = (await getEntry('about', 'about'))!;
 const d = page.data;
+
+// Search and AI labels: an About page describing Ben, the person behind LLL.
+const site = Astro.site!;
+const structuredData = jsonLd([
+  {
+    '@type': 'AboutPage',
+    url: new URL('/about/', site).href,
+    mainEntity: { '@type': 'Person', name: OWNER_NAME, url: new URL('/about/', site).href, worksFor: { '@id': new URL('/#organization', site).href } },
+  },
+]);
 ---
-<Base title="About">
+<Base title="About" description={`About Loving Life Longer and ${OWNER_NAME}: ${d.heading}`} image={d.photo} imageAlt={d.photoAlt} structuredData={structuredData}>
   <div class="wide about">
     <div class="about-top">
       <div class="photo breakout"><Photo src={d.photo} alt={d.photoAlt} focus={d.photoFocus} zoom={d.photoZoom} sizes="(min-width: 960px) 520px, 100vw" widths={[400, 800, 1200]} eager /></div>

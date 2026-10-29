@@ -9,7 +9,7 @@ const page = (await getEntry('policy', 'policy'))!;
 const d = page.data;
 const sections = splitSections(page.body ?? '');
 ---
-<Base title={d.title}>
+<Base title={d.title} description={d.intro}>
   <div class="wide policy">
     <header class="policy-head">
       <h1 set:html={inline(d.title)} />

@@ -67,6 +67,8 @@ caption. Ask permission from anyone recognisable.
 | Home, About, Policy pages | `src/content/pages/home.md`, `about.md`, `policy.md` (About photos in `about/`) |
 | Email signup box, links heading and affiliate note | `src/content/pages/signup.yaml`, `links.yaml` |
 | Ben's writing style (used when drafting text) | `docs/WRITING-STYLE.md` |
+| Site web address (for search, share previews, sitemap) | `site` in `astro.config.mjs` |
+| Search, share and AI labels | `src/lib/seo.ts`, `src/pages/sitemap.xml.ts`, `src/pages/llms.txt.ts` |
 | Footer social media links | Keystatic → Pages → Social media links (`src/content/pages/social.yaml`) |
 | Which fields the editor shows | `keystatic.config.ts` (must match `src/content.config.ts`) |
 | Header, menu, footer | `src/layouts/Base.astro` |
@@ -142,7 +144,13 @@ Keystatic uses a small GitHub App so that only people with access to this reposi
 
 ## Launch checklist
 
+- Move to the own web address (see `docs/ARCHITECTURE.md`, decision 23): add `www.lovinglifelonger.com` as a
+  custom domain in Cloudflare Pages, redirect `lovinglifelonger.com` and `.co.uk` to it, change `site` in
+  `astro.config.mjs`, and add the new callback address to the Keystatic GitHub App.
 - Set `HIDE_FROM_SEARCH` to `false` in `src/data/site.ts`, so search engines and AI tools can list the site.
+- Submit `https://www.lovinglifelonger.com/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+- Check an article's share preview (e.g. paste its link into WhatsApp) and its search labels with Google's
+  Rich Results Test.
 
 ## Not built yet
 

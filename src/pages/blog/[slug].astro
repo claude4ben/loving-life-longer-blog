@@ -9,6 +9,8 @@ import { photoFor } from '../../lib/images';
 import { dateLabel, readTime } from '../../lib/article-meta';
 import Photo from '../../components/Photo.astro';
 import ArticleLinks from '../../components/ArticleLinks.astro';
+import { wordCount } from '../../lib/sections';
+import { blogPosting, breadcrumbs, faqPage, jsonLd, shareImage } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -25,8 +27,23 @@ const sections = await Promise.all(
     image: s.photo && { ...s.photo, src: await photoFor(s.photo.src, 'blog') },
   })),
 );
+
+// Search and AI labels: this is a blog post by Ben, with these questions and answers.
+const site = Astro.site!;
+const url = new URL(Astro.url.pathname, site).href;
+const structuredData = jsonLd([
+  blogPosting({
+    url, title: d.title, description: d.standfirst, image: await shareImage(d.heroImage, site), date: d.date,
+    author: d.author, pillar: d.pillar, wordCount: wordCount(post.body ?? ''), site,
+  }),
+  faqPage(d.faqs),
+  breadcrumbs([{ name: 'Home', url: site.href }, { name: d.title, url }]),
+]);
 ---
-<Base title={d.title} description={d.standfirst}>
+<Base
+  title={d.title} description={d.standfirst} type="article" image={d.heroImage} imageAlt={d.heroAlt || d.title}
+  published={d.date} author={d.author} section={d.pillar} structuredData={structuredData}
+>
   <div class="progress" aria-hidden="true"><div data-progress></div></div>
 
   <header class="wide article-head">

@@ -42,7 +42,8 @@ Every feature and design change should move at least one of these forward, and s
 | **Purpose-led home page**: LLL's purpose as the headline, then the latest article | G1, G4 | ✅ |
 | **Q&A (FAQ)** on articles and the home page, answering the questions people search for and ask AI | G1, G2 | ✅ layout; 📝 answers are placeholders |
 | **Discoverability basics**: page titles and descriptions | G1 | ✅ |
-| **Discoverability extras**: structured data (Article, FAQ, author), sitemap, share previews (Open Graph), canonical links | G1 | 🔨 not built yet; needed before launch |
+| **Discoverability extras**: structured data (article, FAQ, author, organisation), sitemap, share previews (Open Graph), canonical links and `llms.txt` for AI tools, all built automatically for every new article | G1, G3 | ✅ |
+| **Own web address** (www.lovinglifelonger.com, .co.uk redirecting to it) | G1, G4, G5 | 🔨 later (domains registered at IONOS) |
 | **Comments** saved in a database, with Ben's replies, an **admin panel** (reply, delete, restore, approve), and later **"email me when someone replies"** notifications | G3, G5 | ✅ built and tested (goes live once the database exists); 🔨 reply emails |
 | **Likes and sharing** (copy link, email, WhatsApp, X, Facebook, Instagram, Snapchat) | G1, G3 | ✅ (likes saved in the database, one per visitor) |
 | **Email signup** for new pieces | G3, G4 | 🕒 not saved yet; 🔨 newsletter service |
@@ -280,6 +281,20 @@ change better serves the goals in Part 1.
 | NFR-08 | Spam protection | Comment and signup forms are checked by Cloudflare Turnstile before anything is saved. | 🔨 | None |
 | NFR-10 | Accessibility scan | No WCAG 2.1 A/AA problems found by the automated scan (contrast, labels, alt text, headings) on any page at either size. Temporary "placeholder copy" notes are excluded. | ✅ | Auto |
 | NFR-09 | Cookie banner | Shown only if analytics or other tracking cookies are added. | ❓ (no analytics yet) | None |
+
+## 8a. Discoverability (search engines, AI and share previews)
+
+Everything here is generated from the content at build time, so a new article gets it automatically.
+
+| ID | Requirement | Acceptance criteria | Status | Test |
+| --- | --- | --- | --- | --- |
+| SEO-01 | Structured data on articles | Each article has one JSON-LD block: `BlogPosting` (headline, standfirst, share picture, date, author as a Person linking to About, publisher, pillar, word count, en-GB), `FAQPage` from its Q&A, and a breadcrumb. | ✅ | Auto |
+| SEO-02 | Structured data elsewhere | Home: `Organization` (name, logo, social accounts from Keystatic as `sameAs`), `WebSite`, and the home Q&A as `FAQPage`. About: `AboutPage` about the person behind LLL. | ✅ | Auto |
+| SEO-03 | Share previews | Every public page has Open Graph and X/Twitter card tags (title, description, address, en_GB, large picture). Articles use their top photo (1200px JPEG) and add published date, author and pillar; Home uses the featured article's photo, About its main photo; other pages use `public/og-default.png` (the stones on white). | ✅ | Auto |
+| SEO-04 | Canonical links | Every public page names its one true address (`<link rel="canonical">`), built from the site address in `astro.config.mjs`. Admin and editor pages get no canonical, share or structured-data tags. | ✅ | Auto |
+| SEO-05 | Sitemap | `/sitemap.xml` lists Home, every article (with its date), About and Policy; never admin, editor or API addresses. After launch, `robots.txt` points to it. | ✅ | Auto |
+| SEO-06 | llms.txt | `/llms.txt` gives AI assistants a plain summary: the purpose, every article (link, pillar, date, standfirst), each article's Q&A, and the health disclaimer. | ✅ | Auto |
+| SEO-07 | Site address in one place | The site address (`site` in `astro.config.mjs`) feeds all of the above; changing it is the only code step when moving to www.lovinglifelonger.com. | ✅ | Auto |
 
 ## 9. Hosting and operations
 
