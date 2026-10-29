@@ -121,6 +121,10 @@ main { flex: 1; }
   font-size: 17px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.2;
   padding: 4px 10px; border-radius: 2px; /* very slightly rounded corners, larger text (Ben, 2026-10-28) */
 }
+/* At the top of an article the tag links to its pillar page; the "›" shows it can be tapped. */
+.pillar-link { display: inline-flex; align-items: center; gap: 6px; transition: filter 0.15s ease; }
+.pillar-link:hover { color: var(--white); text-decoration: none; filter: brightness(1.15); }
+.pillar-link .chevron { font-size: 1.15em; line-height: 1; margin-top: -2px; }
 .btn {
   background: var(--ink); color: var(--white); border: none; border-radius: 6px;
   font-weight: 600; cursor: pointer; padding: 12px 22px; font-size: 15px;

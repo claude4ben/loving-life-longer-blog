@@ -125,7 +125,7 @@ export default config({
         believeHeading: fields.text({ label: '“What I believe” heading' }),
         pillars: fields.object(
           { Think: fields.text({ label: 'Think', multiline: true }), Move: fields.text({ label: 'Move', multiline: true }), Live: fields.text({ label: 'Live', multiline: true }) },
-          { label: 'Pillar cards' },
+          { label: 'Pillar cards', description: 'What each pillar means. Also shown at the top of its pillar page (/think/, /move/, /live/).' },
         ),
         peopleHeading: fields.text({ label: '“People behind it” heading' }),
         people: fields.array(

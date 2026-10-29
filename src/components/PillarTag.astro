@@ -1,6 +1,16 @@
 ---
+// The coloured Think / Move / Live label. With `link`, it opens that pillar's page (e.g. /move/).
+// Inside a card that is already a link (home page), it stays a plain label.
 import { PILLAR_COLORS, type Pillar } from '../data/site';
-interface Props { pillar: Pillar; class?: string; }
-const { pillar, class: cls } = Astro.props;
+import { pillarHref } from '../lib/pillars';
+interface Props { pillar: Pillar; class?: string; link?: boolean }
+const { pillar, class: cls, link = false } = Astro.props;
+const style = `background:${PILLAR_COLORS[pillar]}`;
 ---
-<span class:list={['pillar-tag', cls]} style={`background:${PILLAR_COLORS[pillar]}`}>{pillar}</span>
+{link ? (
+  <a class:list={['pillar-tag', 'pillar-link', cls]} style={style} href={pillarHref(pillar)} aria-label={`${pillar}: all ${pillar} articles`}>
+    {pillar}<span class="chevron" aria-hidden="true">›</span>
+  </a>
+) : (
+  <span class:list={['pillar-tag', cls]} style={style}>{pillar}</span>
+)}

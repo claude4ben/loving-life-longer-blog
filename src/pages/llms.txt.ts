@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { OWNER_NAME, SITE_NAME } from '../data/site';
 import { SITE_DESCRIPTION } from '../lib/seo';
+import { PILLARS, pillarHref } from '../lib/pillars';
 
 // Built into /llms.txt: a plain summary of the site for AI assistants (the llms.txt convention),
 // listing every article with its summary and questions. Updated automatically on every build.
@@ -9,6 +10,7 @@ const plain = (s: string) => s.replace(/\{(think|move|live)\}/g, (_, w: string) 
 
 export const GET: APIRoute = async ({ site }) => {
   const home = (await getEntry('home', 'home'))!.data;
+  const about = (await getEntry('about', 'about'))!.data;
   const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const url = (path: string) => new URL(path, site).href;
   const lines = [
@@ -18,6 +20,10 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `First-person accounts by ${OWNER_NAME} of things he has actually tried, under three pillars: Think, Move and Live.`,
     'Personal experience, not medical or professional advice.',
+    '',
+    '## Pillars',
+    '',
+    ...PILLARS.map((p) => `- [${p}](${url(pillarHref(p))}): ${plain(about.pillars[p])}`),
     '',
     '## Articles',
     '',

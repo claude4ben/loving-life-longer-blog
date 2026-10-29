@@ -11,7 +11,7 @@ test.describe('Article content', () => {
   });
 
   test('header, byline and sections', async ({ page }) => {
-    await expect(page.locator('.article-head .pillar-tag')).toHaveText('Move');
+    await expect(page.locator('.article-head .pillar-tag')).toHaveText('Move›'); // the › shows it opens the Move page
     await expect(page.locator('.article-head h1')).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
     await expect(page.locator('.byline')).toContainText('Ben Parker');
     await expect(page.locator('.byline')).toContainText('15 min read');
@@ -405,5 +405,44 @@ test.describe('Comments', () => {
     await form(page).getByRole('link', { name: 'Policy' }).click();
     await expect(page).toHaveURL('/policy/#comments-policy');
     await expect(page.getByRole('heading', { name: 'Comments policy' })).toBeVisible();
+  });
+});
+
+test.describe('Pillar pages', () => {
+  test('the tag at the top of an article opens its pillar page', async ({ page }) => {
+    await page.goto(ARTICLE);
+    const tag = page.locator('.article-head a.pillar-tag');
+    await expect(tag).toHaveAttribute('href', '/move/');
+    await expect(tag).toHaveAccessibleName('Move: all Move articles');
+    await expect(tag.locator('.chevron')).toBeVisible();
+    await tag.click();
+    await expect(page).toHaveURL('/move/');
+  });
+
+  test('a pillar page explains the pillar and lists its articles, newest first', async ({ page }) => {
+    await page.goto('/move/');
+    await expect(page).toHaveTitle('Move · Loving Life Longer');
+    await expect(page.locator('h1')).toHaveText('Move');
+    await expect(page.locator('.pillar-intro')).toHaveText('Placeholder — how this maps to Move.'); // same text as the About card
+    await expect(page.locator('.articles .article')).toHaveCount(1);
+    await expect(page.locator('.articles h2').first()).toHaveText('Blindfolded With 50 Strangers: My First Ecstatic Dance');
+    await expect(page.locator('.articles .meta').first()).toHaveText('15 min read·1 Jul 2026');
+    await expect(page.locator('.crumbs')).toContainText('Home›Move');
+    await expect(page.locator('.other-pillars a')).toHaveText(['Think ›', 'Live ›']);
+    await page.locator('.articles .article').first().click();
+    await expect(page).toHaveURL(ARTICLE);
+  });
+
+  test('a pillar with no articles yet says so and is hidden from search', async ({ page }) => {
+    await page.goto('/think/');
+    await expect(page.locator('h1')).toHaveText('Think');
+    await expect(page.locator('.empty')).toHaveText('No Think articles yet. The first one is on its way.');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  });
+
+  test('home page tags stay plain labels (the whole card is already a link)', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.feature .pillar-tag')).toHaveCount(1);
+    await expect(page.locator('.feature a.pillar-tag')).toHaveCount(0);
   });
 });

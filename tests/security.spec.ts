@@ -1,7 +1,7 @@
 import { test, expect, ARTICLE } from './fixtures';
 
 // Security headers (src/lib/security-headers.mjs) and self-hosted fonts.
-const PUBLIC_PAGES = ['/', ARTICLE, '/about/', '/policy/', '/admin/'];
+const PUBLIC_PAGES = ['/', ARTICLE, '/about/', '/policy/', '/move/', '/admin/'];
 
 test.describe('Security headers', () => {
   test.skip(({ isMobile }) => isMobile, 'same on every screen size');

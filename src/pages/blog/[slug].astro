@@ -12,6 +12,7 @@ import ArticleLinks from '../../components/ArticleLinks.astro';
 import { wordCount } from '../../lib/sections';
 import { blogPosting, breadcrumbs, faqPage, jsonLd, shareImage } from '../../lib/seo';
 import { SHARE_OPTIONS } from '../../lib/share';
+import { pillarHref } from '../../lib/pillars';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -39,7 +40,7 @@ const structuredData = jsonLd([
     author: d.author, pillar: d.pillar, wordCount: wordCount(post.body ?? ''), site,
   }),
   faqPage(d.faqs),
-  breadcrumbs([{ name: 'Home', url: site.href }, { name: d.title, url }]),
+  breadcrumbs([{ name: 'Home', url: site.href }, { name: d.pillar, url: new URL(pillarHref(d.pillar), site).href }, { name: d.title, url }]),
 ]);
 ---
 <Base
@@ -49,7 +50,7 @@ const structuredData = jsonLd([
   <div class="progress" aria-hidden="true"><div data-progress></div></div>
 
   <header class="wide article-head">
-    <PillarTag pillar={d.pillar} />
+    <PillarTag pillar={d.pillar} link />
     <div class="headline">
       <h1>{d.title}</h1>
       <p class="standfirst">{d.standfirst}</p>

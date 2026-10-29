@@ -22,7 +22,9 @@ test.describe('Discoverability', () => {
     expect(post.wordCount).toBeGreaterThan(3000);
     const faq = find(items, 'FAQPage');
     expect(faq.mainEntity[0]).toMatchObject({ '@type': 'Question', name: 'What is ecstatic dance?' });
-    expect(find(items, 'BreadcrumbList').itemListElement).toHaveLength(2);
+    const crumbs = find(items, 'BreadcrumbList').itemListElement;
+    expect(crumbs.map((c) => c.name)).toEqual(['Home', 'Move', 'Blindfolded With 50 Strangers: My First Ecstatic Dance']);
+    expect(crumbs[1].item).toBe(`${SITE}/move/`);
   });
 
   test('articles have share previews and a canonical address', async ({ page }) => {
@@ -57,6 +59,13 @@ test.describe('Discoverability', () => {
     expect((await page.request.get('/og-default.png')).ok()).toBe(true);
   });
 
+  test('pillar pages describe themselves as collections of articles', async ({ page }) => {
+    await page.goto('/move/');
+    const items = await graph(page);
+    expect(find(items, 'CollectionPage').mainEntity.itemListElement[0].url).toBe(`${SITE}${ARTICLE}`);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${SITE}/move/`);
+  });
+
   test('admin pages get no share or search labels', async ({ page }) => {
     await page.goto('/admin/');
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
@@ -67,7 +76,8 @@ test.describe('Discoverability', () => {
     const res = await request.get('/sitemap.xml');
     expect(res.headers()['content-type']).toContain('xml');
     const xml = await res.text();
-    for (const path of ['/', ARTICLE, '/about/', '/policy/']) expect(xml).toContain(`<loc>${SITE}${path}</loc>`);
+    for (const path of ['/', ARTICLE, '/about/', '/policy/', '/move/']) expect(xml).toContain(`<loc>${SITE}${path}</loc>`);
+    expect(xml).not.toContain('/think/'); // no articles yet, so not listed
     expect(xml).toContain('<lastmod>2026-07-01</lastmod>');
     expect(xml).not.toMatch(/admin|keystatic|api/);
   });
@@ -77,6 +87,7 @@ test.describe('Discoverability', () => {
     expect(text).toMatch(/^# Loving Life Longer\n/);
     expect(text).toContain(`[Blindfolded With 50 Strangers: My First Ecstatic Dance](${SITE}${ARTICLE})`);
     expect(text).toContain('**What is ecstatic dance?**');
+    expect(text).toContain(`- [Move](${SITE}/move/): Placeholder — how this maps to Move.`);
     expect(text).toContain('not medical or professional advice');
     expect(text).not.toMatch(/\{(think|move|live)\}/);
   });

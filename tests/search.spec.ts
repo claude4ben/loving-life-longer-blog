@@ -5,7 +5,7 @@ import { HIDE_FROM_SEARCH } from '../src/data/site';
 test.describe('Hidden from search until launch', () => {
   test.skip(!HIDE_FROM_SEARCH, 'site has launched');
 
-  for (const path of ['/', ARTICLE, '/about/', '/policy/', '/admin/', '/admin/photos/']) {
+  for (const path of ['/', ARTICLE, '/about/', '/policy/', '/move/', '/admin/', '/admin/photos/']) {
     test(`${path} carries one "noindex" tag`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator('meta[name="robots"]')).toHaveCount(1);

@@ -1,0 +1,121 @@
+---
+// Pillar pages: /think/, /move/, /live/. What the pillar means (the same text as its card on the About
+// page, so it's edited once in Keystatic), then every article in it, newest first, and links to the
+// other pillars. The tag at the top of each article links here.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import SignupBlock from '../components/SignupBlock.astro';
+import { PILLAR_COLORS, SITE_NAME, type Pillar } from '../data/site';
+import { PILLARS, pillarHref } from '../lib/pillars';
+import { dateLabel, readTime } from '../lib/article-meta';
+import { inline } from '../lib/markdown';
+import { breadcrumbs, jsonLd } from '../lib/seo';
+
+export function getStaticPaths() {
+  return PILLARS.map((pillar) => ({ params: { pillar: pillar.toLowerCase() }, props: { pillar } }));
+}
+
+const { pillar } = Astro.props as { pillar: Pillar };
+const about = (await getEntry('about', 'about'))!.data;
+const description = about.pillars[pillar];
+const plainDescription = description.replace(/\*\*?|__?|\[([^\]]*)\]\([^)]*\)/g, '$1').trim();
+const posts = (await getCollection('blog', (p) => p.data.pillar === pillar)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const others = PILLARS.filter((p) => p !== pillar);
+
+// Search and AI labels: a collection of articles on this topic, with a breadcrumb.
+const site = Astro.site!;
+const url = new URL(pillarHref(pillar), site).href;
+const structuredData = jsonLd([
+  {
+    '@type': 'CollectionPage',
+    name: `${pillar} · ${SITE_NAME}`,
+    description: plainDescription,
+    url,
+    inLanguage: 'en-GB',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`/blog/${p.id}/`, site).href })),
+    },
+  },
+  breadcrumbs([{ name: 'Home', url: site.href }, { name: pillar, url }]),
+]);
+---
+<Base
+  title={pillar}
+  description={`${pillar}: ${plainDescription}`}
+  image={posts[0]?.data.heroImage}
+  imageAlt={posts[0]?.data.heroAlt}
+  structuredData={posts.length ? structuredData : undefined}
+  noindex={posts.length === 0}
+>
+  <div class="wide pillar-page" style={`--pillar:${PILLAR_COLORS[pillar]}`}>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><span aria-current="page">{pillar}</span></nav>
+    <header class="pillar-head">
+      <h1>{pillar}</h1>
+      <p class="pillar-intro" set:html={inline(description)} />
+    </header>
+
+    {posts.length ? (
+      <ul class="articles">
+        {posts.map((p, i) => (
+          <li>
+            <a class="article" href={`/blog/${p.id}/`}>
+              <div class="thumb">
+                <Photo src={p.data.heroImage} alt={p.data.heroAlt} focus={p.data.heroFocus} zoom={p.data.heroZoom} sizes="(min-width: 960px) 420px, 100vw" widths={[400, 800, 1200]} eager={i === 0} />
+              </div>
+              <div class="text">
+                <h2>{p.data.title}</h2>
+                <p class="standfirst">{p.data.standfirst}</p>
+                <div class="meta"><span>{readTime(p.body)}</span><span aria-hidden="true">·</span><time datetime={p.data.date.toISOString().slice(0, 10)}>{dateLabel(p.data.date)}</time></div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="empty">No {pillar} articles yet. The first one is on its way.</p>
+    )}
+
+    <nav class="other-pillars" aria-label="Other pillars">
+      <span>Explore</span>
+      {others.map((p) => <a href={pillarHref(p)} style={`--c:${PILLAR_COLORS[p]}`}>{p} ›</a>)}
+    </nav>
+  </div>
+
+  <SignupBlock />
+</Base>
+
+<style>
+  .pillar-page { padding-top: 24px; padding-bottom: 48px; }
+  .crumbs { display: flex; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+  .crumbs a { color: var(--muted); }
+  .pillar-head { border-left: 6px solid var(--pillar); padding-left: 16px; margin-bottom: 32px; }
+  .pillar-head h1 { font-size: 36px; line-height: 1.1; margin: 0 0 10px; color: var(--pillar); }
+  .pillar-intro { font-size: 17px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 720px; }
+
+  .articles { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 32px; }
+  .article { display: flex; flex-direction: column; gap: 14px; color: inherit; }
+  .article:hover { text-decoration: none; color: inherit; }
+  .article:hover h2 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .thumb { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px; }
+  .article h2 { font-size: 24px; line-height: 1.2; margin: 0 0 8px; }
+  .standfirst { font-size: 16px; line-height: 1.55; color: var(--muted); margin: 0 0 8px; }
+  .meta { display: flex; gap: 6px; font-size: 13px; color: var(--muted); }
+  .empty { font-size: 17px; color: var(--muted); margin: 0; }
+
+  .other-pillars { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--subtle); font-size: 15px; }
+  .other-pillars span { color: var(--muted); }
+  .other-pillars a { color: var(--c); font-family: var(--font-label); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 0; }
+
+  @media (min-width: 960px) {
+    .pillar-page { padding-top: 40px; }
+    .pillar-head h1 { font-size: 48px; }
+    .pillar-intro { font-size: 19px; }
+    .article { display: grid; grid-template-columns: 420px 1fr; gap: 32px; align-items: start; }
+    .article h2 { font-size: 28px; }
+    .standfirst { font-size: 17px; }
+  }
+</style>
