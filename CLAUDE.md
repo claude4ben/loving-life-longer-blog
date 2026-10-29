@@ -11,6 +11,9 @@
   emails, social posts), read `docs/WRITING-STYLE.md` first and write in his voice. Never invent
   experiences, people or quotes; leave gaps like **[Ben: …]**. After a new article is published, update
   the style guide with anything new it shows.
+- Ben writes text that defines what LLL stands for himself, from scratch: the pillar descriptions (About →
+  Pillar cards, also shown on the pillar pages), the purpose line, the About bio and "What I believe". Don't
+  draft or suggest wording for these; just point him to where to edit them.
 - Whenever an architecture decision changes, update docs/ARCHITECTURE.md in the same commit.
 - `docs/ARCHITECTURE.md` records every architecture decision with simple pros and cons. Whenever a change
   affects the architecture (framework, content storage, styling approach, scripts, backends or services,

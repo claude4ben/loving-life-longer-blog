@@ -143,6 +143,8 @@ talking and no phones on the dance floor. I went in feeling like a rusty robot a
 
 ## 10. Drafting rules for writing assistants
 
+- **Don't draft Ben's "what LLL stands for" text:** the pillar descriptions, the purpose line, the About bio
+  and "What I believe". Ben writes these himself, from scratch.
 - **Write clean.** Ben's published drafts keep his typos until he approves corrections (requirement
   ART-10), but **new text you draft should have correct spelling and grammar**. Copy the voice, not the
   slips.
