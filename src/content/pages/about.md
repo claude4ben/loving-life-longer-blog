@@ -1,12 +1,13 @@
 ---
 heading: >-
-  I started this as a way to consolidate things I have learned and because
-  friends asked me for tips and I thought this could be a cool way to share
-  ideas with others 
+  I started this as a way to consolidate things I have learned and create a
+  place to share ideas
 photo: ./about/photo.jpg
 photoAlt: Candid photo of Ben
 photoFocus: center
-placeholderNote: Placeholder copy — real "About Me" content pending.
+placeholderNote: >-
+  I feel very lucky in my life and the experiences I have had. Something in me
+  has 
 believeHeading: What I believe
 pillars:
   Think: Placeholder — how this maps to Think.
