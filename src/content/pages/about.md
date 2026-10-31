@@ -1,7 +1,7 @@
 ---
 heading: >-
-  I started this as a way to consolidate things I have learned and create a
-  place to share ideas
+  I started this as a way to consolidate learnings and create a place to share
+  ideas
 photo: ./about/photo.jpg
 photoAlt: Candid photo of Ben Parker
 photoFocus: center
