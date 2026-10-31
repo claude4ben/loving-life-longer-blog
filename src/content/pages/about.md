@@ -5,10 +5,6 @@ heading: >-
 photo: ./about/photo.jpg
 photoAlt: Candid photo of Ben Parker
 photoFocus: center
-placeholderNote: >-
-  I feel very lucky in my life and the experiences I have had. Life events have
-  encouraged me to research how to get more from my human experience  - this has
-  included how I think, move and live 
 believeHeading: What I believe
 pillars:
   Think: Placeholder — how this maps to Think.
@@ -35,8 +31,5 @@ strip:
   - src: ./about/strip/1/src.jpg
     focus: center
   - src: ./about/strip/2/src.jpg
-    focus: center
 ---
-Placeholder — first-person intro paragraph pending final "About Me" copy. This will cover who I am, why this exists, and what changed for me.
-
-Placeholder — second paragraph pending final copy.
+I feel very grateful for the experiences I have had in my life. Life events have encouraged me to research how to balance my life and get more from my human experience  - including how I think, move and live
