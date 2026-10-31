@@ -82,13 +82,6 @@ After climbing the grand stairs, passing lovely, well worn, dorms and many many 
 
 ## Mealtime fun
 
-{% photo
-   src="./blindfolded-with-50-strangers/cacao-circle.jpg"
-   alt="cacao fireside circle photo"
-   side="right"
-   focus="center"
-   zoom=1 /%}
-
 All meals are one option, community and volunteer prepared, all vegetarian/vegan, mix of served / self-service buffet and all very delicious. Leela's chef could write an incredible recipe book.
 
 If you like cacao, you are in for a treat - it's almost available on tap. As well as being on offer in fun fire-side singing circles, led by the master of festival organisation Diana (Co-founder of ED London etc), it's served in lots of the dances and activities. So, no drugs but plenty of delicious cacao to get you in the mood.
@@ -122,9 +115,9 @@ After each ED come down, there was an option to break into 'sharing circles' of 
 ## Dancing in the Dark
 
 {% photo
-   src="./blindfolded-with-50-strangers/trance-dance.jpg"
+   src="./blindfolded-with-50-strangers/180-EcstaticDanceFestival2026-AFO_17042.jpg"
    alt="blindfolded trance dance photo"
-   side="left"
+   side="right"
    caption="50 dancers. Blindfolded. In the dark."
    focus="center"
    zoom=1 /%}
@@ -166,9 +159,9 @@ Next, he asked us to lay face down into the wet grass. In the back of my head I 
 ## Final Sharing Circle & Finale
 
 {% photo
-   src="./blindfolded-with-50-strangers/sunrise-circle.jpg"
-   alt="sunrise closing circle photo"
-   side="right"
+   src="./blindfolded-with-50-strangers/351-EcstaticDanceFestival2026-AFO_4763.jpg"
+   alt="people lying in a mush connecting with one another "
+   side="left"
    caption="You're welcome… Feel free."
    focus="center"
    zoom=1 /%}
