@@ -7,7 +7,12 @@ photoAlt: Candid photo of Ben Parker
 photoFocus: center
 believeHeading: What I believe
 pillars:
-  Think: Placeholder — how this maps to Think.
+  Think: >-
+    How are mind manifests our individual experience fascinates me - I love
+    understanding and applying the intersection of brain science and
+    spirituality. I like to apply what I learn to what I practice every day -
+    like understanding the brain's neuroplasticity and how it can remap to
+    create a positive experience via mindfulness and meditation techniques. 
   Move: Placeholder — how this maps to Move.
   Live: Placeholder — how this maps to Live.
 peopleHeading: People behind it
@@ -15,7 +20,7 @@ people:
   - name: Ben
     role: Writes and runs Loving Life Longer
     photo: ./about/people/0/photo.jpg
-    focus: "36.5% 52%"
+    focus: 36.5% 52%
     zoom: 1
 note:
   title: A note on qualifications
@@ -29,16 +34,16 @@ note:
 strip:
   - src: ./about/strip/0/src.jpeg
     alt: Ben Parker and Olivia Parker Salthouse beach Norfolk UK
-    focus: "0% 54.6%"
+    focus: 0% 54.6%
     zoom: 1
   - src: ./about/strip/1/src.jpeg
-    focus: "67.9% 85.4%"
-    zoom: 1
     alt: Greece Horse Rider
+    focus: 67.9% 85.4%
+    zoom: 1
   - src: ./about/strip/2/src.jpeg
-    focus: "92.9% 21.6%"
-    zoom: 1.25
     alt: Ben Guitar
+    focus: 92.9% 21.6%
+    zoom: 1.25
 ---
 I feel very grateful for the experiences I have had in my life.
 
