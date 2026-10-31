@@ -11,7 +11,8 @@ disclosure: First-person account — Ben’s first Ecstatic Dance festival.
 avatar: ./blindfolded-with-50-strangers/avatar.jpg
 featured: true
 heroImage: ./blindfolded-with-50-strangers/heroImage.jpg
-heroAlt: Festival venue and grounds
+heroAlt: 'Ecstatic Dancing in the marquee  '
+heroCaption: 'Music is my medicine '
 heroFocus: center
 faqs:
   - q: What is ecstatic dance?
