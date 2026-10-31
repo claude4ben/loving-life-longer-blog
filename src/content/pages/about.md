@@ -28,7 +28,8 @@ note:
 strip:
   - src: ./about/strip/0/src.jpeg
     alt: Ben Parker and Olivia Parker Salthouse beach Norfolk UK
-    focus: center
+    focus: "0% 54.6%"
+    zoom: 1
   - src: ./about/strip/1/src.jpeg
     focus: "67.9% 85.4%"
     zoom: 1
