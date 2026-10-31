@@ -36,4 +36,4 @@ strip:
 ---
 I feel very grateful for the experiences I have had in my life.
 
-Life events have encouraged me to research how to balance my life and get more from my human experience  - including how I think, move and live
+Life events have encouraged me to research how to balance my life and get more from my human experience  - including how I think, move and live.
