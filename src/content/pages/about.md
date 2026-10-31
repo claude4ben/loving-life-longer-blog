@@ -3,12 +3,12 @@ heading: >-
   I started this as a way to consolidate things I have learned and create a
   place to share ideas
 photo: ./about/photo.jpg
-photoAlt: Candid photo of Ben
+photoAlt: Candid photo of Ben Parker
 photoFocus: center
 placeholderNote: >-
-  I feel very lucky in my life and the experiences I have had. Life experiences
-  have driven me to research how to get more from my human experience  - this
-  has included how I think, move and live 
+  I feel very lucky in my life and the experiences I have had. Life events have
+  encouraged me to research how to get more from my human experience  - this has
+  included how I think, move and live 
 believeHeading: What I believe
 pillars:
   Think: Placeholder — how this maps to Think.
