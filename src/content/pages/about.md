@@ -15,8 +15,7 @@ people:
   - name: Ben
     role: Writes and runs Loving Life Longer
     photo: ./about/people/0/photo.jpg
-    focus: "34.6% 53.4%"
-    zoom: 1
+    focus: center
 note:
   title: A note on qualifications
   body: >-
@@ -28,12 +27,12 @@ note:
     situation. [Read the full disclaimer](/policy/#not-medical-advice).
 strip:
   - src: ./about/strip/0/src.jpeg
-    alt: France surf beach sunrise
+    alt: Ben Parker and Olivia Parker Salthouse beach Norfolk UK
     focus: center
   - src: ./about/strip/1/src.jpeg
     alt: Greece Horse Rider
   - src: ./about/strip/2/src.jpeg
-    alt: Sunset Cow Salthouse Norfolk UK
+    alt: Ben Guitar
 ---
 I feel very grateful for the experiences I have had in my life.
 
