@@ -28,7 +28,8 @@ note:
 strip:
   - src: ./about/strip/0/src.jpg
     focus: center
-  - src: ./about/strip/1/src.jpg
+  - src: ./about/strip/1/src.jpeg
+    alt: Greece Horse Rider
   - src: ./about/strip/2/src.jpeg
     alt: Sunset Cow Salthouse Norfolk UK
 ---
