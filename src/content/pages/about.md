@@ -1,5 +1,8 @@
 ---
-heading: I started this because I got tired of my own excuses.
+heading: >-
+  I started this as a way to consolidate things I have learned and because
+  friends asked me for tips and I thought this could be a cool way to share
+  ideas with others 
 photo: ./about/photo.jpg
 photoAlt: Candid photo of Ben
 photoFocus: center
