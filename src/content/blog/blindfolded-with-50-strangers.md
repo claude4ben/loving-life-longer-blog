@@ -32,7 +32,7 @@ links:
       retreat-style workshops.
     affiliate: false
   - name: Ecstatic Dance Festival
-    url: https://example.com/placeholder-ed-festival
+    url: https://ecstaticdancefestival.co.uk/
     type: Website
     description: >-
       Placeholder: the Dorset festival this article is about. Dates, tickets and
