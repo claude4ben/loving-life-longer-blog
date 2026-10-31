@@ -15,7 +15,8 @@ people:
   - name: Ben
     role: Writes and runs Loving Life Longer
     photo: ./about/people/0/photo.jpg
-    focus: center
+    focus: "36.5% 52%"
+    zoom: 1
 note:
   title: A note on qualifications
   body: >-
