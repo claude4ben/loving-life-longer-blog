@@ -128,7 +128,7 @@ order, so the site never stops updating:
 3. Back in Cloudflare: **Settings → Builds → Branch control** → untick **Enable automatic production branch
    deployments** (leave preview deployments on). Save.
 
-From then on a change appears about 5–6 minutes after it's saved, and only if every check passed. To see
+From then on a Keystatic save appears about 3–4 minutes after it's saved (code changes about 6), and only if every check passed. If you save several times in a row, only the latest is checked and published. To see
 why something didn't go live, open the repository's **Actions** tab.
 
 **One-time setup: let Keystatic sign you in with GitHub**

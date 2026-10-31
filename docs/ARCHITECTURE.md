@@ -516,13 +516,14 @@ or touches its link. Lighthouse checks speed on every change (see 28).
 ### 28. Tested before it goes live: GitHub Actions publishes ✅ (needs Ben's two settings)
 
 **Why:** Cloudflare used to publish every push straight away, even if tests failed. Now the GitHub workflow
-(`.github/workflows/test.yml`) builds the real content, runs Lighthouse (`lighthouserc.cjs`) and every test, and
-only then calls a Cloudflare **deploy hook** (secret `CLOUDFLARE_DEPLOY_HOOK`), which makes Cloudflare build and
+(`.github/workflows/test.yml`) builds the real content, runs Lighthouse (`lighthouserc.cjs`) and, when code
+has changed since the last successful check, the browser tests; only then does it call a Cloudflare **deploy hook** (secret `CLOUDFLARE_DEPLOY_HOOK`), which makes Cloudflare build and
 publish `main`. Cloudflare's automatic production publishing is switched off; branch previews stay on.
 
 | Pros | Cons |
 | --- | --- |
-| Nothing goes live untested, whether it comes from Claude, Keystatic or Dependabot | Changes take about 5–6 minutes to go live instead of 2 |
+| Nothing goes live unchecked, whether it comes from Claude, Keystatic or Dependabot | Changes take about 3–4 minutes (content) or 6 (code) to go live instead of 2 |
+| Content-only saves skip the browser tests (they use a frozen sample, so can't check content); a newer push cancels older runs | Relies on the last successful run to know what changed (if none is found, everything runs) |
 | Deploy hook needs no Cloudflare API key, only a secret web address | If GitHub Actions is down, publishing waits (can still publish from the Cloudflare dashboard) |
 | Lighthouse reports are kept for 14 days on each run | |
 
@@ -572,3 +573,4 @@ these.
 | 2026-10-29 | Fonts (12) self-hosted; security headers (24); database backup plan (25, later); Dependabot (26). |
 | 2026-10-29 | Speed (27): inline styles, preloaded fonts, year-long caching of fingerprinted files, link prefetch. Lighthouse budget in CI and publishing only after tests pass (28). Dependabot skips major core upgrades (26). |
 | 2026-10-29 | Pillar pages (29): /think/, /move/, /live/, linked from each article's pillar tag; in the sitemap, llms.txt and breadcrumbs. |
+| 2026-10-31 | Checks (28): content-only saves run the build and Lighthouse only; browser tests run when code changed since the last successful check; newer pushes cancel older runs. |
