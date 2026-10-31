@@ -84,7 +84,7 @@ export default config({
           components: {
             photo: block({
               label: 'Photo beside this section',
-              description: 'Put it straight after a section heading. Text wraps around it on desktop; on phones it shows after the text.',
+              description: 'Put it straight after a section heading. Text wraps around it on desktop; on phones it shows under the heading, before the text.',
               schema: {
                 src: fields.image({ label: 'Photo', directory: 'src/content/blog', publicPath: './', validation: { isRequired: true } }),
                 alt: fields.text({ label: 'Description', description: 'Describe the photo for people who can’t see it.' }),

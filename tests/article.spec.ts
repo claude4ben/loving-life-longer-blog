@@ -43,7 +43,7 @@ test.describe('Article content', () => {
     await expect(page.locator('.caption')).toHaveText(['Five days in Dorset.', '50 dancers. Blindfolded. In the dark.', 'You’re welcome… Feel free.'.replace('’', "'")]);
   });
 
-  test('photo side alternates on desktop and text comes first on mobile', async ({ page, isMobile }) => {
+  test('photo side alternates on desktop; on phones the photo sits under the heading, before the text', async ({ page, isMobile }) => {
     const sec = page.locator('#dancing-in-the-dark');
     // Where the heading's words actually sit (its box spans behind a floated photo).
     const words = await sec.locator('h2').evaluate((h) => {
@@ -53,7 +53,11 @@ test.describe('Article content', () => {
       return { x: b.left, y: b.top };
     });
     const img = (await sec.locator('.sec-img').boundingBox())!;
-    if (isMobile) expect(img.y).toBeGreaterThan(words.y);
+    if (isMobile) {
+      const firstPara = (await sec.locator('p').first().boundingBox())!;
+      expect(img.y).toBeGreaterThan(words.y); // below the heading
+      expect(img.y + img.height).toBeLessThanOrEqual(firstPara.y); // above the first paragraph
+    }
     else expect(words.x).toBeGreaterThan(img.x + img.width); // photo on the left for this section
   });
 

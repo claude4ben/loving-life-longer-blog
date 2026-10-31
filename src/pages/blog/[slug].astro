@@ -257,7 +257,14 @@ const structuredData = jsonLd([
   /* Space before the next heading: 20% less than before (Ben, 2026-10-28). */
   .sec-plain { padding-bottom: 29px; }
   .sec-split { padding: 0 20px 27px; display: flex; flex-direction: column; }
-  .sec-split .sec-img { order: 2; } /* mobile: text first, then the photo */
+  /* Phones: the section heading, then its photo, then the text (Ben, 2026-10-31). The text wrapper steps
+     aside (display: contents) so the heading and paragraphs can sit either side of the photo. */
+  @media (max-width: 959px) {
+    .sec-split .sec-text { display: contents; }
+    .sec-split h2 { order: 0; }
+    .sec-split .sec-img { order: 1; }
+    .sec-split .sec-text > :global(:not(h2)) { order: 2; }
+  }
   .sec-img { aspect-ratio: 4 / 3; max-height: 300px; position: relative; overflow: hidden; margin-bottom: 24px; }
   /* Caption over the bottom left of a photo: white text on a dark fade, with a soft shadow, so it's readable on any photo. */
   .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 18px; text-align: left; background: linear-gradient(transparent, rgba(0, 0, 0, 0.6)); }
