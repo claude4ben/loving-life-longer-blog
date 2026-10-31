@@ -9,6 +9,8 @@ date: 2026-07-01
 author: Ben Parker
 disclosure: First-person account — Ben’s first Ecstatic Dance festival.
 avatar: ./blindfolded-with-50-strangers/avatar.jpg
+avatarFocus: "34% 49.2%"
+avatarZoom: 1
 featured: true
 heroImage: ./blindfolded-with-50-strangers/heroImage.jpg
 heroAlt: 'Ecstatic Dancing in the marquee  '
