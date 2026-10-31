@@ -29,7 +29,9 @@ strip:
   - src: ./about/strip/0/src.jpg
     focus: center
   - src: ./about/strip/1/src.jpg
-    focus: center
-  - src: ./about/strip/2/src.jpg
+  - src: ./about/strip/2/src.jpeg
+    alt: Sunset Cow Salthouse Norfolk UK
 ---
-I feel very grateful for the experiences I have had in my life. Life events have encouraged me to research how to balance my life and get more from my human experience  - including how I think, move and live
+I feel very grateful for the experiences I have had in my life.
+
+Life events have encouraged me to research how to balance my life and get more from my human experience  - including how I think, move and live
