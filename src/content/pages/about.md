@@ -26,7 +26,8 @@ note:
     mental-health care, talk to a qualified professional who knows your
     situation. [Read the full disclaimer](/policy/#not-medical-advice).
 strip:
-  - src: ./about/strip/0/src.jpg
+  - src: ./about/strip/0/src.jpeg
+    alt: France surf beach sunrise
     focus: center
   - src: ./about/strip/1/src.jpeg
     alt: Greece Horse Rider
