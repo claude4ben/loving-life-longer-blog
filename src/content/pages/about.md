@@ -32,6 +32,8 @@ strip:
   - src: ./about/strip/1/src.jpeg
     alt: Greece Horse Rider
   - src: ./about/strip/2/src.jpeg
+    focus: "92.9% 21.6%"
+    zoom: 1.25
     alt: Ben Guitar
 ---
 I feel very grateful for the experiences I have had in my life.
