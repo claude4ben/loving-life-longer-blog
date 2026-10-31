@@ -30,6 +30,8 @@ strip:
     alt: Ben Parker and Olivia Parker Salthouse beach Norfolk UK
     focus: center
   - src: ./about/strip/1/src.jpeg
+    focus: "67.9% 85.4%"
+    zoom: 1
     alt: Greece Horse Rider
   - src: ./about/strip/2/src.jpeg
     focus: "92.9% 21.6%"
