@@ -11,11 +11,12 @@ test.describe('Photo focus words', () => {
     expect(focusPosition('top right')).toBe('100% 0%');
     expect(focusPosition('Bottom Left')).toBe('0% 100%');
     expect(focusPosition('50%   30%')).toBe('50% 30%');
+    expect(focusPosition('34.6% 53.4%')).toBe('34.6% 53.4%'); // what the crop editor saves
   });
 
   test('only sensible values are accepted (a typo stops the build)', () => {
-    for (const ok of ['center', 'top', 'top left', 'bottom right', '50% 30%', '0% 100%']) expect(ok).toMatch(FOCUS_PATTERN);
-    for (const bad of ['middle-ish', 'up', '50', '50% 30', 'top top top']) expect(bad).not.toMatch(FOCUS_PATTERN);
+    for (const ok of ['center', 'top', 'top left', 'bottom right', '50% 30%', '0% 100%', '34.6% 53.4%']) expect(ok).toMatch(FOCUS_PATTERN);
+    for (const bad of ['middle-ish', 'up', '50', '50% 30', 'top top top', '34.% 50%']) expect(bad).not.toMatch(FOCUS_PATTERN);
   });
 });
 

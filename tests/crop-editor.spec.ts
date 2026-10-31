@@ -1,5 +1,6 @@
 import { test, expect } from './fixtures';
 import { saveCrops, SaveError } from '../src/lib/github';
+import { FOCUS_PATTERN } from '../src/lib/photos';
 
 const HERO = '[data-shot][data-id="hero"]';
 const signIn = async (page) => {
@@ -70,6 +71,8 @@ test.describe('Photo crop editor', () => {
     expect(last.branch).toBe('main');
     expect(last.message).toMatch(/^Photo crop: hero/);
     expect(last.text).toContain(`heroFocus: "${x}% ${y}%"\nheroZoom: 1.5\n`);
+    // Whatever the editor saves must pass the site's own rules, or the next build fails (bug fixed 2026-10-31).
+    expect(last.text.match(/heroFocus: "([^"]+)"/)![1]).toMatch(FOCUS_PATTERN);
     expect(last.text).toContain('title: "Blindfolded With 50 Strangers: My First Ecstatic Dance"'); // rest untouched
   });
 });
